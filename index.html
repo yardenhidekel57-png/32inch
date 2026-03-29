@@ -15,69 +15,63 @@
         body { 
             margin: 0; padding: 0; background: var(--bg-gradient);
             font-family: 'Assistant', sans-serif; height: 100vh; width: 100vw; 
-            display: flex; flex-direction: column; overflow: hidden; color: #1e293b;
+            display: flex; flex-direction: column; overflow: hidden;
         }
         
         /* Header */
-        .header-wrapper { height: 12vh; display: flex; justify-content: center; align-items: center; padding: 0 1.5vw; }
+        .header-wrapper { height: 10vh; display: flex; align-items: center; padding: 0 2vw; }
         .header-bubble {
-            width: 100%; height: 9vh; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(15px);
-            border: 2px solid var(--accent-gold); border-radius: 20px;
+            width: 100%; height: 8vh; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px);
+            border: 2px solid var(--accent-gold); border-radius: 15px;
             display: grid; grid-template-columns: 1fr 2fr 1fr; align-items: center; padding: 0 2vw;
         }
-        .header-right { text-align: right; font-size: 1.6vw; font-weight: 800; color: var(--accent-gold); }
-        .header-center { text-align: center; display: flex; align-items: center; justify-content: center; gap: 20px; color: white; }
-        #live-clock, #live-date { font-size: 2.8vw; font-weight: 800; }
-        .header-left { text-align: left; font-size: 1.1vw; color: white; font-weight: 800; opacity: 0.9; }
+        .header-center { display: flex; justify-content: center; gap: 20px; color: white; font-size: 2.5vw; font-weight: 800; }
 
-        /* Stage Layout - 70/30 */
+        /* Main Stage - 70/30 Layout */
         .stage { 
-            height: 78vh; /* צמצמתי מעט כדי לפנות מקום לחדשות */
+            height: 80vh; 
             display: flex; 
             gap: 1.5vw; 
-            padding: 0 1.5vw 1.5vh 1.5vw;
+            padding: 0 2vw 1vh 2vw; /* הוספת ריווח למניעת חיתוך */
         }
-        .center-col { flex: 7; display: flex; flex-direction: column; min-width: 0; }
-        .side-col-right { flex: 3; display: flex; flex-direction: column; gap: 1.5vh; min-width: 0; }
+        .center-col { flex: 7; display: flex; flex-direction: column; }
+        .side-col-right { flex: 3; display: flex; flex-direction: column; gap: 1.5vh; }
 
-        .card { background: var(--card-bg); border-radius: 25px; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.5); }
-        .card-header { background: var(--primary-blue); color: var(--accent-gold); height: 6.5vh; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.8vw; border-bottom: 4px solid var(--accent-gold); flex-shrink: 0; }
+        .card { background: var(--card-bg); border-radius: 20px; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
+        .card-header { background: var(--primary-blue); color: var(--accent-gold); height: 6vh; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.8vw; border-bottom: 3px solid var(--accent-gold); }
 
         /* Messages */
-        #message-box { flex:1; padding:20px; overflow-y:auto; }
-        .msg-bubble { background: #f8fafc; padding: 22px; border-radius: 20px; border-right: 10px solid var(--accent-gold); margin-bottom: 15px; font-size: 2.2vw; font-weight: 700; color: #1e3a8a; }
+        #message-box { flex:1; padding:15px; overflow-y:auto; }
+        .msg-bubble { background: #f1f5f9; padding: 20px; border-radius: 15px; border-right: 8px solid var(--accent-gold); margin-bottom: 12px; font-size: 2vw; font-weight: 700; color: var(--primary-blue); }
 
         /* Events */
-        #events-list { flex: 1; padding: 12px; }
-        .event-item { background: #fff; padding: 10px; border-radius: 12px; border: 1px solid #e2e8f0; border-right: 6px solid var(--primary-blue); margin-bottom: 8px; display: flex; align-items: center; font-size: 1.3vw; font-weight: 800; }
-        .event-date-pill { color: var(--primary-blue); margin-left: 8px; }
+        #events-list { flex: 1; padding: 10px; }
+        .event-item { background: white; padding: 10px; border-radius: 10px; border-right: 6px solid var(--primary-blue); margin-bottom: 8px; font-size: 1.3vw; font-weight: 800; display: flex; align-items: center; }
+        .event-date { color: var(--primary-blue); margin-left: 10px; font-size: 1.1vw; }
 
-        /* QR & Promo */
-        .promo-content { padding: 10px; text-align: center; flex: 1; display: flex; flex-direction: column; justify-content: center; }
-        .cake-img { width: 100%; height: 14vh; object-fit: cover; border-radius: 12px; margin-bottom: 5px; }
-        .cake-phone { background: var(--accent-gold); color: #000; padding: 4px 12px; border-radius: 50px; font-size: 1.4vw; font-weight: 800; }
+        /* Promo & QR */
+        .promo-content { padding: 8px; text-align: center; }
+        .cake-img { width: 100%; height: 12vh; object-fit: cover; border-radius: 10px; }
         .qr-section { background: #f0f9ff; padding: 8px; display: flex; align-items: center; justify-content: center; gap: 10px; border-top: 1px solid #bae6fd; }
-        .qr-img-styled { height: 9vh; width: 9vh; border: 2px solid var(--primary-blue); border-radius: 10px; padding: 4px; background: white; }
+        .qr-img { height: 8vh; width: 8vh; border: 1px solid var(--primary-blue); border-radius: 5px; }
 
-        /* Footer - News Ticker */
-        .footer-ticker { height: 5vh; background: white; width: 100vw; display: flex; align-items: center; overflow: hidden; position: relative; border-top: 3px solid #ee2d24; }
-        .ticker-move { display: inline-block; white-space: nowrap; animation: ticker-loop 180s linear infinite; font-size: 1.8vw; font-weight: 800; color: #ee2d24; }
-        @keyframes ticker-loop { 0% { transform: translateX(0); } 100% { transform: translateX(100%); } }
-        .ynet-tag { background: #ee2d24; color: white; font-weight: 900; font-size: 1.6vw; width: 100px; height: 100%; display: flex; align-items: center; justify-content: center; position: absolute; right: 0; top: 0; z-index: 10; }
-        .emergency-bar { background: #ef4444; color: white; padding: 5px; text-align: center; font-size: 1.6vw; font-weight: 900; }
+        /* News Ticker */
+        .ticker-wrap { height: 5vh; background: white; width: 100%; display: flex; align-items: center; position: relative; border-top: 3px solid #ee2d24; }
+        .ticker-content { display: inline-block; white-space: nowrap; animation: ticker 150s linear infinite; font-size: 1.6vw; font-weight: 800; color: #ee2d24; }
+        @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(100%); } }
+        .ynet-label { background: #ee2d24; color: white; padding: 0 15px; height: 100%; display: flex; align-items: center; font-weight: 900; z-index: 5; position: absolute; right: 0; }
     </style>
 </head>
 <body>
 
 <div class="header-wrapper">
     <div class="header-bubble">
-        <div class="header-right">📍 דודו דותן 2, נתניה</div>
+        <div style="color:var(--accent-gold); font-weight:800; font-size:1.4vw;">📍 דודו דותן 2, נתניה</div>
         <div class="header-center">
-            <div id="live-date">--/--/--</div>
-            <div style="width:2px; height:4vh; background:var(--accent-gold);"></div>
+            <div id="live-date">--/--</div>
             <div id="live-clock">--:--</div>
         </div>
-        <div class="header-left">Gal & Yarden Board ©</div>
+        <div style="text-align:left; color:white; font-size:1vw;">Gal & Yarden Board ©</div>
     </div>
 </div>
 
@@ -85,18 +79,18 @@
     <div class="center-col">
         <div class="card" style="height: 100%;">
             <div class="card-header">📢 הודעות ועד הבית</div>
-            <div id="message-box"></div>
-            <div class="emergency-bar">🚨 חירום חב' ניהול: 053-2784358</div>
+            <div id="message-box">טוען הודעות...</div>
+            <div style="background:#ef4444; color:white; text-align:center; padding:5px; font-weight:900; font-size:1.5vw;">🚨 חירום: 053-2784358</div>
         </div>
     </div>
 
     <div class="side-col-right">
         <div class="card" style="flex: 1.2;">
-            <div class="card-header">🗓️ אירועים</div>
-            <div id="events-list"></div>
+            <div class="card-header">🗓️ אירועים קרובים</div>
+            <div id="events-list">טוען יומן...</div>
             <div class="qr-section">
-                <div style="font-size:1vw; font-weight:800;">שריון ג'ימבורי:</div>
-                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://forms.gle/FiVeEZ6pes8JKA7d6" class="qr-img-styled">
+                <span style="font-size:0.9vw; font-weight:800;">שריון ג'ימבורי:</span>
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://forms.gle/FiVeEZ6pes8JKA7d6" class="qr-img">
             </div>
         </div>
 
@@ -104,63 +98,66 @@
             <div class="card-header">🍰 פרסום</div>
             <div class="promo-content">
                 <img src="https://i.postimg.cc/8PKxcRFT/PHOTO-2026-02-24-10-45-14.jpg" class="cake-img">
-                <div class="cake-phone">רון: 052-2221491</div>
+                <div style="font-weight:800; color:var(--primary-blue); margin-top:5px;">רון: 052-2221491</div>
             </div>
-            <div class="qr-section" style="background: #fffdf5;">
-                <div style="font-size:1vw; font-weight:800;">לפרסום:</div>
-                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://wa.me/972502655525" class="qr-img-styled">
+            <div class="qr-section" style="background:#fffdf5;">
+                <span style="font-size:0.9vw; font-weight:800;">לפרסום:</span>
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://wa.me/972502655525" class="qr-img">
             </div>
         </div>
     </div>
 </div>
 
-<div class="footer-ticker">
-    <div class="ynet-tag">ynet</div>
-    <div class="ticker-move" id="news-ticker">מתחבר למבזקים...</div>
+<div class="ticker-wrap">
+    <div class="ynet-label">ynet</div>
+    <div class="ticker-content" id="news-ticker">טוען מבזקים...</div>
 </div>
 
 <script>
+    // החלף את הכתובת הזו בכתובת שקיבלת מה-Deployment
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyu3cJo5iSfnKWjEz-lQ8WFC-z7Y3GoLi17BKV0nIaLrF6EktyAAwV-HS2H_XoYWrmG/exec';
 
-    function updateDateTime() {
+    function updateTime() {
         const now = new Date();
         document.getElementById('live-clock').innerText = now.toLocaleTimeString('he-IL', {hour:'2-digit', minute:'2-digit'});
-        document.getElementById('live-date').innerText = now.toLocaleDateString('he-IL', {day:'2-digit', month:'2-digit', year:'2-digit'});
+        document.getElementById('live-date').innerText = now.toLocaleDateString('he-IL', {day:'2-digit', month:'2-digit'});
     }
 
-    async function updateData() {
+    async function fetchData() {
         try {
             const res = await fetch(SCRIPT_URL + '?t=' + Date.now());
             const data = await res.json();
+            
             if (data.messages) {
                 document.getElementById('message-box').innerHTML = data.messages.slice(1).reverse().map(m => 
-                    `<div class="msg-bubble">${m.toString().replace(/#/g,'<br>')}</div>`
+                    `<div class="msg-bubble">${m.replace(/#/g,'<br>')}</div>`
                 ).join('');
             }
-            if (data.events) {
+            
+            if (data.events && data.events.length > 0) {
                 document.getElementById('events-list').innerHTML = data.events.map(e => {
-                    const p = e.split('|');
-                    return `<div class="event-item"><span class="event-date-pill">${p[0].split(' ')[0]}</span><span>${p[1] ? p[1].replace(/00:00/g,'').trim() : ''}</span></div>`;
+                    const parts = e.split('|');
+                    return `<div class="event-item"><span class="event-date">${parts[0]}</span><span>${parts[1]}</span></div>`;
                 }).join('');
+            } else {
+                document.getElementById('events-list').innerHTML = '<div style="text-align:center; padding:20px; color:gray;">אין אירועים השבוע</div>';
             }
-        } catch(e) {}
+        } catch(e) { console.log(e); }
     }
 
     async function fetchNews() {
         try {
-            const res = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fwww.ynet.co.il%2FIntegration%2FStoryRss2.xml&t=${Date.now()}`);
+            const res = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fwww.ynet.co.il%2FIntegration%2FStoryRss2.xml`);
             const data = await res.json();
-            if(data.status === 'ok') {
-                const items = data.items.map(i => i.title).join("  •  ");
-                document.getElementById('news-ticker').innerText = "  •  " + items + "  •  " + items;
-            }
+            const news = data.items.map(i => i.title).join("  •  ");
+            document.getElementById('news-ticker').innerText = " • " + news + " • " + news;
         } catch(e) {}
     }
 
-    setInterval(updateDateTime, 1000); 
-    setInterval(updateData, 30000); 
+    setInterval(updateTime, 1000);
+    setInterval(fetchData, 30000);
     setInterval(fetchNews, 60000);
-    updateDateTime(); updateData(); fetchNews();
+    updateTime(); fetchData(); fetchNews();
 </script>
 </body>
 </html>
