@@ -3,83 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="color-scheme" content="light">
     <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@600;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* ערכת צבעים יוקרתית: אפור פחם, זהב ולבן נקי */
-            --title-bg: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); 
-            --title-text: #f1f5f9;
-            --primary-bg: #f8fafc;
-            --card-bg: #ffffff;
-            --accent: #d4af37; /* צבע זהב יוקרתי */
-            --main-text: #1e293b;
+            --primary-blue: #1e3a8a;
+            --accent-gold: #f59e0b;
+            --bg-gradient: radial-gradient(circle at center, #0f172a 0%, #1e3a8a 100%);
+            --card-bg: rgba(255, 255, 255, 0.98);
         }
         * { box-sizing: border-box; }
         body { 
-            margin: 0; padding: 0; 
-            background: var(--primary-bg);
+            margin: 0; padding: 0; background: var(--bg-gradient);
             font-family: 'Assistant', sans-serif; height: 100vh; width: 100vw; 
-            display: flex; flex-direction: column; overflow: hidden; color: var(--main-text);
+            display: flex; flex-direction: column; overflow: hidden; color: #1e293b;
         }
         
         /* Header */
         .header-wrapper { height: 12vh; display: flex; justify-content: center; align-items: center; padding: 0 1vw; }
         .header-bubble {
-            width: 98%; height: 9vh; background: var(--title-bg);
-            border-radius: 20px;
-            display: grid; grid-template-columns: 1fr 2fr 1fr; align-items: center; padding: 0 2vw; box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            width: 98%; height: 9vh; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(15px);
+            border: 2px solid var(--accent-gold); border-radius: 20px;
+            display: grid; grid-template-columns: 1fr 2fr 1fr; align-items: center; padding: 0 2vw;
         }
-        .header-right { text-align: right; font-size: 1.8vw; font-weight: 800; color: var(--accent); }
+        .header-right { text-align: right; font-size: 1.8vw; font-weight: 800; color: var(--accent-gold); }
         .header-center { text-align: center; display: flex; align-items: center; justify-content: center; gap: 20px; color: white; }
-        #live-clock, #live-date { font-size: 2.8vw; font-weight: 800; }
-        .separator { width: 2px; height: 4vh; background: var(--accent); }
-        .header-left { text-align: left; font-size: 1vw; color: white; opacity: 0.6; }
+        #live-clock, #live-date { font-size: 3vw; font-weight: 800; }
+        .header-left { text-align: left; font-size: 1.2vw; color: white; font-weight: 800; }
 
-        /* Main Layout - 50/50 Split */
+        /* Stage Layout - 70/30 Split */
         .stage { height: 83vh; display: flex; gap: 1.5vw; padding: 1.5vh; }
-        
-        /* עמודת הודעות - 50% */
-        .center-col { width: 50%; display: flex; flex-direction: column; }
-        
-        /* עמודת אירועים ופרסום - 50% */
-        .side-col-right { width: 50%; display: flex; flex-direction: column; gap: 1.5vh; }
+        .center-col { width: 70%; display: flex; flex-direction: column; }
+        .side-col-right { width: 30%; display: flex; flex-direction: column; gap: 1.5vh; }
 
-        .card { background: var(--card-bg); border-radius: 25px; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.1); border: 1px solid #e2e8f0; }
-        .card-header { background: var(--title-bg); color: var(--accent); height: 7vh; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.8vw; flex-shrink: 0; border-bottom: 3px solid var(--accent); }
+        .card { background: var(--card-bg); border-radius: 25px; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.5); }
+        .card-header { background: var(--primary-blue); color: var(--accent-gold); height: 7vh; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 2vw; border-bottom: 4px solid var(--accent-gold); }
 
-        /* Message Styles */
-        #message-box { flex:1; padding:20px; overflow-y:auto; }
-        .msg-bubble { background: #f1f5f9; padding: 22px; border-radius: 15px; border-right: 10px solid var(--accent); margin-bottom: 15px; font-size: 2.2vw; font-weight: 700; color: #0f172a; line-height: 1.3; }
+        /* Messages - 70% Width Area */
+        #message-box { flex:1; padding:25px; overflow-y:auto; }
+        .msg-bubble { background: #f8fafc; padding: 25px; border-radius: 20px; border-right: 12px solid var(--accent-gold); margin-bottom: 20px; font-size: 2.5vw; font-weight: 700; color: #1e3a8a; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
 
-        /* Events Styles */
-        #events-list { flex: 1; padding: 15px; overflow: hidden; }
-        .event-item { 
-            background: #fff; padding: 15px; border-radius: 12px; border: 1px solid #e2e8f0; border-right: 8px solid #0f172a; 
-            margin-bottom: 10px; display: flex; align-items: center; font-size: 1.6vw; 
-        }
-        .event-date-pill { color: #0f172a; font-weight: 800; margin-left: 12px; }
-        .event-text { font-weight: 800; color: #334155; }
+        /* Events Area */
+        #events-list { flex: 1; padding: 15px; }
+        .event-item { background: #fff; padding: 12px; border-radius: 12px; border: 1px solid #e2e8f0; border-right: 6px solid var(--primary-blue); margin-bottom: 8px; display: flex; align-items: center; font-size: 1.4vw; font-weight: 800; }
+        .event-date-pill { color: var(--primary-blue); margin-left: 10px; }
 
-        /* Promo Styles */
-        .cake-promo { flex: 1; display: flex; flex-direction: row; align-items: center; padding: 15px; gap: 15px; }
-        .promo-img-container { width: 35%; height: 100%; border-radius: 15px; overflow: hidden; }
-        .cake-img { width: 100%; height: 100%; object-fit: cover; }
-        .promo-content { width: 65%; display: flex; flex-direction: column; justify-content: center; }
-        .cake-text { font-size: 1.8vw; font-weight: 800; color: #0f172a; margin-bottom: 10px; }
-        .cake-phone { display: inline-block; background: var(--accent); color: #000; padding: 5px 15px; border-radius: 10px; font-size: 1.8vw; font-weight: 800; width: fit-content; }
+        /* Promo Area */
+        .promo-content { padding: 15px; text-align: center; }
+        .cake-img { width: 100%; height: 18vh; object-fit: cover; border-radius: 15px; margin-bottom: 10px; }
+        .cake-text { font-size: 1.5vw; font-weight: 800; color: #1e3a8a; }
+        .cake-phone { background: var(--accent-gold); color: #000; padding: 5px 15px; border-radius: 50px; font-size: 1.6vw; display: inline-block; margin-top: 5px; }
 
-        /* QR Styling - Optimized for 32" Neon */
-        .qr-img-styled { background: white; padding: 8px; border-radius: 12px; border: 2px solid var(--accent); }
-        .qr-section-horizontal { display: flex; align-items: center; justify-content: space-between; padding: 10px 20px; background: #f8fafc; border-top: 2px solid #e2e8f0; }
-        .qr-text-big { font-size: 1.4vw; font-weight: 800; color: #0f172a; text-align: right; }
+        /* QR Scaling for 32" */
+        .qr-section { background: #f0f9ff; padding: 12px; display: flex; align-items: center; justify-content: center; gap: 15px; border-top: 2px solid #bae6fd; }
+        .qr-img-styled { height: 11vh; width: 11vh; border: 2px solid var(--primary-blue); border-radius: 10px; padding: 5px; background: white; }
+        .qr-text-small { font-size: 1.2vw; font-weight: 800; color: var(--primary-blue); }
 
         /* Footer */
         .footer { height: 5vh; background: white; width: 100vw; display: flex; align-items: center; overflow: hidden; position: relative; border-top: 3px solid #ee2d24; }
-        .ticker-move { display: inline-block; white-space: nowrap; animation: ticker-loop 200s linear infinite; font-size: 1.8vw; font-weight: 800; color: #ee2d24; }
+        .ticker-move { display: inline-block; white-space: nowrap; animation: ticker-loop 200s linear infinite; font-size: 2vw; font-weight: 800; color: #ee2d24; }
         @keyframes ticker-loop { 0% { transform: translateX(0); } 100% { transform: translateX(100%); } }
-        .ynet-tag { background: #ee2d24; color: white; font-weight: 900; font-size: 1.6vw; width: 100px; height: 100%; display: flex; align-items: center; justify-content: center; position: absolute; right: 0; top: 0; z-index: 10; }
-        .emergency { background: #ef4444; color: white; padding: 1vh; text-align: center; font-size: 1.8vw; font-weight: 900; border-radius: 0 0 20px 20px; }
+        .emergency { background: #ef4444; color: white; padding: 1vh; text-align: center; font-size: 2vw; font-weight: 900; }
     </style>
 </head>
 <body>
@@ -89,10 +72,10 @@
         <div class="header-right">📍 דודו דותן 2, נתניה</div>
         <div class="header-center">
             <div id="live-date">--/--/--</div>
-            <div class="separator"></div>
+            <div style="width:2px; height:4vh; background:var(--accent-gold);"></div>
             <div id="live-clock">--:--</div>
         </div>
-        <div class="header-left">Lobby Digital Board</div>
+        <div class="header-left">Gal & Yarden Board ©</div>
     </div>
 </div>
 
@@ -106,37 +89,32 @@
     </div>
 
     <div class="side-col-right">
-        <div class="card" style="flex: 1.5;">
-            <div class="card-header">🗓️ לוח אירועים ופעילויות</div>
+        <div class="card" style="flex: 1.2;">
+            <div class="card-header" style="font-size: 1.5vw;">🗓️ אירועים</div>
             <div id="events-list"></div>
-            <div class="qr-section-horizontal">
-                <div class="qr-text-big">לשריון הג'ימבורי<br>סרקו כאן:</div>
-                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://forms.gle/FiVeEZ6pes8JKA7d6" class="qr-img-styled" style="height: 12vh; width: 12vh;">
+            <div class="qr-section">
+                <div class="qr-text-small">שריון<br>ג'ימבורי:</div>
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://forms.gle/FiVeEZ6pes8JKA7d6" class="qr-img-styled">
             </div>
         </div>
 
         <div class="card" style="flex: 1;">
-            <div class="card-header">🏢 פרסום עסקים</div>
-            <div class="cake-promo">
-                <div class="promo-img-container">
-                    <img src="https://i.postimg.cc/8PKxcRFT/PHOTO-2026-02-24-10-45-14.jpg" class="cake-img">
-                </div>
-                <div class="promo-content">
-                    <div class="cake-text">עוגות שמרים מעולם אחר! 🥐</div>
-                    <div class="cake-phone">רון: 052-2221491</div>
-                </div>
+            <div class="card-header" style="font-size: 1.5vw;">🍰 פרסום</div>
+            <div class="promo-content">
+                <img src="https://i.postimg.cc/8PKxcRFT/PHOTO-2026-02-24-10-45-14.jpg" class="cake-img">
+                <div class="cake-text">עוגות שמרים רון</div>
+                <div class="cake-phone">052-2221491</div>
             </div>
-            <div class="qr-section-horizontal" style="background: #fffdf5;">
-                <div class="qr-text-big">מעוניינים בפרסום?<br>סרקו לפרטים:</div>
-                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://wa.me/972502655525?text=שלום,%20אשמח%20לקבל%20פרטים%20בנוגע%20לפרסום%20מודעה" class="qr-img-styled" style="height: 12vh; width: 12vh;">
+            <div class="qr-section" style="background: #fffdf5;">
+                <div class="qr-text-small">רוצים<br>לפרסם?</div>
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://wa.me/972502655525" class="qr-img-styled">
             </div>
         </div>
     </div>
 </div>
 
 <div class="footer">
-    <div class="ynet-tag">ynet</div>
-    <div class="ticker-wrap"><div class="ticker-move" id="news-ticker">מתחבר למבזקים...</div></div>
+    <div class="ticker-move" id="news-ticker">מתחבר למבזקים...</div>
 </div>
 
 <script>
@@ -152,22 +130,24 @@
         try {
             const res = await fetch(SCRIPT_URL + '?t=' + Date.now());
             const data = await res.json();
-            if (data.messages && data.messages.length > 1) {
-                // הצגת הודעות ועד
+            
+            // הודעות
+            if (data.messages) {
                 document.getElementById('message-box').innerHTML = data.messages.slice(1).reverse().map(m => 
                     `<div class="msg-bubble">${m.toString().replace(/#/g,'<br>')}</div>`
                 ).join('');
             }
+            
+            // אירועים - תיקון המשיכה
             if (data.events) {
-                // הצגת אירועים
-                document.getElementById('events-list').innerHTML = data.events.slice(0, 5).map(e => {
-                    const p = e.split('|');
-                    let nameClean = p[1].replace(/00:00/g, '').replace(/^[\s:]+/, '').replace('כל היום:', '').trim();
-                    let dateClean = p[0].trim().split(' ')[0];
-                    return `<div class="event-item"><span class="event-date-pill">${dateClean}</span><span class="event-text">${nameClean}</span></div>`;
+                document.getElementById('events-list').innerHTML = data.events.map(e => {
+                    const parts = e.split('|');
+                    let dateStr = parts[0].trim().split(' ')[0];
+                    let nameStr = parts[1] ? parts[1].replace(/00:00/g, '').trim() : "";
+                    return `<div class="event-item"><span class="event-date-pill">${dateStr}</span><span>${nameStr}</span></div>`;
                 }).join('');
             }
-        } catch(e) {}
+        } catch(e) { console.log("Error loading events", e); }
     }
 
     async function fetchNews() {
@@ -175,8 +155,7 @@
             const res = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fwww.ynet.co.il%2FIntegration%2FStoryRss2.xml&t=${Date.now()}`);
             const data = await res.json();
             if(data.status === 'ok') {
-                const newsItems = data.items.map(i => i.title).join("  •  ");
-                document.getElementById('news-ticker').innerText = "  •  " + newsItems + "  •  " + newsItems;
+                document.getElementById('news-ticker').innerText = data.items.map(i => i.title).join("  •  ");
             }
         } catch(e) {}
     }
