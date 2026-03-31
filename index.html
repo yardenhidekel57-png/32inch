@@ -6,194 +6,160 @@
     <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@600;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* ערכת צבעים מקצועית: כחול עמוק וזהב אטרקטיבי */
-            --primary-blue: #0f172a; /* אפור פחם כהה-כהה, מראה יוקרתי */
-            --accent-gold: #d4af37; /* צבע זהב מט */
-            --card-bg: rgba(255, 255, 255, 0.98);
+            --primary-blue: #0f172a; 
+            --accent-gold: #d4af37; 
+            --card-bg: #ffffff;
         }
         * { box-sizing: border-box; }
         body { 
             margin: 0; padding: 0; background-color: var(--primary-blue); 
-            font-family: 'Assistant', sans-serif; height: 100vh; width: 100vw; 
-            display: flex; flex-direction: column; overflow: hidden; color: #1e293b;
+            font-family: 'Assistant', sans-serif; height: 100vh; overflow: hidden;
         }
         
-        /* Header Fix - גובה ורווחים מוגדלים */
-        .header-wrapper { height: 11vh; display: flex; justify-content: center; align-items: center; padding: 0 2.5vw; flex-shrink: 0; }
-        .header-bubble {
-            width: 100%; height: 9vh; background: rgba(255, 255, 255, 0.05);
-            border: 2px solid var(--accent-gold); border-radius: 20px;
-            display: grid; grid-template-columns: 1fr 2fr 1fr; align-items: center; padding: 0 2vw;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        /* Header - מוגן מחיתוך */
+        .header {
+            height: 10vh; display: flex; justify-content: space-between; align-items: center;
+            padding: 0 4vw; border-bottom: 3px solid var(--accent-gold); color: white;
         }
-        .header-right { text-align: right; font-size: 1.8vw; font-weight: 800; color: var(--accent-gold); }
-        .header-center { text-align: center; display: flex; align-items: center; justify-content: center; gap: 20px; color: white; font-size: 2.5vw; font-weight: 800; }
-        .header-left { text-align: left; font-size: 1vw; color: white; font-weight: 600; opacity: 0.8; }
+        .header-text { font-size: 2.2vw; font-weight: 800; }
 
-        /* Container Fix למניעת חיתוך */
-        .main-container { height: 83vh; width: 100%; padding: 0 2.5vw 2vh 2.5vw; box-sizing: border-box; }
+        /* Main Layout - שימוש ב-Floats במקום Flex למניעת בעיות בטלוויזיה */
+        .main-container { height: 84vh; width: 100%; padding: 2vh 3vw; }
         
-        /* Column Messages - 70% הרוחב של ה'קונטיינר', לא של המסך */
         .col-messages { 
-            width: 68%; float: right; height: 98%; 
-            background: white; border-radius: 25px; position: relative; overflow: hidden; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3); border: 2px solid #e2e8f0;
+            width: 65%; float: right; height: 100%; 
+            background: white; border-radius: 20px; position: relative; overflow: hidden;
+            border: 2px solid #cbd5e1;
         }
         
-        /* Column Side - 30% */
-        .col-side { width: 30%; float: left; height: 98%; overflow: hidden; }
+        .col-side { width: 32%; float: left; height: 100%; }
 
         .card { 
-            background: var(--card-bg); border-radius: 20px; margin-bottom: 1.5vh; 
-            border: 2px solid #cbd5e1; overflow: hidden; display: flex; flex-direction: column; 
-            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            background: white; border-radius: 20px; margin-bottom: 2vh; 
+            border: 2px solid #cbd5e1; overflow: hidden; position: relative;
         }
         .card-title { 
-            background: var(--primary-blue); color: var(--accent-gold); padding: 12px; 
-            text-align: center; font-weight: 800; font-size: 1.8vw; border-bottom: 3px solid var(--accent-gold); flex-shrink: 0;
+            background: var(--primary-blue); color: var(--accent-gold); padding: 10px; 
+            text-align: center; font-weight: 800; font-size: 1.6vw; border-bottom: 2px solid var(--accent-gold);
         }
 
-        /* Message Styles */
-        #message-box { padding: 20px; font-size: 2.2vw; flex-grow: 1; overflow-y: auto; }
-        .msg { background: white; border-right: 12px solid var(--accent-gold); padding: 22px; margin-bottom: 15px; border-radius: 12px; font-weight: 700; color: #0f172a; line-height: 1.4; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        /* Messages */
+        #message-box { padding: 15px; font-size: 2vw; height: 65vh; overflow-y: auto; color: #1e293b; }
+        .msg { background: #f8fafc; border-right: 10px solid var(--accent-gold); padding: 15px; margin-bottom: 12px; border-radius: 8px; font-weight: 700; }
 
-        /* Event Styles */
-        #events-list { padding: 10px; flex-grow: 1; }
-        .event { background: white; padding: 12px; margin: 8px; border-right: 6px solid var(--primary-blue); border-radius: 8px; font-size: 1.5vw; font-weight: 800; display: flex; align-items: center; gap: 10px; }
-        .event b { color: var(--primary-blue); white-space: nowrap; }
+        /* Events - רק תאריך */
+        .event { padding: 10px; border-bottom: 1px solid #e2e8f0; font-size: 1.4vw; font-weight: 800; color: #0f172a; }
 
-        /* אזור פרסום - לא חתוך */
-        .promo-box { flex-grow: 1; text-align: center; padding: 10px; display: flex; flex-direction: column; justify-content: space-around; gap: 5px; }
-        .promo-img { width: 100%; height: 23vh; object-fit: cover; border-radius: 15px; border: 2px solid #e2e8f0; }
-        .promo-text { font-size: 1.4vw; font-weight: 800; color: #0f172a; line-height: 1.2; }
-        .promo-phone { background: var(--accent-gold); color: black; padding: 5px 15px; border-radius: 10px; display: inline-block; font-size: 1.6vw; font-weight: bold; }
+        /* Promo Area */
+        .promo-img { width: 100%; height: 20vh; object-fit: cover; }
+        .promo-text { text-align: center; padding: 5px; font-size: 1.3vw; font-weight: 800; color: #0f172a; }
+        .promo-phone { background: var(--accent-gold); color: black; padding: 3px 10px; border-radius: 5px; display: inline-block; font-size: 1.4vw; margin-top: 2px; }
 
-        /* QR Scaling - מותאם לסריקה ב-32" */
-        .qr-section { background: #f8fafc; padding: 10px 15px; display: flex; align-items: center; justify-content: center; gap: 15px; border-top: 2px solid #bae6fd; flex-shrink: 0; }
-        .qr-img-styled { height: 9vh; width: 9vh; border: 2px solid var(--primary-blue); border-radius: 10px; padding: 6px; background: white; }
-        .qr-text-label { font-size: 1.1vw; font-weight: 800; color: var(--primary-blue); line-height: 1.2; }
+        /* QR Section */
+        .qr-area { display: flex; align-items: center; justify-content: center; background: #f1f5f9; padding: 5px; gap: 10px; }
+        .qr-img { height: 7vh; width: 7vh; background: white; padding: 3px; border: 1px solid #94a3b8; }
+        .qr-label { font-size: 1vw; font-weight: 800; line-height: 1.1; }
 
-        /* Ticker - עם צבעי החדשות של ynet */
-        .ticker-bar {
-            position: fixed; bottom: 0; width: 100%; height: 6vh; 
-            background: white; border-top: 4px solid #ee2d24; overflow: hidden;
-        }
-        #ticker {
-            white-space: nowrap; position: absolute; right: 0;
-            line-height: 6vh; font-size: 2.1vw; color: #ee2d24; font-weight: 800;
-        }
+        /* Ticker */
+        .footer { position: fixed; bottom: 0; width: 100%; height: 6vh; background: white; border-top: 4px solid #ef4444; overflow: hidden; }
+        #ticker { white-space: nowrap; position: absolute; right: 0; line-height: 6vh; font-size: 1.8vw; color: #ef4444; font-weight: 800; }
     </style>
 </head>
 <body>
 
-<div class="header-wrapper">
-    <div class="header-bubble">
-        <div class="header-right">📍 דודו דותן 2, נתניה</div>
-        <div class="header-center">
-            <div id="live-time">00:00</div>
-        </div>
-        <div class="header-left">Gal & Yarden Board ©</div>
-    </div>
+<div class="header">
+    <div class="header-text">📍 דודו דותן 2, נתניה</div>
+    <div class="header-text" id="clock">00:00</div>
 </div>
 
-<div class="stage-wrapper main-container">
+<div class="main-container">
     <div class="col-messages">
         <div class="card-title">📢 הודעות ועד הבית</div>
         <div id="message-box">טוען הודעות...</div>
-        <div style="background:#ef4444; color:white; text-align:center; padding:10px; font-weight:bold; font-size:1.8vw; position:absolute; bottom:0; width:100%;">
+        <div style="background:#ef4444; color:white; text-align:center; padding:8px; font-weight:bold; font-size:1.5vw; position:absolute; bottom:0; width:100%;">
             🚨 חירום חב' ניהול: 053-2784358
         </div>
     </div>
 
     <div class="col-side">
-        <div class="card" style="height: 40%; flex: 1.2;">
-            <div class="card-title" style="font-size: 1.5vw;">🗓️ אירועים</div>
-            <div id="events-list">טוען אירועים...</div>
-            <div class="qr-section">
-                <div class="qr-text-label">לשריון<br>ג'ימבורי:</div>
-                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://forms.gle/FiVeEZ6pes8JKA7d6" class="qr-img-styled">
+        <div class="card" style="height: 40%;">
+            <div class="card-title">🗓️ אירועים</div>
+            <div id="events-list" style="overflow-y: auto; height: 18vh;">טוען...</div>
+            <div class="qr-area">
+                <div class="qr-label">לשריון<br>ג'ימבורי:</div>
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://forms.gle/FiVeEZ6pes8JKA7d6" class="qr-img">
             </div>
         </div>
         
-        <div class="card" style="height: 57%; flex: 1.2;">
-            <div class="card-title" style="font-size: 1.5vw;">🍰 אזור פרסום</div>
-            <div class="promo-box">
-                <img src="https://i.postimg.cc/8PKxcRFT/PHOTO-2026-02-24-10-45-14.jpg" class="promo-img">
-                <div class="promo-text">عוגות שמרים מעולם אחר!</div>
-                <div class="promo-phone">רון: 052-2221491</div>
+        <div class="card" style="height: 55%;">
+            <div class="card-title">🍰 אזור פרסום</div>
+            <img src="https://i.postimg.cc/8PKxcRFT/PHOTO-2026-02-24-10-45-14.jpg" class="promo-img">
+            <div class="promo-text">
+                עוגות שמרים מעולם אחר!<br>
+                <span class="promo-phone">רון: 052-2221491</span>
             </div>
-            <div class="qr-section" style="background: #fffdf5; border-color: #fef08a;">
-                <div class="qr-text-label">מעוניינים<br>בפרסום?</div>
-                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://wa.me/972502655525" class="qr-img-styled">
+            <div class="qr-area">
+                <div class="qr-label">מעוניינים<br>בפרסום?</div>
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://wa.me/972502655525" class="qr-img">
             </div>
         </div>
     </div>
 </div>
 
-<div class="ticker-bar">
+<div class="footer">
     <div id="ticker">טוען מבזקים...</div>
 </div>
 
 <script>
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyu3cJo5iSfnKWjEz-lQ8WFC-z7Y3GoLi17BKV0nIaLrF6EktyAAwV-HS2H_XoYWrmG/exec';
 
-    function updateClock() {
+    function tick() {
         const now = new Date();
-        document.getElementById('live-time').innerHTML = now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0');
+        document.getElementById('clock').innerHTML = now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0');
     }
 
-    async function getData() {
+    async function loadData() {
         try {
             const r = await fetch(SCRIPT_URL + '?t=' + Date.now());
-            const data = await res.json();
+            const d = await r.json();
             
-            if (data.messages && data.messages.length > 0) {
-                document.getElementById('message-box').innerHTML = data.messages.slice(1).reverse().map(m => 
+            if(d.messages) {
+                document.getElementById('message-box').innerHTML = d.messages.slice(1).reverse().map(m => 
                     `<div class="msg">${m.replace(/#/g,'<br>')}</div>`
                 ).join('');
-            } else {
-                document.getElementById('message-box').innerHTML = '<div style="text-align:center; padding:20px; color:gray;">אין הודעות חדשות</div>';
             }
             
-            if (data.events && data.events.length > 0) {
-                document.getElementById('events-list').innerHTML = data.events.map(e => {
-                    const parts = e.split('|');
-                    // תיקון: הצגת התאריך בלבד
-                    let dateStr = parts[0] ? parts[0].trim().split(' ')[0] : "";
-                    let nameStr = parts[1] ? parts[1].replace(/00:00/g, '').trim() : "";
-                    return `<div class="event"><b>${dateStr}</b> | ${nameStr}</div>`;
+            if(d.events) {
+                document.getElementById('events-list').innerHTML = d.events.map(e => {
+                    const p = e.split('|');
+                    // מציג רק תאריך (לוקח את מה שלפני הרווח הראשון)
+                    let dateOnly = p[0] ? p[0].trim().split(' ')[0] : "";
+                    return `<div class="event"><b>${dateOnly}</b> | ${p[1] || ''}</div>`;
                 }).join('');
-            } else {
-                document.getElementById('events-list').innerHTML = '<div style="text-align:center; color:gray; padding-top:20px;">אין אירועים קרובים</div>';
             }
-        } catch(e) { console.error("Error loading data:", e); fetchDataOld(); }
+        } catch(e) { console.error(e); }
     }
 
-    async function fetchNews() {
+    async function getNews() {
         try {
-            const res = await fetch('https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fwww.ynet.co.il%2FIntegration%2FStoryRss2.xml');
-            const data = await res.json();
-            if (data.items) {
-                document.getElementById('news-ticker').innerHTML = "  •  " + data.items.map(i => i.title).join("  •  ");
-            }
+            const r = await fetch('https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fwww.ynet.co.il%2FIntegration%2FStoryRss2.xml');
+            const d = await r.json();
+            document.getElementById('ticker').innerHTML = "  •  " + d.items.map(i => i.title).join("  •  ");
         } catch(e) {}
     }
 
-    // אנימציה ידנית לטיקר למניעת תקיעות בטלוויזיות Neon
-    let tPos = -1000;
-    function animateTicker() {
-        tPos += 1.5; // מהירות התנועה
-        if (tPos > window.innerWidth) tPos = -2000;
-        document.getElementById('ticker').style.right = tPos + "px";
-        requestAnimationFrame(animateTicker);
+    let pos = -500;
+    function move() {
+        pos += 1.5;
+        if (pos > window.innerWidth) pos = -1500;
+        document.getElementById('ticker').style.right = pos + "px";
+        requestAnimationFrame(move);
     }
 
-    // הפעלה ועדכונים
-    setInterval(updateClock, 1000);
-    setInterval(getData, 30000); // הודעות ויומן כל 30 שניות
-    setInterval(fetchNews, 60000); // חדשות כל דקה
-    updateClock(); getData(); fetchNews(); animateTicker();
+    setInterval(tick, 1000);
+    setInterval(loadData, 30000);
+    setInterval(getNews, 60000);
+    tick(); loadData(); getNews(); move();
 </script>
-
 </body>
 </html>
