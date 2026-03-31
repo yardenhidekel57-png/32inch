@@ -18,8 +18,8 @@
             display: flex; flex-direction: column; overflow: hidden; color: #1e293b;
         }
         
-        /* Header Fix */
-        .header-wrapper { height: 11vh; display: flex; justify-content: center; align-items: center; padding: 0 2vw; flex-shrink: 0; }
+        /* Header Fix - גובה ורווחים מוגדלים */
+        .header-wrapper { height: 11vh; display: flex; justify-content: center; align-items: center; padding: 0 2.5vw; flex-shrink: 0; }
         .header-bubble {
             width: 100%; height: 9vh; background: rgba(255, 255, 255, 0.05);
             border: 2px solid var(--accent-gold); border-radius: 20px;
@@ -31,7 +31,7 @@
         .header-left { text-align: left; font-size: 1vw; color: white; font-weight: 600; opacity: 0.8; }
 
         /* Container Fix למניעת חיתוך */
-        .main-container { height: 83vh; width: 100%; padding: 0 2vw 2vh 2vw; box-sizing: border-box; }
+        .main-container { height: 83vh; width: 100%; padding: 0 2.5vw 2vh 2.5vw; box-sizing: border-box; }
         
         /* Column Messages - 70% הרוחב של ה'קונטיינר', לא של המסך */
         .col-messages { 
@@ -57,7 +57,7 @@
         #message-box { padding: 20px; font-size: 2.2vw; flex-grow: 1; overflow-y: auto; }
         .msg { background: white; border-right: 12px solid var(--accent-gold); padding: 22px; margin-bottom: 15px; border-radius: 12px; font-weight: 700; color: #0f172a; line-height: 1.4; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
 
-        /* Event Styles - ללא שעה */
+        /* Event Styles */
         #events-list { padding: 10px; flex-grow: 1; }
         .event { background: white; padding: 12px; margin: 8px; border-right: 6px solid var(--primary-blue); border-radius: 8px; font-size: 1.5vw; font-weight: 800; display: flex; align-items: center; gap: 10px; }
         .event b { color: var(--primary-blue); white-space: nowrap; }
@@ -96,7 +96,7 @@
     </div>
 </div>
 
-<div class="main-container">
+<div class="stage-wrapper main-container">
     <div class="col-messages">
         <div class="card-title">📢 הודעות ועד הבית</div>
         <div id="message-box">טוען הודעות...</div>
@@ -145,7 +145,7 @@
     async function getData() {
         try {
             const r = await fetch(SCRIPT_URL + '?t=' + Date.now());
-            const data = await r.json();
+            const data = await res.json();
             
             if (data.messages && data.messages.length > 0) {
                 document.getElementById('message-box').innerHTML = data.messages.slice(1).reverse().map(m => 
@@ -157,11 +157,11 @@
             
             if (data.events && data.events.length > 0) {
                 document.getElementById('events-list').innerHTML = data.events.map(e => {
-                    const p = e.split('|');
-                    // תיקון: הצגת התאריך בלבד. מחפש את התו הראשון שאינו מספר אחרי התאריך (בדרך כלל רווח או :) ומפסיק שם.
-                    let datePart = p[0] ? p[0].trim().match(/^[^^\s:]*/)[0] : "";
-                    let namePart = p[1] ? p[1].replace(/00:00/g, '').replace('כל היום:', '').trim() : "";
-                    return `<div class="event"><b>${datePart}</b> | ${namePart}</div>`;
+                    const parts = e.split('|');
+                    // תיקון: הצגת התאריך בלבד
+                    let dateStr = parts[0] ? parts[0].trim().split(' ')[0] : "";
+                    let nameStr = parts[1] ? parts[1].replace(/00:00/g, '').trim() : "";
+                    return `<div class="event"><b>${dateStr}</b> | ${nameStr}</div>`;
                 }).join('');
             } else {
                 document.getElementById('events-list').innerHTML = '<div style="text-align:center; color:gray; padding-top:20px;">אין אירועים קרובים</div>';
