@@ -8,37 +8,33 @@
         :root { --blue: #0f172a; --gold: #d4af37; }
         * { box-sizing: border-box; }
         body { 
-            margin: 0; padding: 2vh 3vw; background: var(--blue); 
+            margin: 0; padding: 2vh 4vw; background: var(--blue); 
             font-family: 'Assistant', sans-serif; height: 100vh; width: 100vw; 
             overflow: hidden; display: flex; flex-direction: column;
         }
         
-        /* Header - מוגן מחיתוך */
         .header {
             height: 10vh; display: flex; justify-content: space-between; align-items: center;
-            border-bottom: 2px solid var(--gold); padding: 0 2vw; margin-bottom: 2vh;
+            border-bottom: 2px solid var(--gold); padding: 0 1vw; margin-bottom: 2vh;
         }
         .h-item { color: white; font-weight: 800; font-size: 1.8vw; }
 
-        /* Main Container */
-        .main { display: flex; gap: 2vw; height: 75vh; }
+        .main { display: flex; gap: 2vw; height: 74vh; width: 100%; }
         
-        .col-right { width: 66%; background: white; border-radius: 20px; display: flex; flex-direction: column; overflow: hidden; border: 2px solid #cbd5e1; }
-        .col-left { width: 32%; display: flex; flex-direction: column; gap: 2vh; }
+        .col-right { width: 64%; background: white; border-radius: 20px; display: flex; flex-direction: column; overflow: hidden; }
+        .col-left { width: 34%; display: flex; flex-direction: column; gap: 2vh; }
 
-        .card { background: white; border-radius: 20px; flex: 1; overflow: hidden; display: flex; flex-direction: column; border: 2px solid #cbd5e1; }
+        .card { background: white; border-radius: 20px; flex: 1; overflow: hidden; display: flex; flex-direction: column; }
         .title { background: var(--blue); color: var(--gold); padding: 1vh; text-align: center; font-size: 1.5vw; font-weight: 800; }
         
         #msgs, #events { padding: 1.5vh; overflow-y: auto; flex-grow: 1; }
         .m-item { border-right: 8px solid var(--gold); background: #f8fafc; padding: 1.2vh; margin-bottom: 1vh; border-radius: 8px; font-size: 2vw; font-weight: 700; color: #1e293b; }
-        .e-item { border-bottom: 1px solid #eee; padding: 1vh; font-size: 1.4vw; font-weight: 800; color: var(--blue); }
+        .e-item { border-bottom: 1px solid #eee; padding: 1vh; font-size: 1.4vw; font-weight: 800; color: var(--blue); line-height: 1.2; }
 
-        /* QR & Promo */
-        .promo-img { width: 100%; height: 14vh; object-fit: cover; }
-        .qr-area { background: #f1f5f9; padding: 1vh; display: flex; align-items: center; justify-content: center; gap: 1vw; border-top: 1px solid #ddd; }
-        .qr-code { height: 8vh; width: 8vh; border: 1px solid var(--blue); background: white; padding: 2px; }
+        .promo-img { width: 100%; height: 13vh; object-fit: cover; }
+        .qr-area { background: #f1f5f9; padding: 0.8vh; display: flex; align-items: center; justify-content: center; gap: 1vw; border-top: 1px solid #ddd; }
+        .qr-code { height: 7.5vh; width: 7.5vh; border: 1px solid var(--blue); background: white; }
 
-        /* Ticker */
         .footer { position: fixed; bottom: 0; left: 0; width: 100%; height: 6vh; background: white; border-top: 4px solid #ef4444; overflow: hidden; }
         #ticker { white-space: nowrap; position: absolute; line-height: 6vh; font-size: 2.2vw; color: #ef4444; font-weight: 800; }
     </style>
@@ -47,14 +43,14 @@
 
 <div class="header">
     <div class="h-item" style="color: var(--gold);">📍 דודו דותן 2, נתניה</div>
-    <div class="h-item"><span id="clock">00:00</span> | <span id="date" style="font-size: 1.3vw; opacity: 0.8;"></span></div>
+    <div class="h-item"><span id="clock">00:00</span> | <span id="date" style="font-size: 1.3vw;"></span></div>
     <div class="h-item" style="font-size: 1vw; opacity: 0.6;">Gal & Yarden Board ©</div>
 </div>
 
 <div class="main">
     <div class="col-right">
         <div class="title">📢 הודעות ועד הבית</div>
-        <div id="msgs">טוען הודעות...</div>
+        <div id="msgs">טוען...</div>
     </div>
     <div class="col-left">
         <div class="card">
@@ -62,16 +58,16 @@
             <div id="events">טוען...</div>
             <div class="qr-area">
                 <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://forms.gle/FiVeEZ6pes8JKA7d6" class="qr-code">
-                <div style="font-size: 1vw; font-weight: 800;">לשריון<br>ג'ימבורי</div>
+                <div style="font-size: 0.9vw; font-weight: 800;">לשריון ג'ימבורי</div>
             </div>
         </div>
         <div class="card">
             <div class="title">🍰 פרסום</div>
             <img src="https://i.postimg.cc/8PKxcRFT/PHOTO-2026-02-24-10-45-14.jpg" class="promo-img">
-            <div style="text-align: center; font-size: 1.2vw; font-weight: 800; padding: 0.5vh;">עוגות רון: 052-2221491</div>
+            <div style="text-align: center; font-size: 1.1vw; font-weight: 800; padding: 0.3vh;">עוגות רון: 052-2221491</div>
             <div class="qr-area">
                 <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://wa.me/972502655525" class="qr-code">
-                <div style="font-size: 1vw; font-weight: 800;">לפרסום<br>כאן</div>
+                <div style="font-size: 0.9vw; font-weight: 800;">לפרסום כאן</div>
             </div>
         </div>
     </div>
@@ -101,12 +97,15 @@
             
             if(d.events) {
                 document.getElementById('events').innerHTML = d.events.map(e => {
-                    const parts = e.split('|');
-                    const text = parts[0] || "";
-                    // Regex שמחפש רק תבנית של תאריך (למשל 31/03 או 09/04)
-                    const dateMatch = text.match(/\d{1,2}\/\d{1,2}/);
-                    const cleanDate = dateMatch ? dateMatch[0] : text.split(' ')[0];
-                    return `<div class="e-item"><b>${cleanDate}</b> | ${parts[1] || ''}</div>`;
+                    let text = e.split('|')[0] || "";
+                    let content = e.split('|')[1] || "";
+                    
+                    // מחיקת כל מה שכולל נקודתיים (שעה) מהחלק של התאריך
+                    let dateOnly = text.replace(/\b\d{1,2}:\d{2}\b/g, "").trim();
+                    // ניקוי תווים מיותרים שנשארו (כמו קווים מפרידים)
+                    dateOnly = dateOnly.replace(/[|-]/g, "").trim();
+                    
+                    return `<div class="e-item"><b>${dateOnly}</b> | ${content}</div>`;
                 }).join('');
             }
         } catch(e) {}
