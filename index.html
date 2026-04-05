@@ -8,34 +8,51 @@
         :root { --blue: #0f172a; --gold: #d4af37; }
         * { box-sizing: border-box; }
         body { 
-            margin: 0; padding: 2vh 4vw; background: var(--blue); 
-            font-family: 'Assistant', sans-serif; height: 100vh; width: 100vw; 
-            overflow: hidden; display: flex; flex-direction: column;
+            margin: 0; padding: 0; background: var(--blue); 
+            font-family: 'Assistant', sans-serif; 
+            height: 100vh; width: 100vw; overflow: hidden; /* מניעת גלילה מוחלטת */
         }
         
+        /* Header - 12% מהמסך */
         .header {
-            height: 10vh; display: flex; justify-content: space-between; align-items: center;
-            border-bottom: 2px solid var(--gold); padding: 0 1vw; margin-bottom: 2vh;
+            height: 12vh; padding: 1vh 2vw;
+            display: grid; grid-template-columns: 1fr 1fr 1fr; align-items: center;
+            border-bottom: 2px solid var(--gold); background: rgba(255,255,255,0.03);
         }
         .h-item { color: white; font-weight: 800; font-size: 1.8vw; }
 
-        .main { display: flex; gap: 2vw; height: 74vh; width: 100%; }
+        /* Main - 82% מהמסך */
+        .container { 
+            height: 82vh; padding: 1.5vh 2vw; 
+            display: flex; gap: 2vw;
+        }
+
+        /* עמודת הודעות - 68% רוחב */
+        .col-main { 
+            width: 68%; height: 100%; background: white; border-radius: 20px; 
+            display: flex; flex-direction: column; overflow: hidden;
+        }
+        .title { background: var(--blue); color: var(--gold); padding: 1vh; text-align: center; font-size: 1.6vw; font-weight: 800; }
+        #msgs { padding: 1.5vh; flex-grow: 1; overflow-y: auto; font-size: 2.2vw; font-weight: 700; color: #1e293b; }
+        .m-item { border-right: 10px solid var(--gold); background: #f8fafc; padding: 1.5vh; margin-bottom: 1vh; border-radius: 8px; }
+
+        /* עמודה צדדית - 30% רוחב */
+        .col-side { width: 30%; height: 100%; display: flex; flex-direction: column; gap: 1.5vh; }
+        .card { background: white; border-radius: 20px; overflow: hidden; display: flex; flex-direction: column; height: 48%; }
         
-        .col-right { width: 64%; background: white; border-radius: 20px; display: flex; flex-direction: column; overflow: hidden; }
-        .col-left { width: 34%; display: flex; flex-direction: column; gap: 2vh; }
-
-        .card { background: white; border-radius: 20px; flex: 1; overflow: hidden; display: flex; flex-direction: column; }
-        .title { background: var(--blue); color: var(--gold); padding: 1vh; text-align: center; font-size: 1.5vw; font-weight: 800; }
+        /* אזור אירועים - ניקוי שעות */
+        .e-item { padding: 0.8vh 1vw; border-bottom: 1px solid #eee; font-size: 1.4vw; font-weight: 800; color: var(--blue); }
         
-        #msgs, #events { padding: 1.5vh; overflow-y: auto; flex-grow: 1; }
-        .m-item { border-right: 8px solid var(--gold); background: #f8fafc; padding: 1.2vh; margin-bottom: 1vh; border-radius: 8px; font-size: 2vw; font-weight: 700; color: #1e293b; }
-        .e-item { border-bottom: 1px solid #eee; padding: 1vh; font-size: 1.4vw; font-weight: 800; color: var(--blue); line-height: 1.2; }
+        /* אזור פרסום - ללא גלילה */
+        .promo-img { width: 100%; height: 16vh; object-fit: cover; }
+        .p-text { text-align: center; font-size: 1.4vw; font-weight: 800; padding: 0.5vh; }
 
-        .promo-img { width: 100%; height: 13vh; object-fit: cover; }
-        .qr-area { background: #f1f5f9; padding: 0.8vh; display: flex; align-items: center; justify-content: center; gap: 1vw; border-top: 1px solid #ddd; }
-        .qr-code { height: 7.5vh; width: 7.5vh; border: 1px solid var(--blue); background: white; }
+        /* QR מוגדלים */
+        .qr-box { background: #f1f5f9; padding: 0.8vh; display: flex; align-items: center; justify-content: center; gap: 1vw; border-top: 1px solid #ddd; }
+        .qr-code { height: 8vh; width: 8vh; border: 2px solid var(--blue); border-radius: 5px; }
 
-        .footer { position: fixed; bottom: 0; left: 0; width: 100%; height: 6vh; background: white; border-top: 4px solid #ef4444; overflow: hidden; }
+        /* Ticker - 6% מהמסך */
+        .footer { position: fixed; bottom: 0; width: 100%; height: 6vh; background: white; border-top: 4px solid #ef4444; overflow: hidden; }
         #ticker { white-space: nowrap; position: absolute; line-height: 6vh; font-size: 2.2vw; color: #ef4444; font-weight: 800; }
     </style>
 </head>
@@ -43,75 +60,69 @@
 
 <div class="header">
     <div class="h-item" style="color: var(--gold);">📍 דודו דותן 2, נתניה</div>
-    <div class="h-item"><span id="clock">00:00</span> | <span id="date" style="font-size: 1.3vw;"></span></div>
-    <div class="h-item" style="font-size: 1vw; opacity: 0.6;">Gal & Yarden Board ©</div>
+    <div class="h-item" style="text-align: center;">
+        <span id="h-time">00:00</span> | <span id="h-date" style="font-size: 1.4vw; opacity: 0.7;"></span>
+    </div>
+    <div class="h-item" style="text-align: left; font-size: 1vw; opacity: 0.6;">Gal & Yarden Board ©</div>
 </div>
 
-<div class="main">
-    <div class="col-right">
+<div class="container">
+    <div class="col-main">
         <div class="title">📢 הודעות ועד הבית</div>
         <div id="msgs">טוען...</div>
+        <div style="background:#ef4444; color:white; text-align:center; padding:0.5vh; font-weight:bold; font-size:1.6vw;">🚨 חירום: 053-2784358</div>
     </div>
-    <div class="col-left">
+
+    <div class="col-side">
         <div class="card">
             <div class="title">🗓️ אירועים</div>
-            <div id="events">טוען...</div>
-            <div class="qr-area">
+            <div id="events" style="flex-grow: 1; overflow: hidden;">טוען...</div>
+            <div class="qr-box">
+                <div style="font-size: 1vw; font-weight: 800;">לשריון<br>ג'ימבורי:</div>
                 <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://forms.gle/FiVeEZ6pes8JKA7d6" class="qr-code">
-                <div style="font-size: 0.9vw; font-weight: 800;">לשריון ג'ימבורי</div>
             </div>
         </div>
         <div class="card">
             <div class="title">🍰 פרסום</div>
             <img src="https://i.postimg.cc/8PKxcRFT/PHOTO-2026-02-24-10-45-14.jpg" class="promo-img">
-            <div style="text-align: center; font-size: 1.1vw; font-weight: 800; padding: 0.3vh;">עוגות רון: 052-2221491</div>
-            <div class="qr-area">
+            <div class="p-text">עוגות שמרים מעולם אחר!<br><span style="background:var(--gold); padding:0 8px; border-radius:4px;">052-2221491</span></div>
+            <div class="qr-box">
+                <div style="font-size: 1vw; font-weight: 800;">מעוניינים<br>בפרסום?</div>
                 <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://wa.me/972502655525" class="qr-code">
-                <div style="font-size: 0.9vw; font-weight: 800;">לפרסום כאן</div>
             </div>
         </div>
     </div>
 </div>
 
-<div class="footer"><div id="ticker">טוען...</div></div>
+<div class="footer"><div id="ticker">טוען מבזקים...</div></div>
 
 <script>
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyu3cJo5iSfnKWjEz-lQ8WFC-z7Y3GoLi17BKV0nIaLrF6EktyAAwV-HS2H_XoYWrmG/exec';
+    const URL = 'https://script.google.com/macros/s/AKfycbyu3cJo5iSfnKWjEz-lQ8WFC-z7Y3GoLi17BKV0nIaLrF6EktyAAwV-HS2H_XoYWrmG/exec';
 
-    function updateClock() {
+    function updateTime() {
         const n = new Date();
-        document.getElementById('clock').innerText = n.getHours().toString().padStart(2,'0')+":"+n.getMinutes().toString().padStart(2,'0');
-        document.getElementById('date').innerText = n.toLocaleDateString('he-IL');
+        document.getElementById('h-time').innerText = n.getHours().toString().padStart(2,'0')+":"+n.getMinutes().toString().padStart(2,'0');
+        document.getElementById('h-date').innerText = n.toLocaleDateString('he-IL');
     }
 
-    async function loadData() {
+    async function load() {
         try {
-            const r = await fetch(SCRIPT_URL + '?t=' + Date.now());
+            const r = await fetch(URL + '?t=' + Date.now());
             const d = await r.json();
-            
-            if(d.messages) {
-                document.getElementById('msgs').innerHTML = d.messages.slice(1).reverse().map(m => 
-                    `<div class="m-item">${m.replace(/#/g,'<br>')}</div>`
-                ).join('');
-            }
-            
+            if(d.messages) document.getElementById('msgs').innerHTML = d.messages.slice(1).reverse().map(m => `<div class="m-item">${m.replace(/#/g,'<br>')}</div>`).join('');
             if(d.events) {
                 document.getElementById('events').innerHTML = d.events.map(e => {
-                    let text = e.split('|')[0] || "";
-                    let content = e.split('|')[1] || "";
-                    
-                    // מחיקת כל מה שכולל נקודתיים (שעה) מהחלק של התאריך
-                    let dateOnly = text.replace(/\b\d{1,2}:\d{2}\b/g, "").trim();
-                    // ניקוי תווים מיותרים שנשארו (כמו קווים מפרידים)
-                    dateOnly = dateOnly.replace(/[|-]/g, "").trim();
-                    
-                    return `<div class="e-item"><b>${dateOnly}</b> | ${content}</div>`;
+                    const p = e.split('|');
+                    // חיתוך אגרסיבי: לוקח רק את ה-5 תווים הראשונים (DD/MM) או עד הרווח הראשון
+                    let dOnly = p[0].trim().split(' ')[0];
+                    if(dOnly.includes(':')) dOnly = p[0].trim().split(' ')[1] || dOnly; // הגנה למקרה שהשעה מופיעה ראשונה
+                    return `<div class="e-item"><b>${dOnly}</b> | ${p[1] || ''}</div>`;
                 }).join('');
             }
         } catch(e) {}
     }
 
-    async function getNews() {
+    async function news() {
         try {
             const r = await fetch('https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fwww.ynet.co.il%2FIntegration%2FStoryRss2.xml');
             const d = await r.json();
@@ -119,16 +130,16 @@
         } catch(e) {}
     }
 
-    let x = 0;
-    function animate() {
+    let x = -500;
+    function anim() {
         x += 1.5;
         if(x > window.innerWidth) x = -1500;
         document.getElementById('ticker').style.right = x + "px";
-        requestAnimationFrame(animate);
+        requestAnimationFrame(anim);
     }
 
-    setInterval(updateClock, 1000); setInterval(loadData, 30000); setInterval(getNews, 60000);
-    updateClock(); loadData(); getNews(); animate();
+    setInterval(updateTime, 1000); setInterval(load, 30000); setInterval(news, 60000);
+    updateTime(); load(); news(); anim();
 </script>
 </body>
 </html>
