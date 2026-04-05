@@ -5,146 +5,108 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@600;800&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary-blue: #0f172a; 
-            --accent-gold: #d4af37; 
-        }
+        :root { --blue: #0f172a; --gold: #d4af37; }
         * { box-sizing: border-box; }
         body { 
-            margin: 0; padding: 0; background-color: var(--primary-blue); 
+            margin: 0; padding: 2vh 3vw; background: var(--blue); 
             font-family: 'Assistant', sans-serif; height: 100vh; width: 100vw; 
             overflow: hidden; display: flex; flex-direction: column;
         }
         
-        /* Header - עיצוב בועה יוקרתי ללא חיתוך */
-        .header-wrapper { height: 12vh; padding: 1.5vh 2vw; flex-shrink: 0; }
-        .header-bubble {
-            width: 100%; height: 100%; background: rgba(255, 255, 255, 0.05);
-            border: 2px solid var(--accent-gold); border-radius: 20px;
-            display: grid; grid-template-columns: 1fr 1fr 1fr; align-items: center; padding: 0 2vw;
+        /* Header - מוגן מחיתוך */
+        .header {
+            height: 10vh; display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 2px solid var(--gold); padding: 0 2vw; margin-bottom: 2vh;
         }
-        .header-right { text-align: right; font-size: 1.6vw; font-weight: 800; color: var(--accent-gold); }
-        .header-center { text-align: center; color: white; font-size: 2.2vw; font-weight: 800; display: flex; justify-content: center; gap: 15px; }
-        .header-left { text-align: left; font-size: 1vw; color: white; opacity: 0.8; }
+        .h-item { color: white; font-weight: 800; font-size: 1.8vw; }
 
-        /* Main Layout - 70/30 מיושר למרכז המסך */
-        .main-container { height: 82vh; width: 100%; padding: 0 2vw 1vh 2vw; display: flex; gap: 2vw; }
+        /* Main Container */
+        .main { display: flex; gap: 2vw; height: 75vh; }
         
-        .col-messages { 
-            width: 68%; height: 100%; background: white; border-radius: 25px; 
-            position: relative; overflow: hidden; border: 2px solid #cbd5e1;
-        }
+        .col-right { width: 66%; background: white; border-radius: 20px; display: flex; flex-direction: column; overflow: hidden; border: 2px solid #cbd5e1; }
+        .col-left { width: 32%; display: flex; flex-direction: column; gap: 2vh; }
+
+        .card { background: white; border-radius: 20px; flex: 1; overflow: hidden; display: flex; flex-direction: column; border: 2px solid #cbd5e1; }
+        .title { background: var(--blue); color: var(--gold); padding: 1vh; text-align: center; font-size: 1.5vw; font-weight: 800; }
         
-        .col-side { width: 30%; height: 100%; display: flex; flex-direction: column; gap: 1.5vh; }
+        #msgs, #events { padding: 1.5vh; overflow-y: auto; flex-grow: 1; }
+        .m-item { border-right: 8px solid var(--gold); background: #f8fafc; padding: 1.2vh; margin-bottom: 1vh; border-radius: 8px; font-size: 2vw; font-weight: 700; color: #1e293b; }
+        .e-item { border-bottom: 1px solid #eee; padding: 1vh; font-size: 1.4vw; font-weight: 800; color: var(--blue); }
 
-        .card { 
-            background: white; border-radius: 20px; border: 2px solid #cbd5e1; 
-            overflow: hidden; display: flex; flex-direction: column;
-        }
-        .card-title { 
-            background: var(--primary-blue); color: var(--accent-gold); padding: 0.8vh; 
-            text-align: center; font-weight: 800; font-size: 1.4vw; border-bottom: 2px solid var(--accent-gold);
-        }
-
-        /* Messages */
-        #message-box { padding: 1.5vh; font-size: 2vw; flex-grow: 1; overflow-y: auto; color: #1e293b; }
-        .msg { background: #f8fafc; border-right: 10px solid var(--accent-gold); padding: 1.5vh; margin-bottom: 1.2vh; border-radius: 12px; font-weight: 700; }
-
-        /* Events - רק תאריך */
-        .event { padding: 1vh; border-bottom: 1px solid #e2e8f0; font-size: 1.3vw; font-weight: 800; color: #0f172a; }
-
-        /* Promo & QR - הגדלה משמעותית למניעת גלילה */
-        .promo-img { width: 100%; height: 18vh; object-fit: cover; }
-        .promo-text { text-align: center; font-size: 1.3vw; font-weight: 800; padding: 0.5vh; }
-        .promo-phone { background: var(--accent-gold); color: black; padding: 2px 10px; border-radius: 5px; font-size: 1.4vw; }
-
-        .qr-section { 
-            background: #f1f5f9; padding: 1vh; display: flex; align-items: center; 
-            justify-content: center; gap: 1vw; border-top: 2px solid #e2e8f0;
-        }
-        .qr-img { height: 8.5vh; width: 8.5vh; background: white; padding: 4px; border: 2px solid var(--primary-blue); border-radius: 8px; }
-        .qr-label { font-size: 1.1vw; font-weight: 800; color: var(--primary-blue); line-height: 1.2; }
+        /* QR & Promo */
+        .promo-img { width: 100%; height: 14vh; object-fit: cover; }
+        .qr-area { background: #f1f5f9; padding: 1vh; display: flex; align-items: center; justify-content: center; gap: 1vw; border-top: 1px solid #ddd; }
+        .qr-code { height: 8vh; width: 8vh; border: 1px solid var(--blue); background: white; padding: 2px; }
 
         /* Ticker */
-        .footer { position: fixed; bottom: 0; width: 100%; height: 6vh; background: white; border-top: 4px solid #ef4444; overflow: hidden; }
-        #ticker { white-space: nowrap; position: absolute; right: 0; line-height: 6vh; font-size: 2vw; color: #ef4444; font-weight: 800; }
+        .footer { position: fixed; bottom: 0; left: 0; width: 100%; height: 6vh; background: white; border-top: 4px solid #ef4444; overflow: hidden; }
+        #ticker { white-space: nowrap; position: absolute; line-height: 6vh; font-size: 2.2vw; color: #ef4444; font-weight: 800; }
     </style>
 </head>
 <body>
 
-<div class="header-wrapper">
-    <div class="header-bubble">
-        <div class="header-right">📍 דודו דותן 2, נתניה</div>
-        <div class="header-center">
-            <span id="live-time">00:00</span>
-            <span style="opacity: 0.5;">|</span>
-            <span id="live-date">01.01.26</span>
-        </div>
-        <div class="header-left">Gal & Yarden Board ©</div>
-    </div>
+<div class="header">
+    <div class="h-item" style="color: var(--gold);">📍 דודו דותן 2, נתניה</div>
+    <div class="h-item"><span id="clock">00:00</span> | <span id="date" style="font-size: 1.3vw; opacity: 0.8;"></span></div>
+    <div class="h-item" style="font-size: 1vw; opacity: 0.6;">Gal & Yarden Board ©</div>
 </div>
 
-<div class="main-container">
-    <div class="col-messages">
-        <div class="card-title">📢 הודעות ועד הבית</div>
-        <div id="message-box">טוען הודעות...</div>
-        <div style="background:#ef4444; color:white; text-align:center; padding:0.8vh; font-weight:bold; font-size:1.6vw; position:absolute; bottom:0; width:100%;">
-            🚨 חירום חב' ניהול: 053-2784358
-        </div>
+<div class="main">
+    <div class="col-right">
+        <div class="title">📢 הודעות ועד הבית</div>
+        <div id="msgs">טוען הודעות...</div>
     </div>
-
-    <div class="col-side">
-        <div class="card" style="height: 42%;">
-            <div class="card-title">🗓️ אירועים</div>
-            <div id="events-list" style="overflow-y: auto; flex-grow: 1;">טוען...</div>
-            <div class="qr-section">
-                <div class="qr-label">לשריון<br>ג'ימבורי:</div>
-                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://forms.gle/FiVeEZ6pes8JKA7d6" class="qr-img">
+    <div class="col-left">
+        <div class="card">
+            <div class="title">🗓️ אירועים</div>
+            <div id="events">טוען...</div>
+            <div class="qr-area">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://forms.gle/FiVeEZ6pes8JKA7d6" class="qr-code">
+                <div style="font-size: 1vw; font-weight: 800;">לשריון<br>ג'ימבורי</div>
             </div>
         </div>
-        
-        <div class="card" style="height: 55%;">
-            <div class="card-title">🍰 אזור פרסום</div>
+        <div class="card">
+            <div class="title">🍰 פרסום</div>
             <img src="https://i.postimg.cc/8PKxcRFT/PHOTO-2026-02-24-10-45-14.jpg" class="promo-img">
-            <div class="promo-text">
-                עוגות שמרים מעולם אחר!<br>
-                <span class="promo-phone">רון: 052-2221491</span>
-            </div>
-            <div class="qr-section">
-                <div class="qr-label">מעוניינים<br>בפרסום?</div>
-                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://wa.me/972502655525" class="qr-img">
+            <div style="text-align: center; font-size: 1.2vw; font-weight: 800; padding: 0.5vh;">עוגות רון: 052-2221491</div>
+            <div class="qr-area">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://wa.me/972502655525" class="qr-code">
+                <div style="font-size: 1vw; font-weight: 800;">לפרסום<br>כאן</div>
             </div>
         </div>
     </div>
 </div>
 
-<div class="footer">
-    <div id="ticker">טוען מבזקים...</div>
-</div>
+<div class="footer"><div id="ticker">טוען...</div></div>
 
 <script>
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyu3cJo5iSfnKWjEz-lQ8WFC-z7Y3GoLi17BKV0nIaLrF6EktyAAwV-HS2H_XoYWrmG/exec';
 
     function updateClock() {
-        const now = new Date();
-        document.getElementById('live-time').innerHTML = now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0');
-        document.getElementById('live-date').innerHTML = now.toLocaleDateString('he-IL');
+        const n = new Date();
+        document.getElementById('clock').innerText = n.getHours().toString().padStart(2,'0')+":"+n.getMinutes().toString().padStart(2,'0');
+        document.getElementById('date').innerText = n.toLocaleDateString('he-IL');
     }
 
     async function loadData() {
         try {
             const r = await fetch(SCRIPT_URL + '?t=' + Date.now());
             const d = await r.json();
+            
             if(d.messages) {
-                document.getElementById('message-box').innerHTML = d.messages.slice(1).reverse().map(m => 
-                    `<div class="msg">${m.replace(/#/g,'<br>')}</div>`
+                document.getElementById('msgs').innerHTML = d.messages.slice(1).reverse().map(m => 
+                    `<div class="m-item">${m.replace(/#/g,'<br>')}</div>`
                 ).join('');
             }
+            
             if(d.events) {
-                document.getElementById('events-list').innerHTML = d.events.map(e => {
-                    const p = e.split('|');
-                    let dateStr = p[0] ? p[0].trim().split(' ')[0] : "";
-                    return `<div class="event"><b>${dateStr}</b> | ${p[1] || ''}</div>`;
+                document.getElementById('events').innerHTML = d.events.map(e => {
+                    const parts = e.split('|');
+                    const text = parts[0] || "";
+                    // Regex שמחפש רק תבנית של תאריך (למשל 31/03 או 09/04)
+                    const dateMatch = text.match(/\d{1,2}\/\d{1,2}/);
+                    const cleanDate = dateMatch ? dateMatch[0] : text.split(' ')[0];
+                    return `<div class="e-item"><b>${cleanDate}</b> | ${parts[1] || ''}</div>`;
                 }).join('');
             }
         } catch(e) {}
@@ -154,22 +116,20 @@
         try {
             const r = await fetch('https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fwww.ynet.co.il%2FIntegration%2FStoryRss2.xml');
             const d = await r.json();
-            document.getElementById('ticker').innerHTML = "  •  " + d.items.map(i => i.title).join("  •  ");
+            document.getElementById('ticker').innerHTML = " • " + d.items.map(i => i.title).join(" • ");
         } catch(e) {}
     }
 
-    let pos = -500;
-    function move() {
-        pos += 1.5;
-        if (pos > window.innerWidth) pos = -1500;
-        document.getElementById('ticker').style.right = pos + "px";
-        requestAnimationFrame(move);
+    let x = 0;
+    function animate() {
+        x += 1.5;
+        if(x > window.innerWidth) x = -1500;
+        document.getElementById('ticker').style.right = x + "px";
+        requestAnimationFrame(animate);
     }
 
-    setInterval(updateClock, 1000);
-    setInterval(loadData, 30000);
-    setInterval(getNews, 60000);
-    updateClock(); loadData(); getNews(); move();
+    setInterval(updateClock, 1000); setInterval(loadData, 30000); setInterval(getNews, 60000);
+    updateClock(); loadData(); getNews(); animate();
 </script>
 </body>
 </html>
