@@ -3,142 +3,144 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light">
     <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@600;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-bg: #0f172a;
-            --accent: #fbbf24;
-            --card-bg: rgba(255, 255, 255, 0.95);
+            --title-bg: linear-gradient(135deg, #b2ebf2 0%, #81d4fa 100%); 
             --title-text: #0c4a6e;
-            --main-blue: #1e40af;
+            --primary-bg: #0f172a;
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --accent: #fbbf24;
+            --main-text: #1e3a8a;
         }
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        * { box-sizing: border-box; }
         body { 
-            background: var(--primary-bg); font-family: 'Assistant', sans-serif; 
-            height: 100vh; width: 100vw; overflow: hidden; 
-            display: flex; flex-direction: column; padding: 1.5vh 1.5vw;
+            margin: 0; padding: 0; 
+            background: var(--primary-bg);
+            background-image: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+            font-family: 'Assistant', sans-serif; height: 100vh; width: 100vw; 
+            display: flex; flex-direction: column; overflow: hidden; color: #334155;
         }
-
-        /* שעון ותאריך מוגדלים */
-        .header {
-            height: 10vh; display: flex; justify-content: space-between; align-items: center;
-            background: rgba(255, 255, 255, 0.1); border-radius: 20px;
-            padding: 0 2.5vw; margin-bottom: 2vh; border: 1px solid rgba(255,255,255,0.2);
-        }
-        .h-item { color: white; font-weight: 800; font-size: 2.2vw; }
-        #live-clock { font-size: 3.2vw; color: var(--accent); margin-right: 15px; }
-
-        .stage { display: flex; gap: 2vw; height: 78vh; }
         
-        /* עמודת הודעות ועד - רחבה */
+        .header-wrapper { height: 12vh; display: flex; justify-content: center; align-items: center; padding: 0 1vw; }
+        .header-bubble {
+            width: 98%; height: 9vh; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(15px);
+            border: 1px solid rgba(255,255,255,0.2); border-radius: 25px;
+            display: grid; grid-template-columns: 1fr 2fr 1fr; align-items: center; padding: 0 2vw; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .header-right { text-align: right; font-size: 1.9vw; font-weight: 800; color: var(--accent); }
+        .header-center { text-align: center; display: flex; align-items: center; justify-content: center; gap: 25px; color: white; }
+        #live-clock, #live-date { font-size: 2.8vw; font-weight: 800; line-height: 1; letter-spacing: 1px; }
+        .separator { width: 3px; height: 4vh; background: rgba(255,255,255,0.3); border-radius: 2px; }
+        .header-left { text-align: left; font-size: 1vw; color: white; opacity: 0.5; font-weight: 700; }
+
+        .stage { height: 83vh; display: flex; gap: 1.2vw; padding: 1.5vh; }
+        
+        /* שינוי פריסה: עמודה ימנית 35%, עמודה מרכזית 65% */
+        .side-col-left { width: 35%; display: flex; flex-direction: column; gap: 1.5vh; height: 100%; }
         .center-col { width: 65%; display: flex; flex-direction: column; }
+
+        .card { background: var(--card-bg); border-radius: 20px; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
+        .card-header { background: var(--title-bg); color: var(--title-text); height: 6vh; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.4vw; flex-shrink: 0; }
+
+        #events-list { flex: 1; padding: 12px; overflow: hidden; display: flex; flex-direction: column; }
+        .event-item { 
+            background: #f8fafc; padding: 12px; border-radius: 12px; border-right: 6px solid #0ea5e9; 
+            margin-bottom: 8px; display: flex; align-items: center; font-size: 1.35vw; 
+        }
+        .event-date-pill { color: #0ea5e9; font-weight: 800; margin-left: 8px; white-space: nowrap; }
+        .event-text { font-weight: 800; color: var(--main-text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+        .msg-bubble { background: white; padding: 18px; border-radius: 15px; border-right: 8px solid var(--accent); margin-bottom: 15px; font-size: 1.9vw; font-weight: 700; color: #1e40af; line-height: 1.3; }
+
+        .cake-promo { flex: 2.2; background: #fffcf0; border: 2px solid #eab308; display: flex; flex-direction: column; }
+        .slider-container { flex: 3.5; width: 100%; overflow: hidden; }
+        .cake-img { width: 100%; height: 100%; object-fit: cover; }
+        .cake-text { flex: 1.5; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 0.5vh; text-align: center; color: #854d0e; font-size: 1.4vw; font-weight: 800; }
+        .cake-phone { background: var(--accent); color: #000; padding: 0.4vh 1.4vw; border-radius: 50px; font-size: 1.6vw; margin-top: 0.4vh; }
+
+        .qr-img-styled { background: white; padding: 5px; border-radius: 8px; border: 1px solid #ddd; display: block; }
+        .promo-footer { background: #fff; padding: 1.2vh; display: flex; align-items: center; justify-content: center; gap: 12px; border-top: 2px dashed #eab308; flex-shrink: 0; }
+        .promo-footer-text { font-size: 1.3vw; font-weight: 800; color: var(--main-text); line-height: 1.2; text-align: right; }
         
-        /* עמודת אירועים ופרסום */
-        .side-col { width: 35%; display: flex; flex-direction: column; gap: 2vh; }
+        .qr-section { background: #f0f9ff; padding: 10px; display: flex; align-items: center; justify-content: center; gap: 10px; border-top: 2px solid #bae6fd; margin-top: auto; }
+        .qr-text { font-size: 1.2vw; font-weight: 900; color: #0369a1; text-align: center; }
 
-        .card { background: var(--card-bg); border-radius: 25px; flex: 1; overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .card-header { background: linear-gradient(135deg, #b2ebf2 0%, #81d4fa 100%); color: var(--title-text); height: 7vh; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.8vw; }
-
-        /* הודעות ועד מוגדלות */
-        .msg-container { padding: 2vh; overflow-y: auto; flex-grow: 1; }
-        .msg-bubble { background: white; padding: 2.5vh; border-radius: 20px; border-right: 10px solid var(--accent); margin-bottom: 2vh; font-size: 2.2vw; font-weight: 700; color: var(--main-blue); line-height: 1.3; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-
-        /* לוח אירועים מוגדל */
-        #events-list { padding: 1.5vh; overflow-y: auto; }
-        .event-item { background: #f8fafc; padding: 1.5vh; border-radius: 15px; border-right: 7px solid #0ea5e9; margin-bottom: 1.2vh; display: flex; align-items: center; font-size: 1.7vw; font-weight: 800; color: #1e3a8a; }
-        .event-date { color: #0ea5e9; margin-left: 12px; }
-
-        /* פרסום עסקי - תמונה נפרסת ו-QR למטה */
-        .promo-card { display: flex; flex-direction: column; background: #fffcf0; border: 2px solid #eab308; }
-        .promo-img { width: 100%; height: 20vh; object-fit: cover; }
-        .promo-desc { padding: 1.5vh; text-align: center; color: #854d0e; font-size: 1.6vw; font-weight: 800; flex-grow: 1; }
-        .promo-phone { background: var(--accent); color: black; padding: 0.5vh 2vw; border-radius: 50px; display: inline-block; margin-top: 1vh; font-size: 1.8vw; }
-
-        .qr-area { 
-            background: #fff; padding: 1.2vh; display: flex; align-items: center; justify-content: center; gap: 15px; 
-            border-top: 2px dashed #eab308; margin-top: auto; /* הצמדה לתחתית */
-        }
-        .qr-code { height: 9vh; width: 9vh; border: 1px solid #ddd; border-radius: 10px; }
-        .qr-text { font-size: 1.4vw; font-weight: 800; color: var(--main-blue); line-height: 1.2; }
-
-        /* פוטר Ynet ללא קרטוע */
-        .footer { 
-            position: fixed; bottom: 0; left: 0; width: 100%; height: 6vh; 
-            background: white; border-top: 4px solid #ef4444; 
-            display: flex; align-items: center; z-index: 100;
-        }
-        .ynet-label { background: #ef4444; color: white; font-weight: 900; font-size: 2vw; padding: 0 1.5vw; height: 100%; display: flex; align-items: center; }
-        #ticker-container { flex-grow: 1; overflow: hidden; position: relative; height: 100%; }
-        #ticker { 
-            white-space: nowrap; position: absolute; line-height: 6vh; 
-            font-size: 2.2vw; color: #ef4444; font-weight: 800; will-change: transform;
-        }
-        .emergency { background: #ef4444; color: white; padding: 1vh; text-align: center; font-size: 1.8vw; font-weight: 900; }
+        .footer { height: 5vh; background: white; width: 100vw; display: flex; align-items: center; overflow: hidden; position: relative; border-top: 2px solid #ee2d24; }
+        .ticker-move { display: inline-block; white-space: nowrap; animation: ticker-loop 200s linear infinite; font-size: 1.9vw; font-weight: 800; color: #ee2d24; }
+        @keyframes ticker-loop { 0% { transform: translateX(0); } 100% { transform: translateX(100%); } }
+        .ynet-tag { background: #ee2d24; color: white; font-weight: 900; font-size: 1.8vw; width: 110px; height: 100%; display: flex; align-items: center; justify-content: center; position: absolute; right: 0; top: 0; z-index: 10; }
+        .emergency { background: #ef4444; color: white; padding: 1vh; text-align: center; font-size: 1.6vw; font-weight: 900; }
     </style>
 </head>
 <body>
 
-<div class="header">
-    <div class="h-item">📍 דודו דותן 2, נתניה</div>
-    <div class="h-item">
-        <span id="live-date">--/--/--</span>
-        <span id="live-clock">00:00</span>
+<div class="header-wrapper">
+    <div class="header-bubble">
+        <div class="header-right">📍 דודו דותן 2, נתניה</div>
+        <div class="header-center">
+            <div id="live-date">--/--/--</div>
+            <div class="separator"></div>
+            <div id="live-clock">--:--</div>
+        </div>
+        <div class="header-left">Gal & Yarden Board ©</div>
     </div>
 </div>
 
 <div class="stage">
-    <div class="center-col">
-        <div class="card">
-            <div class="card-header">📢 הודעות ועד הבית</div>
-            <div id="message-box" class="msg-container"></div>
-            <div class="emergency">🚨 טלפון חירום חב' ניהול: 053-2784358</div>
+    <div class="side-col-left">
+        <div class="card" style="flex: 1.3;">
+            <div class="card-header">🗓️ לוח אירועים</div>
+            <div id="events-list"></div>
+            <div class="qr-section">
+                <div class="qr-text">שריון הג'ימבורי</div>
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://forms.gle/FiVeEZ6pes8JKA7d6" class="qr-img-styled" style="height: 8vh; width: 8vh;">
+            </div>
+        </div>
+        <div class="card cake-promo">
+            <div class="slider-container">
+                <img src="https://i.postimg.cc/8PKxcRFT/PHOTO-2026-02-24-10-45-14.jpg" class="cake-img">
+            </div>
+            <div class="cake-text">
+                <div>עוגות שמרים מעולם אחר! 🥐</div>
+                <div class="cake-phone">רון: 052-2221491</div>
+            </div>
+            <div class="promo-footer">
+                <div class="promo-footer-text">מעוניינים בפרסום?<br>סרקו:</div>
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://wa.me/972502655525?text=שלום,%20אשמח%20לקבל%20פרטים%20בנוגע%20לפרסום%20מודעה" class="qr-img-styled" style="height: 9vh; width: 9vh;">
+            </div>
         </div>
     </div>
 
-    <div class="side-col">
-        <div class="card" style="flex: 1.2;">
-            <div class="card-header">🗓️ לוח אירועים</div>
-            <div id="events-list"></div>
-            <div class="qr-area" style="background: #f0f9ff; border-top: 2px solid #bae6fd;">
-                <div class="qr-text">לשריון<br>הג'ימבורי:</div>
-                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://forms.gle/FiVeEZ6pes8JKA7d6" class="qr-code">
-            </div>
-        </div>
-
-        <div class="card promo-card">
-            <div class="card-header" style="background: #fef08a;">🍰 פינת הפרסום</div>
-            <img src="https://i.postimg.cc/8PKxcRFT/PHOTO-2026-02-24-10-45-14.jpg" class="promo-img">
-            <div class="promo-desc">
-                עוגות שמרים מעולם אחר! 🥐
-                <div class="promo-phone">רון: 052-2221491</div>
-            </div>
-            <div class="qr-area">
-                <div class="qr-text">מעוניינים<br>בפרסום?</div>
-                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://wa.me/972502655525" class="qr-code">
-            </div>
+    <div class="center-col">
+        <div class="card" style="height: 100%;">
+            <div class="card-header">📢 הודעות ועד הבית</div>
+            <div id="message-box" style="flex:1; padding:20px; overflow-y:auto;"></div>
+            <div class="emergency">🚨 טלפון חירום חב' ניהול: 053-2784358</div>
         </div>
     </div>
 </div>
 
 <div class="footer">
-    <div class="ynet-label">ynet</div>
-    <div id="ticker-container"><div id="ticker">מתחבר למבזקים...</div></div>
+    <div class="ynet-tag">ynet</div>
+    <div class="ticker-wrap"><div class="ticker-move" id="news-ticker">מתחבר למבזקים...</div></div>
 </div>
 
 <script>
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzhGwGPiqNXmESzkgh6oW-KDGlgMaBoIiYDd0ennIUNlOwVQH2F7DWIDyZ6Fe_3wrcY/exec';
 
-    function updateClock() {
+    function updateDateTime() {
         const now = new Date();
         document.getElementById('live-clock').innerText = now.toLocaleTimeString('he-IL', {hour:'2-digit', minute:'2-digit'});
-        document.getElementById('live-date').innerText = now.toLocaleDateString('he-IL', {day:'2-digit', month:'2-digit', year:'2-digit'}) + " | ";
+        document.getElementById('live-date').innerText = now.toLocaleDateString('he-IL', {day:'2-digit', month:'2-digit', year:'2-digit'});
     }
 
     async function updateData() {
         try {
             const res = await fetch(SCRIPT_URL + '?t=' + Date.now());
             const data = await res.json();
-            if (data.messages) {
+            if (data.messages && data.messages.length > 1) {
                 document.getElementById('message-box').innerHTML = data.messages.slice(1).reverse().map(m => 
                     `<div class="msg-bubble">${m.toString().replace(/#/g,'<br>')}</div>`
                 ).join('');
@@ -146,9 +148,9 @@
             if (data.events) {
                 document.getElementById('events-list').innerHTML = data.events.map(e => {
                     const p = e.split('|');
-                    let datePart = p[0].trim().split(' ')[0];
-                    let namePart = p[1] ? p[1].replace(/00:00/g, '').replace(/^[\s:]+/, '').trim() : "";
-                    return `<div class="event-item"><span class="event-date">${datePart}</span> | <span>${namePart}</span></div>`;
+                    let nameClean = p[1].replace(/00:00/g, '').replace(/^[\s:]+/, '').replace('כל היום:', '').trim();
+                    let dateClean = p[0].trim().split(' ')[0];
+                    return `<div class="event-item"><span class="event-date-pill">${dateClean}</span><span class="event-text">${nameClean}</span></div>`;
                 }).join('');
             }
         } catch(e) {}
@@ -158,22 +160,17 @@
         try {
             const res = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fwww.ynet.co.il%2FIntegration%2FStoryRss2.xml&t=${Date.now()}`);
             const data = await res.json();
-            document.getElementById('ticker').innerHTML = " • " + data.items.map(i => i.title).join(" • ");
+            if(data.status === 'ok') {
+                const newsItems = data.items.map(i => i.title).join("  •  ");
+                document.getElementById('news-ticker').innerText = "  •  " + newsItems + "  •  " + newsItems;
+            }
         } catch(e) {}
     }
 
-    let pos = 0;
-    function animateTicker() {
-        const ticker = document.getElementById('ticker');
-        const containerWidth = document.getElementById('ticker-container').offsetWidth;
-        pos -= 1.8;
-        if (pos < -ticker.offsetWidth) pos = containerWidth;
-        ticker.style.transform = `translateX(${pos}px)`;
-        requestAnimationFrame(animateTicker);
-    }
-
-    setInterval(updateClock, 1000); setInterval(updateData, 30000); setInterval(fetchNews, 300000);
-    updateClock(); updateData(); fetchNews(); animateTicker();
+    setInterval(updateDateTime, 1000); 
+    setInterval(updateData, 30000); 
+    setInterval(fetchNews, 60000);
+    updateDateTime(); updateData(); fetchNews();
 </script>
 </body>
 </html>
