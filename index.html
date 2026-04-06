@@ -6,57 +6,58 @@
     <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@600;800&display=swap" rel="stylesheet">
     <style>
         :root { --blue: #0f172a; --gold: #d4af37; }
-        * { box-sizing: border-box; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
         body { 
-            margin: 0; padding: 1vh 2vw; background: var(--blue); 
-            font-family: 'Assistant', sans-serif; height: 100vh; width: 100vw; 
-            overflow: hidden; display: flex; flex-direction: column;
+            background: var(--blue); font-family: 'Assistant', sans-serif; 
+            height: 100vh; width: 100vw; overflow: hidden; 
+            display: flex; flex-direction: column; padding: 1.5vh 2vw;
         }
         
+        /* 1. הגדלת פונט שעון ותאריך */
         .header {
-            height: 8vh; display: flex; justify-content: space-between; align-items: center;
+            height: 9vh; display: flex; justify-content: space-between; align-items: center;
             border-bottom: 2px solid var(--gold); padding: 0 1vw; margin-bottom: 1vh;
         }
-        .h-item { color: white; font-weight: 800; font-size: 1.8vw; }
+        .h-item { color: white; font-weight: 800; font-size: 2.2vw; } /* פונט מוגדל */
+        #clock { font-size: 2.8vw; color: white; }
 
-        /* הגדלת הגובה של החלק המרכזי לצמצום הרווח למטה */
-        .main { display: flex; gap: 1.5vw; height: 83vh; width: 100%; margin-bottom: 0.5vh; }
+        .main { display: flex; gap: 1.5vw; height: 81vh; width: 100%; }
         
         .col-right { width: 65%; background: white; border-radius: 20px; display: flex; flex-direction: column; overflow: hidden; }
         .col-left { width: 35%; display: flex; gap: 1.5vh; flex-direction: column; }
 
         .card { background: white; border-radius: 20px; flex: 1; overflow: hidden; display: flex; flex-direction: column; }
-        .title { background: var(--blue); color: var(--gold); padding: 0.8vh; text-align: center; font-size: 1.4vw; font-weight: 800; }
+        .title { background: var(--blue); color: var(--gold); padding: 0.8vh; text-align: center; font-size: 1.6vw; font-weight: 800; }
         
-        #msgs, #events { padding: 1vh; overflow-y: auto; flex-grow: 1; }
-        .m-item { border-right: 8px solid var(--gold); background: #f8fafc; padding: 1vh; margin-bottom: 0.8vh; border-radius: 8px; font-size: 1.8vw; font-weight: 700; color: #1e293b; }
-        .e-item { border-bottom: 1px solid #eee; padding: 0.8vh; font-size: 1.2vw; font-weight: 800; color: var(--blue); }
+        /* 2. הגדלת פונט אירועים */
+        #msgs, #events { padding: 1.2vh; overflow-y: auto; flex-grow: 1; }
+        .m-item { border-right: 8px solid var(--gold); background: #f8fafc; padding: 1.2vh; margin-bottom: 1vh; border-radius: 8px; font-size: 2vw; font-weight: 700; color: #1e293b; }
+        .e-item { border-bottom: 1px solid #eee; padding: 1vh; font-size: 1.6vw; font-weight: 800; color: var(--blue); }
 
-        /* תיקון מרכוז QR ומלל - מלל מימין, QR משמאל */
+        /* 4. הצמדת QR לתחתית (קו אפס) */
         .qr-area { 
-            background: #f1f5f9; padding: 1vh; 
+            background: #f1f5f9; height: 10vh;
             display: flex; align-items: center; justify-content: center; gap: 1.5vw; 
-            border-top: 1px solid #ddd;
+            border-top: 1px solid #ddd; margin-top: auto;
         }
-        .qr-code { height: 7vh; width: 7vh; border: 1px solid var(--blue); background: white; }
-        .qr-text { font-size: 1.2vw; font-weight: 800; color: var(--blue); text-align: right; line-height: 1.2; }
+        .qr-code { height: 8vh; width: 8vh; border: 1px solid var(--blue); background: white; }
+        .qr-text { font-size: 1.4vw; font-weight: 800; color: var(--blue); text-align: right; line-height: 1.1; }
 
-        /* תיקון פריסת תמונת עוגות */
-        .promo-img { width: 100%; height: 16vh; object-fit: contain; background: #fff; }
-        .promo-desc { text-align: center; font-size: 1.2vw; font-weight: 800; padding: 0.5vh; color: var(--blue); }
+        /* 3. פריסת תמונת עוגות רחבה */
+        .promo-img { width: 100%; height: 18vh; object-fit: cover; background: #fff; }
+        .promo-desc { text-align: center; font-size: 1.5vw; font-weight: 800; padding: 0.8vh; color: var(--blue); }
 
-        /* פז מבזקים - תיקון לוגו וכיוון */
+        /* 5. תיקון YNET - מניעת קרטועים */
         .footer { 
-            position: fixed; bottom: 0; left: 0; width: 100%; height: 5.5vh; 
+            position: fixed; bottom: 0; left: 0; width: 100%; height: 6vh; 
             background: white; border-top: 4px solid #ef4444; 
-            display: flex; align-items: center; z-index: 100; padding: 0 1vw;
+            display: flex; align-items: center; z-index: 100;
         }
-        .ynet-logo { height: 3vh; margin-left: 1vw; }
-        #ticker-container { flex-grow: 1; position: relative; height: 100%; overflow: hidden; }
+        .ynet-logo { height: 3.5vh; margin: 0 1.5vw; }
+        #ticker-container { flex-grow: 1; overflow: hidden; position: relative; height: 100%; }
         #ticker { 
-            white-space: nowrap; position: absolute; line-height: 5.5vh; 
-            font-size: 1.8vw; color: #ef4444; font-weight: 800; 
-            right: -100%; /* התחלה מצד ימין */
+            white-space: nowrap; position: absolute; line-height: 6vh; 
+            font-size: 2.2vw; color: #ef4444; font-weight: 800; will-change: transform;
         }
     </style>
 </head>
@@ -65,14 +66,14 @@
 <div class="header">
     <div class="h-item" style="color: var(--gold);">📍 דודו דותן 2, נתניה</div>
     <div class="h-item"><span id="clock">00:00</span> | <span id="date">00/00/0000</span></div>
-    <div class="h-item" style="font-size: 1vw; opacity: 0.6;">© Gal & Yarden Board</div>
+    <div class="h-item" style="font-size: 1.2vw; opacity: 0.6;">© Gal & Yarden Board</div>
 </div>
 
 <div class="main">
     <div class="col-right">
         <div class="title">📢 הודעות ועד הבית</div>
         <div id="msgs">טוען הודעות...</div>
-        <div style="background:#ef4444; color:white; text-align:center; padding:0.4vh; font-weight:bold; font-size:1.3vw;">🚨 חירום חב' ניהול: 053-2784358</div>
+        <div style="background:#ef4444; color:white; text-align:center; padding:0.5vh; font-weight:bold; font-size:1.5vw;">🚨 חירום חב' ניהול: 053-2784358</div>
     </div>
 
     <div class="col-left">
@@ -87,10 +88,7 @@
         <div class="card">
             <div class="title">פרסום עסקים</div>
             <img src="https://i.postimg.cc/8PKxcRFT/PHOTO-2026-02-24-10-45-14.jpg" class="promo-img">
-            <div class="promo-desc">
-                עוגות שמרים מעולם אחר!<br>
-                <span style="color:var(--gold); border-bottom: 1px solid;">רון: 052-2221491</span>
-            </div>
+            <div class="promo-desc">עוגות שמרים מעולם אחר! | רון: 052-2221491</div>
             <div class="qr-area">
                 <div class="qr-text">מעוניינים<br>בפרסום?</div>
                 <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://wa.me/972502655525" class="qr-code">
@@ -100,7 +98,7 @@
 </div>
 
 <div class="footer">
-    <img src="https://upload.wikimedia.org/wikipedia/he/thumb/d/d0/Ynet.svg/1200px-Ynet.svg.png" class="ynet-logo" onerror="this.src='https://www.ynet.co.il/favicon.ico'">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Ynet_logo.svg/2560px-Ynet_logo.svg.png" class="ynet-logo">
     <div id="ticker-container"><div id="ticker">טוען מבזקים...</div></div>
 </div>
 
@@ -137,13 +135,13 @@
         } catch(e) {}
     }
 
-    let x = -1000;
+    let pos = 0;
     function animate() {
-        x += 1.6;
         const ticker = document.getElementById('ticker');
-        const container = document.getElementById('ticker-container');
-        if (x > container.offsetWidth + ticker.offsetWidth) { x = -ticker.offsetWidth; }
-        ticker.style.right = x + "px";
+        const containerWidth = document.getElementById('ticker-container').offsetWidth;
+        pos -= 1.8; // מהירות ריצה חלקה
+        if (pos < -ticker.offsetWidth) pos = containerWidth;
+        ticker.style.transform = `translateX(${pos}px)`; // שימוש ב-Transform לביצועים טובים יותר
         requestAnimationFrame(animate);
     }
 
