@@ -8,54 +8,55 @@
         :root { --blue: #0f172a; --gold: #d4af37; }
         * { box-sizing: border-box; }
         body { 
-            margin: 0; padding: 1.5vh 3vw; background: var(--blue); 
+            margin: 0; padding: 1vh 2vw; background: var(--blue); 
             font-family: 'Assistant', sans-serif; height: 100vh; width: 100vw; 
             overflow: hidden; display: flex; flex-direction: column;
         }
         
         .header {
             height: 8vh; display: flex; justify-content: space-between; align-items: center;
-            border-bottom: 2px solid var(--gold); padding: 0 1vw; margin-bottom: 1.5vh;
+            border-bottom: 2px solid var(--gold); padding: 0 1vw; margin-bottom: 1vh;
         }
         .h-item { color: white; font-weight: 800; font-size: 1.8vw; }
 
-        .main { display: flex; gap: 2vw; height: 78vh; width: 100%; margin-bottom: 1vh; }
+        /* הגדלת הגובה של החלק המרכזי לצמצום הרווח למטה */
+        .main { display: flex; gap: 1.5vw; height: 83vh; width: 100%; margin-bottom: 0.5vh; }
         
-        .col-right { width: 64%; background: white; border-radius: 20px; display: flex; flex-direction: column; overflow: hidden; }
-        .col-left { width: 34%; display: flex; gap: 1.5vh; flex-direction: column; }
+        .col-right { width: 65%; background: white; border-radius: 20px; display: flex; flex-direction: column; overflow: hidden; }
+        .col-left { width: 35%; display: flex; gap: 1.5vh; flex-direction: column; }
 
         .card { background: white; border-radius: 20px; flex: 1; overflow: hidden; display: flex; flex-direction: column; }
-        .title { background: var(--blue); color: var(--gold); padding: 0.8vh; text-align: center; font-size: 1.5vw; font-weight: 800; }
+        .title { background: var(--blue); color: var(--gold); padding: 0.8vh; text-align: center; font-size: 1.4vw; font-weight: 800; }
         
-        #msgs, #events { padding: 1.2vh; overflow-y: auto; flex-grow: 1; }
-        .m-item { border-right: 8px solid var(--gold); background: #f8fafc; padding: 1vh; margin-bottom: 0.8vh; border-radius: 8px; font-size: 1.9vw; font-weight: 700; color: #1e293b; }
-        .e-item { border-bottom: 1px solid #eee; padding: 0.8vh; font-size: 1.3vw; font-weight: 800; color: var(--blue); }
+        #msgs, #events { padding: 1vh; overflow-y: auto; flex-grow: 1; }
+        .m-item { border-right: 8px solid var(--gold); background: #f8fafc; padding: 1vh; margin-bottom: 0.8vh; border-radius: 8px; font-size: 1.8vw; font-weight: 700; color: #1e293b; }
+        .e-item { border-bottom: 1px solid #eee; padding: 0.8vh; font-size: 1.2vw; font-weight: 800; color: var(--blue); }
 
-        /* תיקון אזור ה-QR - מלל מימין לברקוד */
+        /* תיקון מרכוז QR ומלל - מלל מימין, QR משמאל */
         .qr-area { 
-            background: #f1f5f9; padding: 0.8vh 1.5vw; 
-            display: flex; flex-direction: row-reverse; 
-            align-items: center; justify-content: flex-end; gap: 1.5vw; 
-            border-top: 1px solid #ddd; 
+            background: #f1f5f9; padding: 1vh; 
+            display: flex; align-items: center; justify-content: center; gap: 1.5vw; 
+            border-top: 1px solid #ddd;
         }
-        .qr-code { height: 7.5vh; width: 7.5vh; border: 1px solid var(--blue); background: white; }
-        .qr-text { font-size: 1.2vw; font-weight: 800; color: var(--blue); text-align: right; }
+        .qr-code { height: 7vh; width: 7vh; border: 1px solid var(--blue); background: white; }
+        .qr-text { font-size: 1.2vw; font-weight: 800; color: var(--blue); text-align: right; line-height: 1.2; }
 
-        /* תיקון אזור הפרסום - פריסת תמונה מלאה */
-        .promo-img { width: 100%; height: 16vh; object-fit: cover; } /* cover לפריסה מלאה */
-        .promo-desc { text-align: center; font-size: 1.3vw; font-weight: 800; padding: 0.5vh; color: var(--blue); line-height: 1.2; }
+        /* תיקון פריסת תמונת עוגות */
+        .promo-img { width: 100%; height: 16vh; object-fit: contain; background: #fff; }
+        .promo-desc { text-align: center; font-size: 1.2vw; font-weight: 800; padding: 0.5vh; color: var(--blue); }
 
+        /* פז מבזקים - תיקון לוגו וכיוון */
         .footer { 
             position: fixed; bottom: 0; left: 0; width: 100%; height: 5.5vh; 
             background: white; border-top: 4px solid #ef4444; 
-            display: flex; align-items: center; z-index: 100;
+            display: flex; align-items: center; z-index: 100; padding: 0 1vw;
         }
-        .ynet-logo { height: 3.5vh; margin-right: 1vw; padding-left: 1vw; border-left: 2px solid #ddd; }
+        .ynet-logo { height: 3vh; margin-left: 1vw; }
         #ticker-container { flex-grow: 1; position: relative; height: 100%; overflow: hidden; }
         #ticker { 
             white-space: nowrap; position: absolute; line-height: 5.5vh; 
-            font-size: 2vw; color: #ef4444; font-weight: 800; 
-            right: -100%; /* התחלה מימין */
+            font-size: 1.8vw; color: #ef4444; font-weight: 800; 
+            right: -100%; /* התחלה מצד ימין */
         }
     </style>
 </head>
@@ -74,7 +75,7 @@
         <div style="background:#ef4444; color:white; text-align:center; padding:0.4vh; font-weight:bold; font-size:1.3vw;">🚨 חירום חב' ניהול: 053-2784358</div>
     </div>
 
-    <div class="col-side col-left">
+    <div class="col-left">
         <div class="card">
             <div class="title">🗓️ לוח אירועים</div>
             <div id="events">טוען...</div>
@@ -88,7 +89,7 @@
             <img src="https://i.postimg.cc/8PKxcRFT/PHOTO-2026-02-24-10-45-14.jpg" class="promo-img">
             <div class="promo-desc">
                 עוגות שמרים מעולם אחר!<br>
-                <span style="background:var(--gold); padding: 0 5px; border-radius: 4px;">רון: 052-2221491</span>
+                <span style="color:var(--gold); border-bottom: 1px solid;">רון: 052-2221491</span>
             </div>
             <div class="qr-area">
                 <div class="qr-text">מעוניינים<br>בפרסום?</div>
@@ -98,9 +99,9 @@
     </div>
 </div>
 
-<div class="footer ticker-bar">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Ynet_logo.svg/2560px-Ynet_logo.svg.png" class="ynet-logo">
-    <div id="ticker-container"><div id="ticker">טוען מבזקים עדכניים...</div></div>
+<div class="footer">
+    <img src="https://upload.wikimedia.org/wikipedia/he/thumb/d/d0/Ynet.svg/1200px-Ynet.svg.png" class="ynet-logo" onerror="this.src='https://www.ynet.co.il/favicon.ico'">
+    <div id="ticker-container"><div id="ticker">טוען מבזקים...</div></div>
 </div>
 
 <script>
@@ -121,7 +122,6 @@
                 document.getElementById('events').innerHTML = d.events.map(e => {
                     let parts = e.split('|');
                     let rawDate = parts[0] || "";
-                    // מחיקת השעה - לוקח רק תאריך
                     let cleanDate = rawDate.match(/\d{1,2}\/\d{1,2}/) ? rawDate.match(/\d{1,2}\/\d{1,2}/)[0] : rawDate.trim();
                     return `<div class="e-item"><b>${cleanDate}</b> | ${parts[1] || ''}</div>`;
                 }).join('');
@@ -139,12 +139,10 @@
 
     let x = -1000;
     function animate() {
-        x += 1.8;
+        x += 1.6;
         const ticker = document.getElementById('ticker');
         const container = document.getElementById('ticker-container');
-        if (x > container.offsetWidth + ticker.offsetWidth) {
-            x = -ticker.offsetWidth;
-        }
+        if (x > container.offsetWidth + ticker.offsetWidth) { x = -ticker.offsetWidth; }
         ticker.style.right = x + "px";
         requestAnimationFrame(animate);
     }
