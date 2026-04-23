@@ -22,30 +22,30 @@
             display: flex; flex-direction: column; overflow: hidden;
         }
         
-        /* Header Marketing Style */
+        /* Header Style */
         .header-wrapper { height: 15vh; display: flex; justify-content: center; align-items: center; padding: 1vh 2vw; }
         .header-bubble {
             width: 100%; height: 100%; background: var(--header-gradient);
-            border-radius: 20px; display: grid; grid-template-columns: 1fr 2fr 1fr; 
+            border-radius: 20px; display: grid; grid-template-columns: 1fr 1.5fr 1fr; 
             align-items: center; padding: 0 3vw; box-shadow: 0 10px 40px rgba(0,0,0,0.4);
             color: white;
         }
-        .brand-name { font-size: 3.5vw; font-weight: 800; letter-spacing: -1px; }
+        .location-info { font-size: 2.8vw; font-weight: 800; letter-spacing: -1px; color: var(--accent); }
         .header-center { text-align: center; border-right: 2px solid rgba(255,255,255,0.2); border-left: 2px solid rgba(255,255,255,0.2); }
         #live-clock { font-size: 4vw; font-weight: 800; }
         #live-date { font-size: 1.5vw; opacity: 0.9; }
-        .location-info { text-align: left; font-size: 1.4vw; font-weight: 600; color: var(--accent); }
+        .brand-sub { text-align: left; font-size: 1.2vw; font-weight: 600; opacity: 0.7; }
 
         .stage { height: 80vh; display: flex; gap: 2vw; padding: 2vh 2vw; }
 
-        /* Left Side: Main Messages */
+        /* Right Side: Main Messages */
         .main-col { flex: 2; display: flex; flex-direction: column; gap: 2vh; }
         
-        /* Right Side: Events & Ads */
-        .side-col { flex: 0.8; display: flex; flex-direction: column; gap: 2vh; }
+        /* Left Side: Events (1/3) & Ads (2/3) */
+        .side-col { flex: 0.8; display: flex; flex-direction: column; gap: 2vh; height: 100%; }
 
-        .card { background: var(--card-bg); border-radius: 25px; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); }
-        .card-header { background: #f8fafc; color: var(--main-text); height: 7vh; display: flex; align-items: center; padding: 0 20px; font-weight: 800; font-size: 1.8vw; border-bottom: 3px solid var(--accent); }
+        .card { background: var(--card-bg); border-radius: 25px; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.3); }
+        .card-header { background: #f8fafc; color: var(--main-text); height: 6vh; min-height: 45px; display: flex; align-items: center; padding: 0 20px; font-weight: 800; font-size: 1.6vw; border-bottom: 3px solid var(--accent); }
 
         /* Messages Styling */
         #message-box { flex: 1; padding: 25px; overflow-y: auto; display: flex; flex-direction: column; gap: 20px; }
@@ -53,26 +53,27 @@
             background: #fff; padding: 25px; border-radius: 20px; 
             border-right: 10px solid var(--main-text); 
             box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            font-size: 2.2vw; font-weight: 700; color: #1e293b; line-height: 1.4;
+            font-size: 2vw; font-weight: 700; color: #1e293b; line-height: 1.4;
         }
 
-        /* Events Styling */
-        #events-list { padding: 15px; }
+        /* Events Styling (1/3 of the side column) */
+        .events-card { flex: 1; }
+        #events-list { padding: 12px; overflow: hidden; }
         .event-item { 
-            background: #f1f5f9; padding: 15px; border-radius: 15px; 
-            margin-bottom: 12px; display: flex; flex-direction: column; 
+            background: #f1f5f9; padding: 10px; border-radius: 12px; 
+            margin-bottom: 8px; display: flex; align-items: center; gap: 10px;
         }
-        .event-date-pill { color: #2563eb; font-weight: 800; font-size: 1.1vw; margin-bottom: 5px; }
-        .event-text { font-weight: 800; color: #0f172a; font-size: 1.4vw; }
+        .event-date-pill { color: #2563eb; font-weight: 800; font-size: 1vw; white-space: nowrap; }
+        .event-text { font-weight: 800; color: #0f172a; font-size: 1.2vw; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-        /* Marketing Ad Styling */
-        .promo-card { background: #fffdf5; border: 2px solid var(--accent); }
-        .cake-img { width: 100%; height: 20vh; object-fit: cover; }
-        .promo-content { padding: 15px; text-align: center; }
-        .promo-title { font-size: 1.5vw; font-weight: 800; color: #854d0e; }
-        .promo-btn { background: var(--accent); color: #000; padding: 10px; border-radius: 12px; font-weight: 800; margin-top: 10px; font-size: 1.3vw; }
+        /* Promo Styling (2/3 of the side column) */
+        .promo-card { flex: 2; background: #fffdf5; border: 2px solid var(--accent); display: flex; flex-direction: column; }
+        .cake-img { width: 100%; flex: 1; object-fit: cover; }
+        .promo-content { padding: 15px; text-align: center; background: white; }
+        .promo-title { font-size: 1.4vw; font-weight: 800; color: #854d0e; margin-bottom: 8px; }
+        .promo-btn { background: var(--accent); color: #000; padding: 8px; border-radius: 10px; font-weight: 800; font-size: 1.2vw; display: inline-block; width: 90%; }
 
-        .emergency-bar { background: #ef4444; color: white; padding: 1.5vh; text-align: center; font-size: 1.8vw; font-weight: 900; border-radius: 15px; margin-top: auto; }
+        .emergency-bar { background: #ef4444; color: white; padding: 1.5vh; text-align: center; font-size: 1.8vw; font-weight: 900; border-radius: 15px; }
 
         .footer { height: 5vh; background: #fff; width: 100vw; display: flex; align-items: center; position: relative; border-top: 3px solid #ee2d24; }
         .ticker-move { display: inline-block; white-space: nowrap; animation: ticker-loop 150s linear infinite; font-size: 1.8vw; font-weight: 800; color: #ee2d24; }
@@ -84,12 +85,12 @@
 
 <div class="header-wrapper">
     <div class="header-bubble">
-        <div class="brand-name">ALMA'S STUDIO</div>
+        <div class="location-info">📍 דודו דותן 2, נתניה</div>
         <div class="header-center">
             <div id="live-clock">--:--</div>
             <div id="live-date">--/--/--</div>
         </div>
-        <div class="location-info">📍 דודו דותן 2, נתניה</div>
+        <div class="brand-sub">Gal & Yarden Board ©</div>
     </div>
 </div>
 
@@ -103,20 +104,21 @@
     </div>
 
     <div class="side-col">
-        <div class="card">
-            <div class="card-header">🗓️ אירועים קרובים</div>
+        <div class="card events-card">
+            <div class="card-header">🗓️ אירועים</div>
             <div id="events-list"></div>
-            <div style="padding: 15px; text-align: center; background: #f0f9ff; border-top: 1px solid #bae6fd;">
-                <div style="font-size: 1.1vw; font-weight: 800; color: #0369a1; margin-bottom: 5px;">שריון הג'ימבורי:</div>
-                <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://forms.gle/FiVeEZ6pes8JKA7d6" style="border-radius: 8px;">
+            <div style="margin-top: auto; padding: 8px; text-align: center; background: #f0f9ff; border-top: 1px solid #bae6fd; display: flex; align-items: center; justify-content: center; gap: 10px;">
+                <span style="font-size: 0.9vw; font-weight: 800; color: #0369a1;">שריון ג'ימבורי:</span>
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=50x50&data=https://forms.gle/FiVeEZ6pes8JKA7d6" style="border-radius: 4px; height: 4vh;">
             </div>
         </div>
 
         <div class="card promo-card">
             <img src="https://i.postimg.cc/8PKxcRFT/PHOTO-2026-02-24-10-45-14.jpg" class="cake-img">
             <div class="promo-content">
-                <div class="promo-title">עוגות שמרים בעולם אחר! 🥐</div>
-                <div class="promo-btn">רון: 052-2221491</div>
+                <div class="promo-title">עוגות שמרים מעולם אחר! 🥐</div>
+                <div class="promo-btn">להזמנות: רון 052-2221491</div>
+                <div style="margin-top: 10px; font-size: 0.9vw; color: #64748b;">רוצים לפרסם כאן? סרקו בוואטסאפ</div>
             </div>
         </div>
     </div>
@@ -146,7 +148,7 @@
                 ).join('');
             }
             if (data.events) {
-                document.getElementById('events-list').innerHTML = data.events.slice(0, 3).map(e => {
+                document.getElementById('events-list').innerHTML = data.events.slice(0, 4).map(e => {
                     const p = e.split('|');
                     let nameClean = p[1].replace(/00:00/g, '').replace(/^[\s:]+/, '').replace('כל היום:', '').trim();
                     let dateClean = p[0].trim().split(' ')[0];
