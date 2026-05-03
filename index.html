@@ -48,14 +48,32 @@
         .rec-title { font-size: 1.3vw; font-weight: 800; color: #0369a1; border-bottom: 2px solid #bae6fd; margin-bottom: 5px; display: block; }
         .rec-item { font-size: 1.1vw; font-weight: 700; color: #334155; margin-bottom: 3px; line-height: 1.2; }
 
-        #events-list { flex: 1; padding: 8px; overflow-y: auto; }
+        /* עיצוב לוח אירועים לפי התמונה */
+        #events-list { flex: 1; padding: 12px; overflow-y: auto; }
         .event-item { 
-            background: #f8fafc; padding: 6px; border-radius: 12px; border-right: 6px solid #0ea5e9; 
-            margin-bottom: 5px; display: flex; align-items: center; font-size: 1.05vw; 
+            background: #f0f9ff; 
+            padding: 10px 15px; 
+            border-radius: 8px; 
+            border-right: 5px solid #00aeef; /* הפס הכחול המעוגל מימין */
+            border-top-right-radius: 15px;
+            border-bottom-right-radius: 15px;
+            margin-bottom: 10px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: flex-start;
+            gap: 10px;
         }
-        .event-date-pill { color: #0ea5e9; font-weight: 800; margin-left: 8px; }
+        .event-date-pill { 
+            color: #00aeef; 
+            font-size: 1.6vw; 
+            font-weight: 800; 
+        }
+        .event-text { 
+            color: #1e3a8a; 
+            font-size: 1.6vw; 
+            font-weight: 800;
+        }
 
-        /* הגדלת QR */
         .qr-section { background: #f0f9ff; padding: 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; border-top: 2px solid #bae6fd; }
         .qr-text { font-size: 1.1vw; font-weight: 900; color: #0369a1; text-align: center; }
         .qr-code-img { height: 11vh; width: 11vh; background: white; padding: 5px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
@@ -99,7 +117,7 @@
             <div class="card-header" style="background: #fef08a; color: #854d0e;">דיירים ממליצים</div>
             <div class="recommendation-content">
                 <div class="rec-group">
-                    <span class="rec-title">💧 אינסטלציה</span>
+                    <span class="rec-title">💧 אינסטלטורים</span>
                     <div class="rec-item">אבי: 052-4216181</div>
                     <div class="rec-item">ליאב: 052-3720270</div>
                 </div>
@@ -178,7 +196,9 @@
             if (data.events) {
                 document.getElementById('events-list').innerHTML = data.events.map(e => {
                     const p = e.split('|');
-                    return `<div class="event-item"><span class="event-date-pill">${p[0].split(' ')[0]}</span><span class="event-text">${p[1].replace('כל היום:', '').trim()}</span></div>`;
+                    const date = p[0].split(' ')[0];
+                    const text = p[1].replace('כל היום:', '').trim();
+                    return `<div class="event-item"><span class="event-date-pill">${date}</span><span class="event-text">${text}</span></div>`;
                 }).join('');
             }
         } catch(e) {}
