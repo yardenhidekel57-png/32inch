@@ -71,12 +71,12 @@
         /* הודעות */
         .msg-bubble { background: white; padding: 18px; border-radius: 15px; border-right: 8px solid var(--accent); margin-bottom: 15px; font-size: 1.9vw; font-weight: 700; color: #1e40af; line-height: 1.3; }
 
-        /* מזג אוויר וזמנים */
+        /* מזג אוויר וזמנים - הקטנת פונטים ב-3 פיקסלים (באחוזים יחסיים) */
         .w-grid { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 6px; padding: 8px; flex: 1; }
         .w-item { background: #f1f5f9; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2px; }
-        .w-temp { font-size: 2.3vw; font-weight: 900; color: var(--main-text); line-height: 1; }
-        .w-icon { font-size: 2.2vw; margin: 2px 0; }
-        .w-day { font-size: 1vw; font-weight: 800; color: #64748b; }
+        .w-temp { font-size: 2vw; font-weight: 900; color: var(--main-text); line-height: 1; } /* הוקטן מ-2.3vw */
+        .w-icon { font-size: 1.9vw; margin: 2px 0; } /* הוקטן מ-2.2vw */
+        .w-day { font-size: 0.85vw; font-weight: 800; color: #64748b; } /* הוקטן מ-1vw */
         
         .shabbat-row { padding: 1.2vh 1vw; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; font-weight: 800; font-size: 1.2vw; color: var(--main-text); }
 
@@ -102,7 +102,7 @@
 </div>
 
 <div class="stage">
-    <!-- צד ימין: המלצות דיירים (מתפרס אוטומטית) -->
+    <!-- צד ימין: המלצות דיירים -->
     <div class="side-col-right">
         <div class="card recommendation-card">
             <div class="card-header" style="background: #fef08a; color: #854d0e;">דיירים ממליצים</div>
