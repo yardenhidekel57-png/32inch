@@ -38,14 +38,14 @@
         .center-col { width: 58%; display: flex; flex-direction: column; }
         .side-col-left { width: 18%; display: flex; flex-direction: column; gap: 1vh; }
 
-        .card { background: var(--card-bg); border-radius: 15px; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 8px 25px rgba(0,0,0,0.3); margin-bottom: 0.5vh; }
-        .card-header { background: var(--title-bg); color: var(--title-text); height: 4.5vh; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.2vw; flex-shrink: 0; }
+        .card { background: var(--card-bg); border-radius: 15px; display: flex; flex-direction: column; overflow: visible; box-shadow: 0 8px 25px rgba(0,0,0,0.3); margin-bottom: 0.5vh; }
+        .card-header { background: var(--title-bg); color: var(--title-text); height: 4.5vh; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.2vw; flex-shrink: 0; border-radius: 15px 15px 0 0; }
 
-        /* Weather - Bigger icons */
-        .w-grid { display: flex; justify-content: space-between; gap: 4px; padding: 8px; flex: 1; }
-        .w-item { background: #f1f5f9; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; }
+        /* Weather Fix - No clipping */
+        .w-grid { display: flex; justify-content: space-between; gap: 4px; padding: 8px; flex: 1; overflow: visible; }
+        .w-item { background: #f1f5f9; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; overflow: visible; }
         .w-day { font-size: 1.6vw; font-weight: 800; color: #0c4a6e; margin-bottom: 2px; }
-        .w-icon { font-size: 2.8vw; margin: 5px 0; } 
+        .w-icon { font-size: 2.8vw; margin: 4px 0; line-height: 1; display: block; } 
         .w-temp { font-size: 1.5vw; font-weight: 900; color: var(--main-text); }
 
         .recommendation-content { padding: 1.5vh 1vw; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
@@ -59,31 +59,30 @@
         .shabbat-content { padding: 12px; display: flex; flex-direction: column; gap: 8px; }
         .shabbat-row { display: flex; justify-content: space-between; font-weight: 800; font-size: 1.2vw; color: var(--main-text); }
         
-        /* Events List - Font increased by 1px equivalent */
         #events-list { flex: 1; padding: 8px; overflow-y: auto; }
         .event-item { background: #f0f9ff; padding: 8px; border-radius: 8px; border-right: 5px solid #00aeef; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
-        .event-text { color: #1e3a8a; font-size: 1.1vw; font-weight: 800; }
+        .event-text { color: #1e3a8a; font-size: 1.2vw; font-weight: 800; } /* Increased Font */
 
-        .qr-section { padding: 10px; text-align: center; background: white; }
-        .qr-label { font-size: 1vw; font-weight: 800; color: #0c4a6e; margin-bottom: 5px; display: block; }
+        .qr-section { padding: 10px; text-align: center; background: white; border-radius: 0 0 15px 15px; }
+        .qr-label { font-size: 1.2vw; font-weight: 800; color: #0c4a6e; margin-bottom: 5px; display: block; } /* Increased Font */
         .qr-section img { width: 6vw; height: 6vw; }
 
+        /* Footer & Ticker */
         .footer { height: 5vh; background: white; display: flex; align-items: center; border-top: 2px solid #ee2d24; position: relative; overflow: hidden; }
         .ticker-move { 
             white-space: nowrap; 
             position: absolute; 
-            right: 0;
+            right: 110px; /* Adjust for YNET tag */
             animation: ticker-loop 140s linear infinite; 
             font-size: 1.8vw; 
             font-weight: 800; 
             color: #ee2d24; 
-            padding-right: 200px;
         }
         @keyframes ticker-loop { 
             0% { transform: translateX(0); } 
             100% { transform: translateX(100%); } 
         }
-        .ynet-tag { background: #ee2d24; color: white; font-weight: 900; font-size: 1.6vw; width: 90px; height: 100%; display: flex; align-items: center; justify-content: center; z-index: 10; position: absolute; right: 0; }
+        .ynet-tag { background: #ee2d24; color: white; font-weight: 900; font-size: 1.6vw; width: 110px; height: 100%; display: flex; align-items: center; justify-content: center; z-index: 10; position: absolute; right: 0; }
         .emergency { background: #ef4444; color: white; padding: 1vh; text-align: center; font-size: 1.6vw; font-weight: 900; }
     </style>
 </head>
