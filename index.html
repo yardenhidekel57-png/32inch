@@ -44,41 +44,50 @@
         .card { background: var(--card-bg); border-radius: 15px; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 8px 25px rgba(0,0,0,0.3); margin-bottom: 0.5vh; }
         .card-header { background: var(--title-bg); color: var(--title-text); height: 4.5vh; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.2vw; flex-shrink: 0; }
 
-        /* Recommendations List - Optimized */
-        .recommendation-content { padding: 0.8vh 1vw; flex: 1; display: flex; flex-direction: column; gap: 0.4vh; overflow-y: auto; }
-        .rec-group { border-bottom: 1px solid #e2e8f0; padding-bottom: 0.4vh; }
-        .rec-group:last-child { border: none; }
-        .rec-title { font-size: 1.1vw; font-weight: 800; color: #0369a1; display: flex; align-items: center; gap: 5px; }
-        .rec-item { font-size: 1vw; font-weight: 700; color: #334155; line-height: 1.2; padding-right: 5px; }
+        /* Recommendations List - Expanded Spacing */
+        .recommendation-content { padding: 2vh 1vw; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
+        .rec-group { margin-bottom: 2vh; }
+        .rec-title { font-size: 1.2vw; font-weight: 800; color: #0369a1; border-bottom: 2px solid #bae6fd; margin-bottom: 8px; display: block; }
+        .rec-item { font-size: 1.1vw; font-weight: 700; color: #334155; margin-bottom: 6px; }
 
         /* Messages */
         #message-box { flex: 1; overflow-y: auto; padding: 10px; }
-        .msg-bubble { background: white; padding: 15px; border-radius: 12px; border-right: 6px solid var(--accent); margin-bottom: 12px; font-size: 1.7vw; font-weight: 700; color: #1e40af; line-height: 1.3; box-shadow: 0 3px 6px rgba(0,0,0,0.05); }
+        .msg-bubble { background: white; padding: 20px; border-radius: 12px; border-right: 8px solid var(--accent); margin-bottom: 15px; font-size: 1.8vw; font-weight: 700; color: #1e40af; line-height: 1.4; }
 
-        /* Left Side: Weather, Shabbat, Events */
-        .w-grid { display: flex; justify-content: space-between; gap: 3px; padding: 5px; flex: 1; }
-        .w-item { background: #f1f5f9; border-radius: 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; padding: 2px; }
-        .w-temp { font-size: 1.3vw; font-weight: 900; color: var(--main-text); }
-        .w-day { font-size: 0.8vw; font-weight: 800; color: #64748b; }
+        /* Left Side: Adjusted Heights */
+        .w-grid { display: flex; justify-content: space-between; gap: 4px; padding: 8px; flex: 1; }
+        .w-item { background: #f1f5f9; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; }
+        .w-temp { font-size: 1.5vw; font-weight: 900; color: var(--main-text); }
+        .w-day { font-size: 0.9vw; font-weight: 800; color: #64748b; }
 
         .shabbat-card { background: #fffdf5; }
-        .shabbat-content { padding: 8px; display: flex; flex-direction: column; gap: 2px; }
-        .shabbat-row { display: flex; justify-content: space-between; font-weight: 800; font-size: 1.05vw; color: var(--main-text); }
+        .shabbat-content { padding: 12px; display: flex; flex-direction: column; gap: 8px; }
+        .shabbat-row { display: flex; justify-content: space-between; font-weight: 800; font-size: 1.2vw; color: var(--main-text); }
 
-        #events-list { flex: 1; padding: 5px; overflow-y: auto; }
-        .event-item { background: #f0f9ff; padding: 5px 8px; border-radius: 6px; border-right: 4px solid #00aeef; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
-        .event-date-pill { color: #00aeef; font-size: 0.9vw; font-weight: 800; }
-        .event-text { color: #1e3a8a; font-size: 0.95vw; font-weight: 800; }
+        #events-list { flex: 1; padding: 8px; overflow-y: auto; }
+        .event-item { background: #f0f9ff; padding: 8px; border-radius: 8px; border-right: 5px solid #00aeef; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+        .event-text { color: #1e3a8a; font-size: 1vw; font-weight: 800; }
 
-        .qr-container { padding: 8px; text-align: center; background: white; }
-        .qr-container img { width: 5.5vw; height: 5.5vw; }
+        .qr-container { padding: 10px; text-align: center; background: white; }
+        .qr-container img { width: 6vw; height: 6vw; }
 
-        /* Footer */
+        /* Footer & Ticker Fix */
         .footer { height: 5vh; background: white; display: flex; align-items: center; border-top: 2px solid #ee2d24; position: relative; overflow: hidden; }
-        .ticker-move { white-space: nowrap; animation: ticker-loop 120s linear infinite; font-size: 1.8vw; font-weight: 800; color: #ee2d24; position: absolute; }
-        @keyframes ticker-loop { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+        .ticker-move { 
+            white-space: nowrap; 
+            position: absolute; 
+            right: -100%; 
+            animation: ticker-loop 90s linear infinite; 
+            font-size: 1.8vw; 
+            font-weight: 800; 
+            color: #ee2d24; 
+        }
+        @keyframes ticker-loop { 
+            0% { transform: translateX(0); } 
+            100% { transform: translateX(250%); } 
+        }
         .ynet-tag { background: #ee2d24; color: white; font-weight: 900; font-size: 1.6vw; width: 90px; height: 100%; display: flex; align-items: center; justify-content: center; z-index: 10; position: absolute; right: 0; }
-        .emergency { background: #ef4444; color: white; padding: 0.8vh; text-align: center; font-size: 1.4vw; font-weight: 900; }
+        .emergency { background: #ef4444; color: white; padding: 1vh; text-align: center; font-size: 1.6vw; font-weight: 900; }
     </style>
 </head>
 <body>
@@ -106,7 +115,7 @@
                     <div class="rec-item">ליאב: 052-3720270</div>
                 </div>
                 <div class="rec-group">
-                    <span class="rec-title">🔨 פרקטים</span>
+                    <span class="rec-title">🔨 התקנת פרקטים</span>
                     <div class="rec-item">אבישי גור: 050-9012123</div>
                     <div class="rec-item">לאוניד: 052-7476167</div>
                 </div>
@@ -115,12 +124,13 @@
                     <div class="rec-item">רשפים: 08-6741000</div>
                 </div>
                 <div class="rec-group">
-                    <span class="rec-title">⚙️ תריסים</span>
-                    <div class="rec-item">בני: 052-3873355 | יגור: 052-5333351</div>
+                    <span class="rec-title">⚙️ תריסים חשמליים</span>
+                    <div class="rec-item">בני: 052-3873355</div>
+                    <div class="rec-item">יגור: 052-5333351</div>
                     <div class="rec-item">יגאל משולם: 052-8372412</div>
                 </div>
                 <div class="rec-group">
-                    <span class="rec-title">❄️ מזגנים</span>
+                    <span class="rec-title">❄️ מיזוג אוויר</span>
                     <div class="rec-item">רפאל: 052-6464522</div>
                 </div>
             </div>
@@ -136,15 +146,15 @@
     </div>
 
     <div class="side-col-left">
-        <div class="card" style="height: 15%;">
+        <div class="card" style="height: 22%;">
             <div class="card-header">🌡️ תחזית</div>
             <div id="weather-4days" class="w-grid"></div>
         </div>
-        <div class="card shabbat-card" style="height: 15%;">
+        <div class="card shabbat-card" style="height: 22%;">
             <div class="card-header" style="background: #fef08a;">שבת | <span id="parasha-display">...</span></div>
             <div id="shabbat-box" class="shabbat-content"></div>
         </div>
-        <div class="card" style="height: 70%;">
+        <div class="card" style="height: 52%;">
             <div class="card-header">🗓️ לוח אירועים</div>
             <div id="events-list"></div>
             <div class="qr-container">
@@ -181,7 +191,7 @@
                 var evHtml = "";
                 for (var j = 0; j < data.events.length; j++) {
                     var parts = data.events[j].split('|');
-                    evHtml += '<div class="event-item"><span class="event-date-pill">'+parts[0].split(' ')[0]+'</span><span class="event-text">'+parts[1].replace('כל היום:', '').trim()+'</span></div>';
+                    evHtml += '<div class="event-item"><span class="event-text">'+parts[0].split(' ')[0]+' | '+parts[1].replace('כל היום:', '').trim()+'</span></div>';
                 }
                 document.getElementById('events-list').innerHTML = evHtml;
             }
