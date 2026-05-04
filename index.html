@@ -67,17 +67,17 @@
         .qr-container { padding: 10px; text-align: center; background: white; }
         .qr-container img { width: 6vw; height: 6vw; }
 
-        /* Footer & Ticker - FIXED VISIBILITY */
+        /* Footer & Ticker - Optimized for TV */
         .footer { height: 5vh; background: white; display: flex; align-items: center; border-top: 2px solid #ee2d24; position: relative; overflow: hidden; }
         .ticker-move { 
             white-space: nowrap; 
             position: absolute; 
             right: 0;
-            animation: ticker-loop 120s linear infinite; 
+            animation: ticker-loop 140s linear infinite; 
             font-size: 1.8vw; 
             font-weight: 800; 
             color: #ee2d24; 
-            padding-right: 100px;
+            padding-right: 200px;
         }
         @keyframes ticker-loop { 
             0% { transform: translateX(0); } 
@@ -155,8 +155,8 @@
             <div class="card-header">🗓️ לוח אירועים</div>
             <div id="events-list"></div>
             <div class="qr-container">
-                <!-- QR Link updated to Google Forms -->
-                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://forms.gle/GYMBORIE_REG_LINK" alt="QR">
+                <!-- FIXED QR LINK TO GYMBOREE FORM -->
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://forms.gle/FiVeEZ6pes8JKA7d6" alt="QR">
             </div>
         </div>
     </div>
