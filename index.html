@@ -109,11 +109,9 @@
             <div class="card-header" style="background: #fef08a; color: #854d0e;">דיירים ממליצים</div>
             <div class="recommendation-content">
                 <div class="rec-group">
-                    <span class="rec-title">💧 אינסטלציה</span>
+                    <span class="rec-title">💧 אינסטלטורים</span>
                     <div class="rec-item">אבי: 052-4216181</div>
                     <div class="rec-item">ליאב: 052-3720270</div>
-                    <div class="rec-item">דניאל: 050-9871744</div>
-
                 </div>
                 <div class="rec-group">
                     <span class="rec-title">🔨 פרקטים</span>
@@ -173,6 +171,31 @@
 <script>
     var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzhGwGPiqNXmESzkgh6oW-KDGlgMaBoIiYDd0ennIUNlOwVQH2F7DWIDyZ6Fe_3wrcY/exec';
     
+    // --- מניעת מצב שינה ---
+    let wakeLock = null;
+
+    async function requestWakeLock() {
+        try {
+            if ('wakeLock' in navigator) {
+                wakeLock = await navigator.wakeLock.request('screen');
+                console.log('Wake Lock is active');
+            }
+        } catch (err) {
+            console.error(`${err.name}, ${err.message}`);
+        }
+    }
+
+    // הפעלה בטעינה
+    requestWakeLock();
+
+    // חידוש הנעילה אם המשתמש חזר ללשונית
+    document.addEventListener('visibilitychange', async () => {
+        if (wakeLock !== null && document.visibilityState === 'visible') {
+            await requestWakeLock();
+        }
+    });
+    // ----------------------
+
     function updateClock() {
         var now = new Date();
         document.getElementById('live-clock').innerHTML = now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0');
