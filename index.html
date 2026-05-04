@@ -2,62 +2,73 @@
 <html lang="he" dir="rtl">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@600;800&display=swap" rel="stylesheet">
     <style>
         :root {
             --title-bg: linear-gradient(135deg, #b2ebf2 0%, #81d4fa 100%); 
-            --title-text: #0c4a6e; --primary-bg: #0f172a; --card-bg: rgba(255, 255, 255, 0.95);
-            --accent: #fbbf24; --main-text: #1e3a8a;
+            --title-text: #0c4a6e;
+            --primary-bg: #0f172a;
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --accent: #fbbf24;
+            --main-text: #1e3a8a;
         }
         * { box-sizing: border-box; }
         body { 
-            margin: 0; padding: 0; background: var(--primary-bg);
+            margin: 0; padding: 0; 
+            background: var(--primary-bg);
             background-image: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
             font-family: 'Assistant', sans-serif; height: 100vh; width: 100vw; 
             display: flex; flex-direction: column; overflow: hidden;
         }
+        
         .header-wrapper { height: 12vh; display: flex; justify-content: center; align-items: center; padding: 0 1vw; }
         .header-bubble {
             width: 98%; height: 9vh; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(15px);
             border: 1px solid rgba(255,255,255,0.2); border-radius: 25px;
-            display: grid; grid-template-columns: 1fr 2fr 1fr; align-items: center; padding: 0 2vw;
+            display: grid; grid-template-columns: 1fr 2fr 1fr; align-items: center; padding: 0 2vw; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
         .header-right { text-align: right; font-size: 1.9vw; font-weight: 800; color: var(--accent); }
         .header-center { text-align: center; display: flex; align-items: center; justify-content: center; gap: 25px; color: white; }
-        #live-clock, #live-date { font-size: 2.8vw; font-weight: 800; }
-        .separator { width: 3px; height: 4vh; background: rgba(255,255,255,0.3); }
-        .header-left { text-align: left; font-size: 1vw; color: white; opacity: 0.5; }
+        #live-clock, #live-date { font-size: 2.8vw; font-weight: 800; line-height: 1; }
+        .separator { width: 3px; height: 4vh; background: rgba(255,255,255,0.3); border-radius: 2px; }
+        .header-left { text-align: left; font-size: 1vw; color: white; opacity: 0.5; font-weight: 700; }
 
         .stage { height: 83vh; display: flex; gap: 1.2vw; padding: 1.5vh; }
-        .side-col-right { width: 25%; display: flex; flex-direction: column; }
+        
+        .side-col-right { width: 25%; display: flex; flex-direction: column; height: 100%; }
         .center-col { width: 57%; display: flex; flex-direction: column; }
         .side-col-left { width: 18%; display: flex; flex-direction: column; gap: 1.2vh; }
 
-        .card { background: var(--card-bg); border-radius: 20px; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
-        .card-header { background: var(--title-bg); color: var(--title-text); height: 5.5vh; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.3vw; }
+        .card { background: var(--card-bg); border-radius: 20px; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.4); margin-bottom: 0.5vh; }
+        .card-header { background: var(--title-bg); color: var(--title-text); height: 5.5vh; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.3vw; flex-shrink: 0; }
 
-        .rec-group { padding: 10px 15px; }
-        .rec-title { font-size: 1.2vw; font-weight: 800; color: #0369a1; border-bottom: 2px solid #bae6fd; }
-        .rec-item { font-size: 1.1vw; font-weight: 700; color: #334155; margin-top: 3px; }
+        .recommendation-content { padding: 1.5vh; flex: 1; display: flex; flex-direction: column; justify-content: space-around; }
+        .rec-group { margin-bottom: 1vh; }
+        .rec-title { font-size: 1.3vw; font-weight: 800; color: #0369a1; border-bottom: 2px solid #bae6fd; margin-bottom: 5px; display: block; }
+        .rec-item { font-size: 1.1vw; font-weight: 700; color: #334155; margin-bottom: 3px; line-height: 1.2; }
 
+        #events-list { flex: 1; padding: 10px; overflow-y: auto; }
         .event-item { 
             background: #f0f9ff; padding: 8px 12px; border-radius: 8px; border-right: 5px solid #00aeef; 
-            margin: 5px 10px; display: flex; align-items: center; white-space: nowrap; gap: 8px;
+            margin-bottom: 8px; display: flex; align-items: center; white-space: nowrap; gap: 8px;
         }
         .event-date-pill { color: #00aeef; font-size: 1.1vw; font-weight: 800; }
         .event-text { color: #1e3a8a; font-size: 1.1vw; font-weight: 800; }
 
-        .msg-bubble { background: white; padding: 18px; border-radius: 15px; border-right: 8px solid var(--accent); margin: 10px; font-size: 1.9vw; font-weight: 700; color: #1e40af; }
-        
-        .w-grid { display: flex; justify-content: space-between; padding: 8px; }
-        .w-item { background: #f1f5f9; border-radius: 12px; display: flex; flex-direction: column; align-items: center; flex: 1; margin: 2px; padding: 5px; }
-        .w-temp { font-size: 1.4vw; font-weight: 900; color: var(--main-text); }
+        .msg-bubble { background: white; padding: 18px; border-radius: 15px; border-right: 8px solid var(--accent); margin: 15px; font-size: 1.9vw; font-weight: 700; color: #1e40af; line-height: 1.3; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+
+        .w-grid { display: flex; justify-content: space-between; gap: 4px; padding: 8px; flex: 1; }
+        .w-item { background: #f1f5f9; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; padding: 4px; }
+        .w-temp { font-size: 1.6vw; font-weight: 900; color: var(--main-text); line-height: 1; } 
+        .w-icon { font-size: 1.8vw; margin: 2px 0; }
+        .w-day { font-size: 0.85vw; font-weight: 800; color: #64748b; }
         
         .footer { height: 5vh; background: white; width: 100vw; display: flex; align-items: center; position: relative; border-top: 2px solid #ee2d24; overflow: hidden; }
-        .ticker-move { white-space: nowrap; animation: ticker-loop 120s linear infinite; font-size: 1.8vw; font-weight: 800; color: #ee2d24; position: absolute; }
-        @keyframes ticker-loop { 0% { right: -100%; } 100% { right: 100%; } }
-        .ynet-tag { background: #ee2d24; color: white; font-weight: 900; font-size: 1.8vw; width: 100px; height: 100%; display: flex; align-items: center; justify-content: center; z-index: 10; position: absolute; right: 0; }
-        .emergency { background: #ef4444; color: white; padding: 1vh; text-align: center; font-size: 1.5vw; font-weight: 900; }
+        .ticker-move { display: inline-block; white-space: nowrap; animation: ticker-loop 120s linear infinite; font-size: 1.9vw; font-weight: 800; color: #ee2d24; position: absolute; right: 0; }
+        @keyframes ticker-loop { 0% { transform: translateX(0); } 100% { transform: translateX(100%); } }
+        .ynet-tag { background: #ee2d24; color: white; font-weight: 900; font-size: 1.8vw; width: 110px; height: 100%; display: flex; align-items: center; justify-content: center; position: absolute; right: 0; top: 0; z-index: 10; }
+        .emergency { background: #ef4444; color: white; padding: 1vh; text-align: center; font-size: 1.6vw; font-weight: 900; margin-top: auto; }
     </style>
 </head>
 <body>
@@ -77,20 +88,31 @@
 <div class="stage">
     <div class="side-col-right">
         <div class="card" style="height: 100%;">
-            <div class="card-header" style="background: #fef08a;">דיירים ממליצים</div>
-            <div class="rec-group"><span class="rec-title">💧 אינסטלטורים</span><div class="rec-item">אבי: 052-4216181</div></div>
-            <div class="rec-group"><span class="rec-title">🔨 פרקטים</span><div class="rec-item">אבישי גור: 050-9012123</div></div>
-            <div class="rec-group"><span class="rec-title">⚙️ תריסים</span><div class="rec-item">בני: 052-3873355</div></div>
+            <div class="card-header" style="background: #fef08a; color: #854d0e;">דיירים ממליצים</div>
+            <div class="recommendation-content">
+                <div class="rec-group">
+                    <span class="rec-title">💧 אינסטלציה</span>
+                    <div class="rec-item">אבי: 052-4216181</div>
+                    <div class="rec-item">ליאב: 052-3720270</div>
+                </div>
+                <div class="rec-group">
+                    <span class="rec-title">🔨 התקנת פרקטים</span>
+                    <div class="rec-item">אבישי גור: 050-9012123</div>
+                </div>
+                <div class="rec-group">
+                    <span class="rec-title">⚙️ תריסים חשמליים</span>
+                    <div class="rec-item">בני: 052-3873355</div>
+                    <div class="rec-item">יגור: 052-5333351</div>
+                </div>
+            </div>
         </div>
     </div>
 
     <div class="center-col">
         <div class="card" style="height: 100%;">
             <div class="card-header">📢 הודעות ועד הבית</div>
-            <div id="message-box" style="flex:1; overflow-y:auto;">
-                <div class="msg-bubble">טוען הודעות...</div>
-            </div>
-            <div class="emergency">🚨 חירום חב' ניהול: 052-6663722</div>
+            <div id="message-box" style="flex:1; overflow-y:auto;"></div>
+            <div class="emergency">🚨 טלפון חירום חב' ניהול: 052-6663722</div>
         </div>
     </div>
 
@@ -99,6 +121,7 @@
             <div class="card-header">🌡️ תחזית</div>
             <div id="weather-4days" class="w-grid"></div>
         </div>
+        
         <div class="card" style="flex: 1;">
             <div class="card-header">🗓️ לוח אירועים</div>
             <div id="events-list"></div>
@@ -122,30 +145,29 @@
 
     function getData() {
         fetch(SCRIPT_URL + '?t=' + new Date().getTime())
-        .then(function(response) { return response.json(); })
+        .then(function(r) { return r.json(); })
         .then(function(data) {
             if (data.messages) {
-                var msgHtml = "";
+                var html = "";
                 for (var i = 1; i < data.messages.length; i++) {
-                    msgHtml += '<div class="msg-bubble">' + data.messages[i].toString().replace(/#/g, '<br>') + '</div>';
+                    html += '<div class="msg-bubble">' + data.messages[i].toString().replace(/#/g, '<br>') + '</div>';
                 }
-                document.getElementById('message-box').innerHTML = msgHtml;
+                document.getElementById('message-box').innerHTML = html;
             }
             if (data.events) {
                 var evHtml = "";
                 for (var j = 0; j < data.events.length; j++) {
                     var parts = data.events[j].split('|');
-                    var date = parts[0].split(' ')[0];
-                    var text = parts[1].replace('כל היום:', '').trim();
-                    evHtml += '<div class="event-item"><span class="event-date-pill">'+date+'</span><span class="event-text">'+text+'</span></div>';
+                    var d = parts[0].split(' ')[0];
+                    var t = parts[1].replace('כל היום:', '').trim();
+                    evHtml += '<div class="event-item"><span class="event-date-pill">'+d+'</span><span class="event-text">'+t+'</span></div>';
                 }
                 document.getElementById('events-list').innerHTML = evHtml;
             }
-        })
-        .catch(function(err) { console.log("Data error"); });
+        });
     }
 
-    function getExternal() {
+    function fetchExternal() {
         fetch('https://api.open-meteo.com/v1/forecast?latitude=32.3215&longitude=34.8532&daily=temperature_2m_max,weathercode&timezone=auto')
         .then(function(r){ return r.json(); })
         .then(function(w){
@@ -153,8 +175,8 @@
             var days = ['א', 'ב', 'ג', 'ד', 'ה', 'ו', 'ש'];
             var today = new Date().getDay();
             for(var i=0; i<4; i++) {
-                var icon = w.daily.weathercode[i] < 3 ? '☀️' : '☁️';
-                wHtml += '<div class="w-item"><span style="font-size:0.8vw">'+days[(today+i)%7]+'</span><div>'+icon+'</div><div class="w-temp">'+Math.round(w.daily.temperature_2m_max[i])+'°</div></div>';
+                var icon = w.daily.weathercode[i] < 3 ? '☀️' : (w.daily.weathercode[i] < 50 ? '☁️' : '🌧️');
+                wHtml += '<div class="w-item"><span class="w-day">'+days[(today+i)%7]+'\'</span><div class="w-icon">'+icon+'</div><div class="w-temp">'+Math.round(w.daily.temperature_2m_max[i])+'°</div></div>';
             }
             document.getElementById('weather-4days').innerHTML = wHtml;
         });
@@ -164,15 +186,15 @@
         .then(function(d){
             if(d.items) {
                 var news = d.items.map(function(i){ return i.title; }).join("  •  ");
-                document.getElementById('news-ticker').innerHTML = news + "  •  " + news;
+                document.getElementById('news-ticker').innerHTML = "  •  " + news + "  •  " + news;
             }
         });
     }
 
     setInterval(updateClock, 1000);
-    setInterval(getData, 60000);
-    setInterval(getExternal, 600000);
-    updateClock(); getData(); getExternal();
+    setInterval(getData, 30000);
+    setInterval(fetchExternal, 600000);
+    updateClock(); getData(); fetchExternal();
 </script>
 </body>
 </html>
