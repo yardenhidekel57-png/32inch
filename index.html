@@ -40,43 +40,65 @@
         .center-col { width: 57%; display: flex; flex-direction: column; }
         .side-col-left { width: 18%; display: flex; flex-direction: column; gap: 1.2vh; }
 
-        .card { background: var(--card-bg); border-radius: 20px; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.4); margin-bottom: 0.5vh; position: relative; }
-        .card-header { background: var(--title-bg); color: var(--title-text); height: 5vh; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.3vw; flex-shrink: 0; }
+        .card { background: var(--card-bg); border-radius: 20px; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
+        .card-header { background: var(--title-bg); color: var(--title-text); height: 5.5vh; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.3vw; flex-shrink: 0; }
 
-        .recommendation-content { padding: 1.2vh; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
-        .rec-group { margin-bottom: 0.8vh; }
-        .rec-title { font-size: 1.2vw; font-weight: 800; color: #0369a1; border-bottom: 2px solid #bae6fd; margin-bottom: 3px; display: block; }
-        .rec-item { font-size: 1vw; font-weight: 700; color: #334155; margin-bottom: 2px; line-height: 1.1; }
+        .recommendation-content { padding: 1.5vh; flex: 1; display: flex; flex-direction: column; justify-content: space-around; }
+        .rec-group { margin-bottom: 1vh; }
+        .rec-title { font-size: 1.3vw; font-weight: 800; color: #0369a1; border-bottom: 2px solid #bae6fd; margin-bottom: 5px; display: block; }
+        .rec-item { font-size: 1.1vw; font-weight: 700; color: #334155; margin-bottom: 3px; line-height: 1.2; }
 
-        #events-list { flex: 1; padding: 8px; overflow-y: auto; }
+        /* עיצוב מעודכן ללוח אירועים - פונט קטן יותר לשורה אחת */
+        #events-list { flex: 1; padding: 10px; overflow-y: auto; }
         .event-item { 
-            background: #f0f9ff; padding: 6px 10px; border-radius: 8px; border-right: 5px solid #00aeef; 
-            margin-bottom: 6px; display: flex; align-items: center; white-space: nowrap; gap: 8px;
+            background: #f0f9ff; 
+            padding: 8px 12px; 
+            border-radius: 8px; 
+            border-right: 5px solid #00aeef; 
+            border-top-right-radius: 15px;
+            border-bottom-right-radius: 15px;
+            margin-bottom: 8px; 
+            display: flex; 
+            align-items: center; 
+            white-space: nowrap; /* מונע ירידת שורה */
+            overflow: hidden;
+            gap: 8px;
         }
-        .event-date-pill { color: #00aeef; font-size: 1vw; font-weight: 800; }
-        .event-text { color: #1e3a8a; font-size: 1vw; font-weight: 800; }
+        .event-date-pill { 
+            color: #00aeef; 
+            font-size: 1.2vw; /* הקטנת פונט */
+            font-weight: 800; 
+            flex-shrink: 0;
+        }
+        .event-text { 
+            color: #1e3a8a; 
+            font-size: 1.2vw; /* הקטנת פונט */
+            font-weight: 800;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
 
-        .qr-container { text-align: center; padding: 10px; background: white; border-top: 1px solid #e2e8f0; }
-        .qr-container img { width: 7vw; height: 7vw; }
-        .qr-text { font-size: 0.8vw; font-weight: 800; color: #64748b; margin-top: 5px; }
+        .qr-section { background: #f0f9ff; padding: 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; border-top: 2px solid #bae6fd; }
+        .qr-text { font-size: 1.1vw; font-weight: 900; color: #0369a1; text-align: center; }
+        .qr-code-img { height: 11vh; width: 11vh; background: white; padding: 5px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
 
-        .msg-bubble { background: white; padding: 18px; border-radius: 15px; border-right: 8px solid var(--accent); margin: 15px; font-size: 1.9vw; font-weight: 700; color: #1e40af; line-height: 1.3; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .msg-bubble { background: white; padding: 18px; border-radius: 15px; border-right: 8px solid var(--accent); margin-bottom: 15px; font-size: 1.9vw; font-weight: 700; color: #1e40af; line-height: 1.3; }
 
-        .w-grid { display: flex; justify-content: space-between; gap: 4px; padding: 6px; flex: 1; }
-        .w-item { background: #f1f5f9; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; padding: 3px; }
-        .w-temp { font-size: 1.4vw; font-weight: 900; color: var(--main-text); line-height: 1; } 
-        .w-icon { font-size: 1.5vw; margin: 1px 0; }
-        .w-day { font-size: 0.75vw; font-weight: 800; color: #64748b; }
+        .w-grid { display: flex; justify-content: space-between; gap: 4px; padding: 8px; flex: 1; }
+        .w-item { background: #f1f5f9; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; padding: 4px; }
+        .w-temp { font-size: 1.6vw; font-weight: 900; color: var(--main-text); line-height: 1; } 
+        .w-icon { font-size: 1.8vw; margin: 2px 0; }
+        .w-day { font-size: 0.85vw; font-weight: 800; color: #64748b; }
         
         .shabbat-card { background:#fffdf5; flex-shrink: 0; }
-        .shabbat-content { padding: 8px; display: flex; flex-direction: column; gap: 3px; }
-        .shabbat-row { display: flex; justify-content: space-between; font-weight: 800; font-size: 1.1vw; color: var(--main-text); }
+        .shabbat-content { padding: 10px; display: flex; flex-direction: column; gap: 5px; }
+        .shabbat-row { display: flex; justify-content: space-between; font-weight: 800; font-size: 1.3vw; color: var(--main-text); }
 
-        .footer { height: 5vh; background: white; width: 100vw; display: flex; align-items: center; position: relative; border-top: 2px solid #ee2d24; overflow: hidden; }
-        .ticker-move { display: inline-block; white-space: nowrap; animation: ticker-loop 120s linear infinite; font-size: 1.9vw; font-weight: 800; color: #ee2d24; position: absolute; right: 0; }
+        .footer { height: 5vh; background: white; width: 100vw; display: flex; align-items: center; position: relative; border-top: 2px solid #ee2d24; }
+        .ticker-move { display: inline-block; white-space: nowrap; animation: ticker-loop 200s linear infinite; font-size: 1.9vw; font-weight: 800; color: #ee2d24; }
         @keyframes ticker-loop { 0% { transform: translateX(0); } 100% { transform: translateX(100%); } }
         .ynet-tag { background: #ee2d24; color: white; font-weight: 900; font-size: 1.8vw; width: 110px; height: 100%; display: flex; align-items: center; justify-content: center; position: absolute; right: 0; top: 0; z-index: 10; }
-        .emergency { background: #ef4444; color: white; padding: 1vh; text-align: center; font-size: 1.6vw; font-weight: 900; margin-top: auto; }
+        .emergency { background: #ef4444; color: white; padding: 1vh; text-align: center; font-size: 1.6vw; font-weight: 900; }
     </style>
 </head>
 <body>
@@ -113,7 +135,7 @@
                     <div class="rec-item">רשפים: 08-6741000</div>
                 </div>
                 <div class="rec-group">
-                    <span class="rec-title">⚙️ תריסים חשמליים</span>
+                    <span class="rec-title">⚙️ תיקון תריסים חשמליים</span>
                     <div class="rec-item">בני: 052-3873355</div>
                     <div class="rec-item">יגור: 052-5333351</div>
                     <div class="rec-item">יגאל משולם: 052-8372412</div>
@@ -125,28 +147,28 @@
     <div class="center-col">
         <div class="card" style="height: 100%;">
             <div class="card-header">📢 הודעות ועד הבית</div>
-            <div id="message-box" style="flex:1; overflow-y:auto;"></div>
+            <div id="message-box" style="flex:1; padding:15px; overflow-y:auto;"></div>
             <div class="emergency">🚨 טלפון חירום חב' ניהול: 052-6663722</div>
         </div>
     </div>
 
     <div class="side-col-left">
-        <div class="card" style="height: 18%;">
+        <div class="card" style="flex-shrink: 0;">
             <div class="card-header">🌡️ תחזית</div>
             <div id="weather-4days" class="w-grid"></div>
         </div>
         
-        <div class="card shabbat-card" style="height: 18%;">
-            <div class="card-header" style="background: #fef08a;">שבת | <span id="parasha-display">...</span></div>
+        <div class="card shabbat-card">
+            <div id="shabbat-header" class="card-header" style="background: #fef08a;">שבת | <span id="parasha-display">...</span></div>
             <div id="shabbat-box" class="shabbat-content"></div>
         </div>
 
-        <div class="card" style="height: 64%;">
+        <div class="card" style="flex: 1; min-height: 0;">
             <div class="card-header">🗓️ לוח אירועים</div>
             <div id="events-list"></div>
-            <div class="qr-container">
-                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://calendar.google.com/calendar/u/0/r?cid=kkel57%40gmail.com" alt="QR Code">
-                <div class="qr-text">סרקו להוספת אירוע</div>
+            <div class="qr-section">
+                <div class="qr-text">שריון הג'ימבורי</div>
+                <img class="qr-code-img" src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://forms.gle/FiVeEZ6pes8JKA7d6">
             </div>
         </div>
     </div>
@@ -158,78 +180,69 @@
 </div>
 
 <script>
-    var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzhGwGPiqNXmESzkgh6oW-KDGlgMaBoIiYDd0ennIUNlOwVQH2F7DWIDyZ6Fe_3wrcY/exec';
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzhGwGPiqNXmESzkgh6oW-KDGlgMaBoIiYDd0ennIUNlOwVQH2F7DWIDyZ6Fe_3wrcY/exec';
 
-    function updateClock() {
-        var now = new Date();
-        document.getElementById('live-clock').innerHTML = now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0');
-        document.getElementById('live-date').innerHTML = now.getDate().toString().padStart(2, '0') + "/" + (now.getMonth()+1).toString().padStart(2, '0');
+    function updateDateTime() {
+        const now = new Date();
+        document.getElementById('live-clock').innerText = now.toLocaleTimeString('he-IL', {hour:'2-digit', minute:'2-digit'});
+        document.getElementById('live-date').innerText = now.toLocaleDateString('he-IL', {day:'2-digit', month:'2-digit', year:'2-digit'});
     }
 
-    function getData() {
-        fetch(SCRIPT_URL + '?t=' + new Date().getTime())
-        .then(function(r) { return r.json(); })
-        .then(function(data) {
+    async function updateData() {
+        try {
+            const res = await fetch(SCRIPT_URL + '?t=' + Date.now());
+            const data = await res.json();
             if (data.messages) {
-                var html = "";
-                for (var i = 1; i < data.messages.length; i++) {
-                    html += '<div class="msg-bubble">' + data.messages[i].toString().replace(/#/g, '<br>') + '</div>';
-                }
-                document.getElementById('message-box').innerHTML = html;
+                document.getElementById('message-box').innerHTML = data.messages.slice(1).reverse().map(m => 
+                    `<div class="msg-bubble">${m.toString().replace(/#/g,'<br>')}</div>`
+                ).join('');
             }
             if (data.events) {
-                var evHtml = "";
-                for (var j = 0; j < data.events.length; j++) {
-                    var parts = data.events[j].split('|');
-                    var d = parts[0].split(' ')[0];
-                    var t = parts[1].replace('כל היום:', '').trim();
-                    evHtml += '<div class="event-item"><span class="event-date-pill">'+d+'</span><span class="event-text">'+t+'</span></div>';
-                }
-                document.getElementById('events-list').innerHTML = evHtml;
+                document.getElementById('events-list').innerHTML = data.events.map(e => {
+                    const p = e.split('|');
+                    const date = p[0].split(' ')[0];
+                    const text = p[1].replace('כל היום:', '').trim();
+                    return `<div class="event-item"><span class="event-date-pill">${date}</span><span class="event-text">${text}</span></div>`;
+                }).join('');
             }
-        });
+        } catch(e) {}
     }
 
-    function fetchExternal() {
-        fetch('https://api.open-meteo.com/v1/forecast?latitude=32.3215&longitude=34.8532&daily=temperature_2m_max,weathercode&timezone=auto')
-        .then(function(r){ return r.json(); })
-        .then(function(w){
-            var wHtml = "";
-            var days = ['א', 'ב', 'ג', 'ד', 'ה', 'ו', 'ש'];
-            var today = new Date().getDay();
-            for(var i=0; i<4; i++) {
-                var icon = w.daily.weathercode[i] < 3 ? '☀️' : (w.daily.weathercode[i] < 50 ? '☁️' : '🌧️');
-                wHtml += '<div class="w-item"><span class="w-day">'+days[(today+i)%7]+'\'</span><div class="w-icon">'+icon+'</div><div class="w-temp">'+Math.round(w.daily.temperature_2m_max[i])+'°</div></div>';
+    async function fetchExternal() {
+        try {
+            const w = await fetch('https://api.open-meteo.com/v1/forecast?latitude=32.3215&longitude=34.8532&daily=temperature_2m_max,weathercode&timezone=auto').then(r=>r.json());
+            let wHtml = '';
+            const daysHeb = ['א\'', 'ב\'', 'ג\'', 'ד\'', 'ה\'', 'ו\'', 'ש\''];
+            const todayNum = new Date().getDay();
+            for(let i=0; i<4; i++) {
+                let icon = w.daily.weathercode[i] < 3 ? '☀️' : (w.daily.weathercode[i] < 50 ? '☁️' : '🌧️');
+                wHtml += `<div class="w-item"><span class="w-day">${daysHeb[(todayNum + i) % 7]}</span><div class="w-icon">${icon}</div><div class="w-temp">${Math.round(w.daily.temperature_2m_max[i])}°</div></div>`;
             }
             document.getElementById('weather-4days').innerHTML = wHtml;
-        });
-
-        fetch('https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fwww.ynet.co.il%2FIntegration%2FStoryRss2.xml')
-        .then(function(r){ return r.json(); })
-        .then(function(d){
-            if(d.items) {
-                var news = d.items.map(function(i){ return i.title; }).join("  •  ");
-                document.getElementById('news-ticker').innerHTML = "  •  " + news + "  •  " + news;
-            }
-        });
-
-        fetch('https://www.hebcal.com/shabbat?cfg=json&geonameid=293397&m=50')
-        .then(function(r){ return r.json(); })
-        .then(function(shabbat){
-            var parasha = shabbat.items.find(function(i){return i.category==="parashat"});
-            document.getElementById('parasha-display').innerHTML = parasha ? parasha.hebrew : "שבת";
-            var candles = shabbat.items.find(function(i){return i.category==="candles"});
-            var havdalah = shabbat.items.find(function(i){return i.category==="havdalah"});
+            const shabbat = await fetch('https://www.hebcal.com/shabbat?cfg=json&geonameid=293397&m=50').then(r=>r.json());
+            document.getElementById('parasha-display').innerText = shabbat.items.find(i=>i.category==="parashat")?.hebrew || "שבת";
             document.getElementById('shabbat-box').innerHTML = `
-                <div class="shabbat-row"><span>🕯️ כניסה:</span> <span>${candles ? candles.title.split(': ')[1] : '--:--'}</span></div>
-                <div class="shabbat-row"><span>✨ צאת:</span> <span>${havdalah ? havdalah.title.split(': ')[1] : '--:--'}</span></div>`;
-        });
+                <div class="shabbat-row"><span>🕯️ כניסה:</span> <span>${shabbat.items.find(i=>i.category==="candles").title.split(': ')[1]}</span></div>
+                <div class="shabbat-row"><span>✨ צאת:</span> <span>${shabbat.items.find(i=>i.category==="havdalah").title.split(': ')[1]}</span></div>`;
+        } catch(e) {}
     }
 
-    setInterval(updateClock, 1000);
-    setInterval(getData, 30000);
+    async function fetchNews() {
+        try {
+            const res = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fwww.ynet.co.il%2FIntegration%2FStoryRss2.xml&t=${Date.now()}`);
+            const data = await res.json();
+            if(data.status === 'ok') {
+                const newsItems = data.items.map(i => i.title).join("  •  ");
+                document.getElementById('news-ticker').innerText = "  •  " + newsItems + "  •  " + newsItems;
+            }
+        } catch(e) {}
+    }
+
+    setInterval(updateDateTime, 1000); 
+    setInterval(updateData, 30000); 
     setInterval(fetchExternal, 600000);
-    updateClock(); getData(); fetchExternal();
+    setInterval(fetchNews, 60000);
+    updateDateTime(); updateData(); fetchExternal(); fetchNews();
 </script>
 </body>
 </html>
