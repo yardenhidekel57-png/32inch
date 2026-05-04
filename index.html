@@ -67,20 +67,20 @@
         .qr-container { padding: 10px; text-align: center; background: white; }
         .qr-container img { width: 6vw; height: 6vw; }
 
-        /* Footer & Ticker - INFINITE LOOP FIX */
+        /* Footer & Ticker - FIXED VISIBILITY */
         .footer { height: 5vh; background: white; display: flex; align-items: center; border-top: 2px solid #ee2d24; position: relative; overflow: hidden; }
-        .ticker-wrapper { width: 100%; overflow: hidden; position: relative; }
         .ticker-move { 
-            display: inline-block;
             white-space: nowrap; 
-            padding-right: 100%;
-            animation: ticker-loop 160s linear infinite; 
+            position: absolute; 
+            right: 0;
+            animation: ticker-loop 120s linear infinite; 
             font-size: 1.8vw; 
             font-weight: 800; 
             color: #ee2d24; 
+            padding-right: 100px;
         }
         @keyframes ticker-loop { 
-            0% { transform: translateX(-100%); } 
+            0% { transform: translateX(0); } 
             100% { transform: translateX(100%); } 
         }
         .ynet-tag { background: #ee2d24; color: white; font-weight: 900; font-size: 1.6vw; width: 90px; height: 100%; display: flex; align-items: center; justify-content: center; z-index: 10; position: absolute; right: 0; }
@@ -155,7 +155,8 @@
             <div class="card-header">🗓️ לוח אירועים</div>
             <div id="events-list"></div>
             <div class="qr-container">
-                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://docs.google.com/forms/d/e/1FAIpQLSfp-2zY_y-5Yj0fGvFjP9p1U6f0gQZ4vV5fR-0G-0G-0G-0G/viewform" alt="QR">
+                <!-- QR Link updated to Google Forms -->
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://forms.gle/GYMBORIE_REG_LINK" alt="QR">
             </div>
         </div>
     </div>
@@ -163,9 +164,7 @@
 
 <div class="footer">
     <div class="ynet-tag">ynet</div>
-    <div class="ticker-wrapper">
-        <div id="news-ticker" class="ticker-move">מתחבר למבזקים...</div>
-    </div>
+    <div id="news-ticker" class="ticker-move">מתחבר למבזקים...</div>
 </div>
 
 <script>
@@ -210,8 +209,7 @@
         });
         fetch('https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fwww.ynet.co.il%2FIntegration%2FStoryRss2.xml').then(function(r){ return r.json(); }).then(function(d){
             if(d.items) {
-                var newsStr = "  •  " + d.items.map(function(i){ return i.title; }).join("  •  ");
-                document.getElementById('news-ticker').innerHTML = newsStr + " " + newsStr;
+                document.getElementById('news-ticker').innerHTML = "  •  " + d.items.map(function(i){ return i.title; }).join("  •  ");
             }
         });
         fetch('https://www.hebcal.com/shabbat?cfg=json&geonameid=293397&m=50').then(function(r){ return r.json(); }).then(function(shabbat){
