@@ -33,7 +33,7 @@
         .separator { width: 2px; height: 3vh; background: rgba(255,255,255,0.3); }
         .header-left { font-size: 1.6vw; font-weight: 800; color: #ffffff; justify-self: end; }
 
-        .stage { height: 85vh; display: flex; gap: 1vw; padding: 1vh 1vw; }
+        .stage { height: 84vh; display: flex; gap: 1vw; padding: 1vh 1vw; }
         .side-col-right { width: 24%; display: flex; flex-direction: column; }
         .center-col { width: 58%; display: flex; flex-direction: column; }
         .side-col-left { width: 18%; display: flex; flex-direction: column; gap: 1vh; }
@@ -41,7 +41,6 @@
         .card { background: var(--card-bg); border-radius: 15px; display: flex; flex-direction: column; overflow: visible; box-shadow: 0 8px 25px rgba(0,0,0,0.3); margin-bottom: 0.5vh; }
         .card-header { background: var(--title-bg); color: var(--title-text); height: 4.5vh; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.2vw; flex-shrink: 0; border-radius: 15px 15px 0 0; }
 
-        /* Weather Fix - No clipping */
         .w-grid { display: flex; justify-content: space-between; gap: 4px; padding: 8px; flex: 1; overflow: visible; }
         .w-item { background: #f1f5f9; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; overflow: visible; }
         .w-day { font-size: 1.6vw; font-weight: 800; color: #0c4a6e; margin-bottom: 2px; }
@@ -49,9 +48,9 @@
         .w-temp { font-size: 1.5vw; font-weight: 900; color: var(--main-text); }
 
         .recommendation-content { padding: 1.5vh 1vw; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
-        .rec-group { margin-bottom: 1.5vh; }
-        .rec-title { font-size: 1.2vw; font-weight: 800; color: #0369a1; border-bottom: 2px solid #bae6fd; margin-bottom: 8px; display: block; }
-        .rec-item { font-size: 1.1vw; font-weight: 700; color: #334155; margin-bottom: 5px; }
+        .rec-group { margin-bottom: 1.2vh; }
+        .rec-title { font-size: 1.2vw; font-weight: 800; color: #0369a1; border-bottom: 2px solid #bae6fd; margin-bottom: 5px; display: block; }
+        .rec-item { font-size: 1vw; font-weight: 700; color: #334155; margin-bottom: 3px; }
 
         #message-box { flex: 1; overflow-y: auto; padding: 10px; }
         .msg-bubble { background: white; padding: 20px; border-radius: 12px; border-right: 8px solid var(--accent); margin-bottom: 15px; font-size: 1.8vw; font-weight: 700; color: #1e40af; line-height: 1.4; }
@@ -61,29 +60,30 @@
         
         #events-list { flex: 1; padding: 8px; overflow-y: auto; }
         .event-item { background: #f0f9ff; padding: 8px; border-radius: 8px; border-right: 5px solid #00aeef; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
-        .event-text { color: #1e3a8a; font-size: 1.2vw; font-weight: 800; } /* Increased Font */
+        .event-text { color: #1e3a8a; font-size: 1.2vw; font-weight: 800; }
 
         .qr-section { padding: 10px; text-align: center; background: white; border-radius: 0 0 15px 15px; }
-        .qr-label { font-size: 1.2vw; font-weight: 800; color: #0c4a6e; margin-bottom: 5px; display: block; } /* Increased Font */
+        .qr-label { font-size: 1.2vw; font-weight: 800; color: #0c4a6e; margin-bottom: 5px; display: block; }
         .qr-section img { width: 6vw; height: 6vw; }
 
-        /* Footer & Ticker */
-        .footer { height: 5vh; background: white; display: flex; align-items: center; border-top: 2px solid #ee2d24; position: relative; overflow: hidden; }
+        /* Footer Fix - Adjusted height and centering */
+        .footer { height: 6vh; background: white; display: flex; align-items: center; border-top: 3px solid #ee2d24; position: relative; overflow: hidden; }
         .ticker-move { 
             white-space: nowrap; 
             position: absolute; 
-            right: 110px; /* Adjust for YNET tag */
+            right: 120px;
             animation: ticker-loop 140s linear infinite; 
             font-size: 1.8vw; 
             font-weight: 800; 
             color: #ee2d24; 
+            line-height: 6vh;
         }
         @keyframes ticker-loop { 
             0% { transform: translateX(0); } 
             100% { transform: translateX(100%); } 
         }
-        .ynet-tag { background: #ee2d24; color: white; font-weight: 900; font-size: 1.6vw; width: 110px; height: 100%; display: flex; align-items: center; justify-content: center; z-index: 10; position: absolute; right: 0; }
-        .emergency { background: #ef4444; color: white; padding: 1vh; text-align: center; font-size: 1.6vw; font-weight: 900; }
+        .ynet-tag { background: #ee2d24; color: white; font-weight: 900; font-size: 1.8vw; width: 120px; height: 100%; display: flex; align-items: center; justify-content: center; z-index: 10; position: absolute; right: 0; top: 0; }
+        .emergency { background: #ef4444; color: white; padding: 0.8vh; text-align: center; font-size: 1.6vw; font-weight: 900; }
     </style>
 </head>
 <body>
@@ -106,9 +106,11 @@
             <div class="card-header" style="background: #fef08a; color: #854d0e;">דיירים ממליצים</div>
             <div class="recommendation-content">
                 <div class="rec-group">
-                    <span class="rec-title">💧 אינסטלטורים</span>
+                    <span class="rec-title">💧 אינסטלציה</span>
                     <div class="rec-item">אבי: 052-4216181</div>
                     <div class="rec-item">ליאב: 052-3720270</div>
+                    <div class="rec-item">דניאל: 050-9871744</div>
+                    <div class="rec-item">מוטי: 054-9496662</div>
                 </div>
                 <div class="rec-group">
                     <span class="rec-title">🔨 פרקטים</span>
