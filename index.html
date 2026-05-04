@@ -30,9 +30,8 @@
         }
         .header-right { font-size: 1.8vw; font-weight: 800; color: var(--accent); }
         .header-center { display: flex; align-items: center; justify-content: center; gap: 20px; color: white; }
-        #live-clock, #live-date { font-size: 2.2vw; font-weight: 800; }
+        #live-clock, #live-date { font-size: 2vw; font-weight: 800; }
         .separator { width: 2px; height: 3vh; background: rgba(255,255,255,0.3); }
-        .header-left { font-size: 0.9vw; color: white; opacity: 0.6; text-align: left; }
 
         /* Main Layout */
         .stage { height: 85vh; display: flex; gap: 1vw; padding: 1vh 1vw; }
@@ -45,22 +44,19 @@
         .card-header { background: var(--title-bg); color: var(--title-text); height: 4.5vh; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.2vw; flex-shrink: 0; }
 
         /* Recommendations List */
-        .recommendation-content { padding: 2vh 1vw; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
-        .rec-group { margin-bottom: 2vh; }
+        .recommendation-content { padding: 1.5vh 1vw; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
+        .rec-group { margin-bottom: 1.5vh; }
         .rec-title { font-size: 1.2vw; font-weight: 800; color: #0369a1; border-bottom: 2px solid #bae6fd; margin-bottom: 8px; display: block; }
-        .rec-item { font-size: 1.1vw; font-weight: 700; color: #334155; margin-bottom: 6px; }
+        .rec-item { font-size: 1.1vw; font-weight: 700; color: #334155; margin-bottom: 5px; }
 
         /* Messages */
         #message-box { flex: 1; overflow-y: auto; padding: 10px; }
         .msg-bubble { background: white; padding: 20px; border-radius: 12px; border-right: 8px solid var(--accent); margin-bottom: 15px; font-size: 1.8vw; font-weight: 700; color: #1e40af; line-height: 1.4; }
 
-        /* Left Side */
+        /* Side Elements */
         .w-grid { display: flex; justify-content: space-between; gap: 4px; padding: 8px; flex: 1; }
         .w-item { background: #f1f5f9; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; }
         .w-temp { font-size: 1.5vw; font-weight: 900; color: var(--main-text); }
-        .w-day { font-size: 0.9vw; font-weight: 800; color: #64748b; }
-
-        .shabbat-card { background: #fffdf5; }
         .shabbat-content { padding: 12px; display: flex; flex-direction: column; gap: 8px; }
         .shabbat-row { display: flex; justify-content: space-between; font-weight: 800; font-size: 1.2vw; color: var(--main-text); }
 
@@ -71,20 +67,21 @@
         .qr-container { padding: 10px; text-align: center; background: white; }
         .qr-container img { width: 6vw; height: 6vw; }
 
-        /* Footer & Ticker - FIXED LOOP */
+        /* Footer & Ticker - INFINITE LOOP FIX */
         .footer { height: 5vh; background: white; display: flex; align-items: center; border-top: 2px solid #ee2d24; position: relative; overflow: hidden; }
+        .ticker-wrapper { width: 100%; overflow: hidden; position: relative; }
         .ticker-move { 
+            display: inline-block;
             white-space: nowrap; 
-            position: absolute; 
-            animation: ticker-loop 150s linear infinite; 
+            padding-right: 100%;
+            animation: ticker-loop 160s linear infinite; 
             font-size: 1.8vw; 
             font-weight: 800; 
             color: #ee2d24; 
-            padding-left: 100%;
         }
         @keyframes ticker-loop { 
-            0% { transform: translateX(100%); } 
-            100% { transform: translateX(-100%); } 
+            0% { transform: translateX(-100%); } 
+            100% { transform: translateX(100%); } 
         }
         .ynet-tag { background: #ee2d24; color: white; font-weight: 900; font-size: 1.6vw; width: 90px; height: 100%; display: flex; align-items: center; justify-content: center; z-index: 10; position: absolute; right: 0; }
         .emergency { background: #ef4444; color: white; padding: 1vh; text-align: center; font-size: 1.6vw; font-weight: 900; }
@@ -115,7 +112,7 @@
                     <div class="rec-item">ליאב: 052-3720270</div>
                 </div>
                 <div class="rec-group">
-                    <span class="rec-title">🔨 התקנת פרקטים</span>
+                    <span class="rec-title">🔨 פרקטים</span>
                     <div class="rec-item">אבישי גור: 050-9012123</div>
                     <div class="rec-item">לאוניד: 052-7476167</div>
                 </div>
@@ -124,13 +121,13 @@
                     <div class="rec-item">רשפים: 08-6741000</div>
                 </div>
                 <div class="rec-group">
-                    <span class="rec-title">⚙️ תריסים חשמליים</span>
+                    <span class="rec-title">⚙️ תריסים</span>
                     <div class="rec-item">בני: 052-3873355</div>
                     <div class="rec-item">יגור: 052-5333351</div>
                     <div class="rec-item">יגאל משולם: 052-8372412</div>
                 </div>
                 <div class="rec-group">
-                    <span class="rec-title">❄️ מיזוג אוויר</span>
+                    <span class="rec-title">❄️ מזגנים</span>
                     <div class="rec-item">רפאל: 052-6464522</div>
                 </div>
             </div>
@@ -146,19 +143,18 @@
     </div>
 
     <div class="side-col-left">
-        <div class="card" style="height: 22%;">
+        <div class="card" style="height: 25%;">
             <div class="card-header">🌡️ תחזית</div>
             <div id="weather-4days" class="w-grid"></div>
         </div>
-        <div class="card shabbat-card" style="height: 22%;">
+        <div class="card" style="height: 25%; background: #fffdf5;">
             <div class="card-header" style="background: #fef08a;">שבת | <span id="parasha-display">...</span></div>
             <div id="shabbat-box" class="shabbat-content"></div>
         </div>
-        <div class="card" style="height: 52%;">
+        <div class="card" style="height: 48%;">
             <div class="card-header">🗓️ לוח אירועים</div>
             <div id="events-list"></div>
             <div class="qr-container">
-                <!-- QR Link updated to Gymboree Form -->
                 <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://docs.google.com/forms/d/e/1FAIpQLSfp-2zY_y-5Yj0fGvFjP9p1U6f0gQZ4vV5fR-0G-0G-0G-0G/viewform" alt="QR">
             </div>
         </div>
@@ -167,7 +163,9 @@
 
 <div class="footer">
     <div class="ynet-tag">ynet</div>
-    <div id="news-ticker" class="ticker-move">מתחבר למבזקים...</div>
+    <div class="ticker-wrapper">
+        <div id="news-ticker" class="ticker-move">מתחבר למבזקים...</div>
+    </div>
 </div>
 
 <script>
@@ -176,7 +174,6 @@
     function updateClock() {
         var now = new Date();
         document.getElementById('live-clock').innerHTML = now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0');
-        // Added Full Year
         document.getElementById('live-date').innerHTML = now.getDate().toString().padStart(2, '0') + "/" + (now.getMonth()+1).toString().padStart(2, '0') + "/" + now.getFullYear();
     }
 
@@ -214,7 +211,7 @@
         fetch('https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fwww.ynet.co.il%2FIntegration%2FStoryRss2.xml').then(function(r){ return r.json(); }).then(function(d){
             if(d.items) {
                 var newsStr = "  •  " + d.items.map(function(i){ return i.title; }).join("  •  ");
-                document.getElementById('news-ticker').innerHTML = newsStr + newsStr; // Doubled for seamless loop
+                document.getElementById('news-ticker').innerHTML = newsStr + " " + newsStr;
             }
         });
         fetch('https://www.hebcal.com/shabbat?cfg=json&geonameid=293397&m=50').then(function(r){ return r.json(); }).then(function(shabbat){
