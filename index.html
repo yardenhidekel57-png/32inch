@@ -41,7 +41,6 @@
         .card { background: var(--card-bg); border-radius: 15px; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 8px 25px rgba(0,0,0,0.3); margin-bottom: 0.5vh; }
         .card-header { background: var(--title-bg); color: var(--title-text); height: 4.5vh; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.2vw; flex-shrink: 0; }
 
-        /* Weather - Fixed "hills" issue */
         .w-grid { display: flex; justify-content: space-between; gap: 4px; padding: 8px; flex: 1; }
         .w-item { background: #f1f5f9; border-radius: 12px 12px 0 0; display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; overflow: visible; }
         .w-day { font-size: 1.6vw; font-weight: 800; color: #0c4a6e; margin-bottom: 2px; }
@@ -60,8 +59,8 @@
         .shabbat-row { display: flex; justify-content: space-between; font-weight: 800; font-size: 1.2vw; color: var(--main-text); }
         
         #events-list { flex: 1; padding: 8px; overflow-y: auto; }
-        .event-item { background: #f0f9ff; padding: 8px; border-radius: 8px; border-right: 5px solid #00aeef; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
-        .event-text { color: #1e3a8a; font-size: 1.2vw; font-weight: 800; }
+        .event-item { background: #f0f9ff; padding: 6px 8px; border-radius: 8px; border-right: 5px solid #00aeef; margin-bottom: 6px; display: flex; align-items: center; overflow: hidden; }
+        .event-text { color: #1e3a8a; font-size: 1.2vw; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; }
 
         .qr-section { padding: 10px; text-align: center; background: white; }
         .qr-label { font-size: 1.2vw; font-weight: 800; color: #0c4a6e; margin-bottom: 5px; display: block; }
@@ -176,9 +175,11 @@
         try { if ('wakeLock' in navigator) { wakeLock = await navigator.wakeLock.request('screen'); } } catch (err) {}
     }
     requestWakeLock();
-    document.addEventListener('visibilitychange', async () => {
-        if (wakeLock !== null && document.visibilityState === 'visible') { await requestWakeLock(); }
-    });
+
+    // ריענון דף כל 3 שעות למניעת כיבוי או קיפאון
+    setTimeout(function() {
+        location.reload();
+    }, 10800000);
 
     function updateClock() {
         var now = new Date();
