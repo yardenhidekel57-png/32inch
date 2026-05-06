@@ -42,7 +42,7 @@
         .card-header { background: var(--title-bg); color: var(--title-text); height: 4.5vh; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.2vw; flex-shrink: 0; }
 
         .w-grid { display: flex; justify-content: space-between; gap: 4px; padding: 8px; flex: 1; }
-        .w-item { background: #f1f5f9; border-radius: 12px 12px 0 0; display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; overflow: visible; }
+        .w-item { background: #f1f5f9; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; }
         .w-day { font-size: 1.6vw; font-weight: 800; color: #0c4a6e; }
         .w-temp { font-size: 1.5vw; font-weight: 900; color: var(--main-text); }
 
@@ -55,7 +55,7 @@
         .msg-bubble { background: white; padding: 20px; border-radius: 12px; border-right: 8px solid var(--accent); margin-bottom: 15px; font-size: 1.8vw; font-weight: 700; color: #1e40af; line-height: 1.4; }
 
         #events-list { flex: 1; padding: 8px; overflow-y: auto; }
-        .event-item { background: #f0f9ff; padding: 6px 8px; border-radius: 8px; border-right: 5px solid #00aeef; margin-bottom: 6px; display: flex; align-items: center; overflow: hidden; }
+        .event-item { background: #f0f9ff; padding: 6px 8px; border-radius: 8px; border-right: 5px solid #00aeef; margin-bottom: 6px; display: flex; align-items: center; }
         .event-text { color: #1e3a8a; font-size: 1.1vw; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; }
 
         .footer { height: 6vh; background: white; display: flex; align-items: center; border-top: 3px solid #ee2d24; position: relative; overflow: hidden; }
@@ -64,7 +64,6 @@
         .ynet-tag { background: #ee2d24; color: white; font-weight: 900; font-size: 1.8vw; width: 120px; height: 100%; display: flex; align-items: center; justify-content: center; z-index: 10; position: absolute; right: 0; }
         .emergency { background: #ef4444; color: white; padding: 0.8vh; text-align: center; font-size: 1.6vw; font-weight: 900; }
         
-        /* Hidden video to trick Android/TVBro */
         #keep-awake-video { position: absolute; width: 1px; height: 1px; opacity: 0.01; pointer-events: none; }
     </style>
 </head>
@@ -93,7 +92,7 @@
             <div class="recommendation-content">
                 <div class="rec-group">
                     <span class="rec-title">🛠️ הנדימן</span>
-                    <div class="rec-item">ישראל: 050-1234567</div>
+                    <div class="rec-item">אלירן: 054-4340538</div>
                 </div>
                 <div class="rec-group">
                     <span class="rec-title">💧 אינסטלציה</span>
@@ -156,7 +155,6 @@
 <script>
     var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzhGwGPiqNXmESzkgh6oW-KDGlgMaBoIiYDd0ennIUNlOwVQH2F7DWIDyZ6Fe_3wrcY/exec';
     
-    // Auto-reload every 3 hours
     setTimeout(() => { location.reload(); }, 10800000);
 
     function updateClock() {
