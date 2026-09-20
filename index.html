@@ -6,7 +6,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@600;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --title-bg: linear-gradient(135deg, #b2ebf2 0%, #81d4fa 100%); 
+            --title-bg: linear-gradient(135deg, #b2ebf2 0%, #81d4fa 100%);
             --title-text: #0c4a6e;
             --primary-bg: #0f172a;
             --card-bg: rgba(255, 255, 255, 0.95);
@@ -14,13 +14,13 @@
             --main-text: #1e3a8a;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { 
+        body {
             background: var(--primary-bg);
             background-image: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
-            font-family: 'Assistant', sans-serif; height: 100vh; width: 100vw; 
+            font-family: 'Assistant', sans-serif; height: 100vh; width: 100vw;
             display: flex; flex-direction: column; overflow: hidden;
         }
-        
+
         .header-wrapper { height: 10vh; display: flex; justify-content: center; align-items: center; padding: 0 1vw; }
         .header-bubble {
             width: 98%; height: 8vh; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(15px);
@@ -63,14 +63,18 @@
         @keyframes ticker-loop { 0% { transform: translateX(0); } 100% { transform: translateX(100%); } }
         .ynet-tag { background: #ee2d24; color: white; font-weight: 900; font-size: 1.8vw; width: 120px; height: 100%; display: flex; align-items: center; justify-content: center; z-index: 10; position: absolute; right: 0; }
         .emergency { background: #ef4444; color: white; padding: 0.8vh; text-align: center; font-size: 1.6vw; font-weight: 900; }
-        
+
         #keep-awake-video { position: absolute; width: 1px; height: 1px; opacity: 0.01; pointer-events: none; }
     </style>
 </head>
 <body>
 
+<!-- Tiny local (no network dependency) silent looping video: some Android TV / TVBRO
+     setups are less likely to hand off to the system screensaver while a video is
+     actively playing. Embedded as a data URI so it never depends on an external host
+     that could itself be unreachable during an outage. -->
 <video id="keep-awake-video" playsinline muted loop autoplay>
-    <source src="https://raw.githubusercontent.com/bower-media-samples/big-buck-bunny-1080p-60fps-30s/master/video.mp4" type="video/mp4">
+    <source src="data:video/mp4;base64,AAAAIGZ0eXBpc29tAAACAGlzb21pc28yYXZjMW1wNDEAAAMxbW9vdgAAAGxtdmhkAAAAAAAAAAAAAAAAAAAD6AAAB9AAAQAAAQAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAlt0cmFrAAAAXHRraGQAAAADAAAAAAAAAAAAAAABAAAAAAAAB9AAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAABAAAAAABAAAAAQAAAAAAAkZWR0cwAAABxlbHN0AAAAAAAAAAEAAAfQAAAAAAABAAAAAAHTbWRpYQAAACBtZGhkAAAAAAAAAAAAAAAAAABAAAAAgABVxAAAAAAALWhkbHIAAAAAAAAAAHZpZGUAAAAAAAAAAAAAAABWaWRlb0hhbmRsZXIAAAABfm1pbmYAAAAUdm1oZAAAAAEAAAAAAAAAAAAAACRkaW5mAAAAHGRyZWYAAAAAAAAAAQAAAAx1cmwgAAAAAQAAAT5zdGJsAAAAvnN0c2QAAAAAAAAAAQAAAK5hdmMxAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAABAAEABIAAAASAAAAAAAAAABFUxhdmM2MC4zMS4xMDIgbGlieDI2NAAAAAAAAAAAAAAAGP//AAAANGF2Y0MBZAAK/+EAF2dkAAqs2V7ARAAAAwAEAAADAAg8SJZYAQAGaOvjyyLA/fj4AAAAABBwYXNwAAAAAQAAAAEAAAAUYnRydAAAAAAAAAtEAAALRAAAABhzdHRzAAAAAAAAAAEAAAACAABAAAAAABRzdHNzAAAAAAAAAAEAAAABAAAAHHN0c2MAAAAAAAAAAQAAAAEAAAACAAAAAQAAABxzdHN6AAAAAAAAAAAAAAACAAACxQAAAAwAAAAUc3RjbwAAAAAAAAABAAADYQAAAGJ1ZHRhAAAAWm1ldGEAAAAAAAAAIWhkbHIAAAAAAAAAAG1kaXJhcHBsAAAAAAAAAAAAAAAALWlsc3QAAAAlqXRvbwAAAB1kYXRhAAAAAQAAAABMYXZmNjAuMTYuMTAwAAAACGZyZWUAAALZbWRhdAAAAq0GBf//qdxF6b3m2Ui3lizYINkj7u94MjY0IC0gY29yZSAxNjQgcjMxMDggMzFlMTlmOSAtIEguMjY0L01QRUctNCBBVkMgY29kZWMgLSBDb3B5bGVmdCAyMDAzLTIwMjMgLSBodHRwOi8vd3d3LnZpZGVvbGFuLm9yZy94MjY0Lmh0bWwgLSBvcHRpb25zOiBjYWJhYz0xIHJlZj0zIGRlYmxvY2s9MTowOjAgYW5hbHlzZT0weDM6MHgxMTMgbWU9aGV4IHN1Ym1lPTcgcHN5PTEgcHN5X3JkPTEuMDA6MC4wMCBtaXhlZF9yZWY9MSBtZV9yYW5nZT0xNiBjaHJvbWFfbWU9MSB0cmVsbGlzPTEgOHg4ZGN0PTEgY3FtPTAgZGVhZHpvbmU9MjEsMTEgZmFzdF9wc2tpcD0xIGNocm9tYV9xcF9vZmZzZXQ9LTIgdGhyZWFkcz0xIGxvb2thaGVhZF90aHJlYWRzPTEgc2xpY2VkX3RocmVhZHM9MCBucj0wIGRlY2ltYXRlPTEgaW50ZXJsYWNlZD0wIGJsdXJheV9jb21wYXQ9MCBjb25zdHJhaW5lZF9pbnRyYT0wIGJmcmFtZXM9MyBiX3B5cmFtaWQ9MiBiX2FkYXB0PTEgYl9iaWFzPTAgZGlyZWN0PTEgd2VpZ2h0Yj0xIG9wZW5fZ29wPTAgd2VpZ2h0cD0yIGtleWludD0yNTAga2V5aW50X21pbj0xIHNjZW5lY3V0PTQwIGludHJhX3JlZnJlc2g9MCByY19sb29rYWhlYWQ9NDAgcmM9Y3JmIG1idHJlZT0xIGNyZj0yMy4wIHFjb21wPTAuNjAgcXBtaW49MCBxcG1heD02OSBxcHN0ZXA9NCBpcF9yYXRpbz0xLjQwIGFxPTE6MS4wMACAAAAAEGWIhAAW//730z/MsuyaJYEAAAAIQZohbEFf/vA=" type="video/mp4">
 </video>
 
 <div class="header-wrapper">
@@ -158,19 +162,106 @@
 
 <script>
     var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzhGwGPiqNXmESzkgh6oW-KDGlgMaBoIiYDd0ennIUNlOwVQH2F7DWIDyZ6Fe_3wrcY/exec';
-    
-    setTimeout(() => { location.reload(); }, 10800000);
 
+    /* ============================================================
+       Resilience layer
+       Goal: a momentary internet drop must NEVER leave the board
+       stuck on the browser's own "no internet" page, and must never
+       hand control over to the TV's system screensaver instead of
+       just quietly retrying in the background.
+       ============================================================ */
+
+    // fetch() with a hard timeout, so a stalled/half-open connection
+    // during flaky connectivity can't hang forever and pile up.
+    function fetchWithTimeout(url, options, timeoutMs) {
+        options = options || {};
+        timeoutMs = timeoutMs || 10000;
+        var controller = new AbortController();
+        var timer = setTimeout(function () { controller.abort(); }, timeoutMs);
+        var merged = Object.assign({}, options, { signal: controller.signal, cache: 'no-store' });
+        return fetch(url, merged).finally(function () { clearTimeout(timer); });
+    }
+
+    // Never let it crash out silently — log and keep going instead.
+    window.addEventListener('error', function (e) { console.warn('board error (ignored):', e.message); });
+    window.addEventListener('unhandledrejection', function (e) { console.warn('board promise error (ignored):', e.reason); });
+
+    // Screen Wake Lock: actively ask the system to keep the display on,
+    // so the TV/TVBRO is less likely to hand off to a screensaver.
+    var wakeLock = null;
+    function requestWakeLock() {
+        if (!('wakeLock' in navigator)) return;
+        navigator.wakeLock.request('screen').then(function (lock) {
+            wakeLock = lock;
+        }).catch(function () { /* not supported/allowed here - the keep-awake video is the fallback */ });
+    }
+    document.addEventListener('visibilitychange', function () {
+        if (document.visibilityState === 'visible') requestWakeLock();
+    });
+    requestWakeLock();
+    setInterval(requestWakeLock, 60000); // some systems silently release the lock - keep reasserting it
+
+    // Full-page reload is the one thing that can trigger the browser's own
+    // offline interstitial, so only ever do it when we've actually confirmed
+    // we're online - otherwise just try again shortly instead of navigating away.
+    function safeReload() {
+        if (navigator.onLine === false) { setTimeout(safeReload, 30000); return; }
+        fetchWithTimeout(SCRIPT_URL + '?ping=' + Date.now(), {}, 6000)
+            .then(function () { location.reload(); })
+            .catch(function () { setTimeout(safeReload, 30000); });
+    }
+    // Full JS/DOM/GPU-layer reset once an hour (while genuinely online). This is
+    // the main defense against slow multi-day resource leaks (memory, GPU
+    // compositing layers, decoders) that otherwise build up over a week of
+    // continuous uptime and can end in a full device freeze needing a physical
+    // power-cycle. A quick reload flash once an hour is a small price for that.
+    var RELOAD_INTERVAL_MS = 60 * 60 * 1000;
+    setTimeout(safeReload, RELOAD_INTERVAL_MS);
+
+    // Extra insurance: on Chromium-based WebViews, performance.memory exposes
+    // JS heap stats. If usage climbs unusually high between scheduled reloads,
+    // reload proactively rather than waiting for an actual out-of-memory freeze.
+    function checkMemoryWatchdog() {
+        if (!(window.performance && performance.memory)) return;
+        var used = performance.memory.usedJSHeapSize;
+        var limit = performance.memory.jsHeapSizeLimit;
+        if (limit && used / limit > 0.85) {
+            console.warn('memory watchdog: heap usage high (' + Math.round(used / 1048576) + 'MB) - reloading proactively');
+            safeReload();
+        }
+    }
+    setInterval(checkMemoryWatchdog, 5 * 60 * 1000);
+
+    // The moment connectivity returns, refresh content immediately instead of
+    // waiting for the next 30s/10min interval.
+    window.addEventListener('online', function () { getData(); fetchExternal(); });
+
+    // Register a tiny service worker (see sw.js) so that if a reload is ever
+    // attempted at the exact moment the connection is down, the last good
+    // copy of this page is served instead of a browser "no internet" page.
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('./sw.js').catch(function () { /* not fatal - board still works without it */ });
+    }
+
+    /* ============================================================
+       Clock
+       ============================================================ */
     function updateClock() {
         var now = new Date();
         document.getElementById('live-clock').innerHTML = now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0');
         document.getElementById('live-date').innerHTML = now.getDate().toString().padStart(2, '0') + "/" + (now.getMonth()+1).toString().padStart(2, '0') + "/" + now.getFullYear();
     }
 
-    function getData() {
-        fetch(SCRIPT_URL + '?t=' + new Date().getTime())
-        .then(r => r.json())
-        .then(data => {
+    /* ============================================================
+       Data (all fetches defensive: timeout + try/catch, and never
+       touch the DOM unless the fetch actually succeeded — so a
+       failed refresh just leaves the last good content on screen
+       and quietly retries on the next interval)
+       ============================================================ */
+    async function getData() {
+        try {
+            var r = await fetchWithTimeout(SCRIPT_URL + '?t=' + new Date().getTime(), {}, 10000);
+            var data = await r.json();
             if (data.messages) {
                 var html = "";
                 for (var i = 1; i < data.messages.length; i++) {
@@ -182,30 +273,38 @@
                 var evHtml = "";
                 for (var j = 0; j < data.events.length; j++) {
                     var parts = data.events[j].split('|');
+                    if (parts.length < 2) continue;
                     evHtml += '<div class="event-item"><span class="event-text">' + parts[0].split(' ')[0] + ' | ' + parts[1].replace('כל היום:', '').trim() + '</span></div>';
                 }
                 document.getElementById('events-list').innerHTML = evHtml;
             }
-        });
+        } catch (e) { console.warn('getData failed, will retry automatically:', e); }
     }
 
-    function fetchExternal() {
-        fetch('https://api.open-meteo.com/v1/forecast?latitude=32.3215&longitude=34.8532&daily=temperature_2m_max,weathercode&timezone=auto').then(r => r.json()).then(w => {
+    async function fetchExternal() {
+        try {
+            var w = await fetchWithTimeout('https://api.open-meteo.com/v1/forecast?latitude=32.3215&longitude=34.8532&daily=temperature_2m_max,weathercode&timezone=auto', {}, 10000).then(function (r) { return r.json(); });
             var wHtml = "", days = ['א', 'ב', 'ג', 'ד', 'ה', 'ו', 'ש'], today = new Date().getDay();
-            for(var i=0; i<4; i++) {
+            for (var i = 0; i < 4; i++) {
                 var icon = w.daily.weathercode[i] < 3 ? '☀️' : (w.daily.weathercode[i] < 50 ? '☁️' : '🌧️');
-                wHtml += '<div class="w-item"><span class="w-day">'+days[(today+i)%7]+'\'</span><div style="font-size:2vw">'+icon+'</div><div class="w-temp">'+Math.round(w.daily.temperature_2m_max[i])+'°</div></div>';
+                wHtml += '<div class="w-item"><span class="w-day">' + days[(today + i) % 7] + '\'</span><div style="font-size:2vw">' + icon + '</div><div class="w-temp">' + Math.round(w.daily.temperature_2m_max[i]) + '°</div></div>';
             }
             document.getElementById('weather-4days').innerHTML = wHtml;
-        });
-        fetch('https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fwww.ynet.co.il%2FIntegration%2FStoryRss2.xml').then(r => r.json()).then(d => {
-            if(d.items) document.getElementById('news-ticker').innerHTML = "  •  " + d.items.map(i => i.title).join("  •  ");
-        });
-        fetch('https://www.hebcal.com/shabbat?cfg=json&geonameid=293397&m=50').then(r => r.json()).then(shabbat => {
-            var p = shabbat.items.find(i => i.category==="parashat"), c = shabbat.items.find(i => i.category==="candles"), h = shabbat.items.find(i => i.category==="havdalah");
+        } catch (e) { console.warn('weather fetch failed, will retry automatically:', e); }
+
+        try {
+            var d = await fetchWithTimeout('https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fwww.ynet.co.il%2FIntegration%2FStoryRss2.xml', {}, 10000).then(function (r) { return r.json(); });
+            if (d.items) document.getElementById('news-ticker').innerHTML = "  •  " + d.items.map(function (i) { return i.title; }).join("  •  ");
+        } catch (e) { console.warn('news fetch failed, will retry automatically:', e); }
+
+        try {
+            var shabbat = await fetchWithTimeout('https://www.hebcal.com/shabbat?cfg=json&geonameid=293397&m=50', {}, 10000).then(function (r) { return r.json(); });
+            var p = shabbat.items && shabbat.items.find(function (i) { return i.category === "parashat"; });
+            var c = shabbat.items && shabbat.items.find(function (i) { return i.category === "candles"; });
+            var h = shabbat.items && shabbat.items.find(function (i) { return i.category === "havdalah"; });
             document.getElementById('parasha-display').innerHTML = p ? p.hebrew : "שבת";
-            document.getElementById('shabbat-box').innerHTML = '<div style="display:flex; justify-content:space-between; font-weight:800; font-size:1.2vw; color:var(--main-text);"><span>🕯️ כניסה: '+(c?c.title.split(': ')[1]:'--:--')+'</span><span>צאת: '+(h?h.title.split(': ')[1]:'--:--')+' ✨</span></div>';
-        });
+            document.getElementById('shabbat-box').innerHTML = '<div style="display:flex; justify-content:space-between; font-weight:800; font-size:1.2vw; color:var(--main-text);"><span>🕯️ כניסה: ' + (c ? c.title.split(': ')[1] : '--:--') + '</span><span>צאת: ' + (h ? h.title.split(': ')[1] : '--:--') + ' ✨</span></div>';
+        } catch (e) { console.warn('shabbat fetch failed, will retry automatically:', e); }
     }
 
     setInterval(updateClock, 1000); setInterval(getData, 30000); setInterval(fetchExternal, 600000);
