@@ -162,7 +162,7 @@
 
 <div class="footer">
     <div class="ynet-tag">ynet</div>
-    <div id="news-ticker" class="ticker-move">מתחבר למבזקים...</div>
+    <div id="news-ticker" class="ticker-move">מבזקי חדשות Ynet</div>
 </div>
 
 <script>
@@ -260,32 +260,44 @@
             document.getElementById('weather-4days').innerHTML = wHtml;
         } catch (e) { console.warn('weather fetch failed, will retry automatically:', e); }
 
-        // מבזקי ynet אמינים ללא חסימות CORS
+        // מבזקי ynet אמינים ומהירים בחיבור ישיר
         try {
-            var rssUrl = encodeURIComponent('https://www.ynet.co.il/Integration/StoryRss2.xml');
-            var d = await fetchWithTimeout('https://api.allorigins.win/get?url=' + rssUrl, {}, 10000).then(function (r) { return r.json(); });
+            var rssTarget = 'https://www.ynet.co.il/Integration/StoryRss2.xml';
+            var proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(rssTarget);
+            var res = await fetchWithTimeout(proxyUrl, {}, 10000);
+            var xmlText = await res.text();
             
-            if (d && d.contents) {
-                var parser = new DOMParser();
-                var xmlDoc = parser.parseFromString(d.contents, "text/xml");
-                var items = xmlDoc.getElementsByTagName("title");
-                var titles = [];
-                for (var i = 1; i < items.length && i < 15; i++) {
-                    var txt = items[i].textContent || items[i].innerText;
-                    if (txt) titles.push(txt.trim());
-                }
-                if (titles.length > 0) {
-                    document.getElementById('news-ticker').innerHTML = "  •  " + titles.join("  •  ");
-                }
+            var parser = new DOMParser();
+            var xmlDoc = parser.parseFromString(xmlText, "text/xml");
+            var items = xmlDoc.getElementsByTagName("title");
+            var titles = [];
+            
+            for (var i = 1; i < items.length && i < 15; i++) {
+                var txt = items[i].textContent || items[i].innerText;
+                if (txt && txt.trim()) titles.push(txt.trim());
             }
-        } catch (e) { console.warn('news fetch failed:', e); }
+            
+            if (titles.length > 0) {
+                document.getElementById('news-ticker').innerHTML = "  •  " + titles.join("  •  ");
+            }
+        } catch (e) { 
+            console.warn('news primary proxy failed, trying fallback:', e); 
+            // fallback לשרת גיבוי נוסף
+            try {
+                var fbUrl = 'https://api.factmaven.com/xml-to-json/?xml=https://www.ynet.co.il/Integration/StoryRss2.xml';
+                var fbRes = await fetchWithTimeout(fbUrl, {}, 8000).then(function(r) { return r.json(); });
+                if (fbRes && fbRes.rss && fbRes.rss.channel && fbRes.rss.channel.item) {
+                    var fbTitles = fbRes.rss.channel.item.map(function(it) { return it.title; }).slice(0, 12);
+                    document.getElementById('news-ticker').innerHTML = "  •  " + fbTitles.join("  •  ");
+                }
+            } catch(err) { console.warn('news fallback failed:', err); }
+        }
 
-        // זמני שבת ופרשת השבוע (מתוקן)
+        // זמני שבת ופרשת השבוע
         try {
             var shabbat = await fetchWithTimeout('https://www.hebcal.com/shabbat?cfg=json&geonameid=293397&b=18&m=40&M=on', {}, 10000).then(function (r) { return r.json(); });
             var items = shabbat.items || [];
             
-            // חיפוש ספציפי של פרשת השבוע בלבד (ללא ימי זיכרון וחגים)
             var p = items.find(function (i) { return i.category === "parashat"; });
             var c = items.find(function (i) { return i.category === "candles"; });
             var h = items.find(function (i) { return i.category === "havdalah"; });
