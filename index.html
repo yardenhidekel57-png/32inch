@@ -162,7 +162,7 @@
 
 <div class="footer">
     <div class="ynet-tag">ynet</div>
-    <div id="news-ticker" class="ticker-move">מבזקי חדשות Ynet</div>
+    <div id="news-ticker" class="ticker-move">מתחבר למבזקים...</div>
 </div>
 
 <script>
@@ -248,6 +248,26 @@
         } catch (e) { console.warn('getData failed, will retry automatically:', e); }
     }
 
+    // פונקציית JSONP לקבלת החדשות משרת חסין CORS
+    window.processYnetNews = function(data) {
+        if (data && data.items && data.items.length > 0) {
+            var titles = data.items.map(function(item) { return item.title; }).filter(Boolean);
+            if (titles.length > 0) {
+                document.getElementById('news-ticker').innerHTML = "  •  " + titles.join("  •  ");
+            }
+        }
+    };
+
+    function fetchYnetNewsJSONP() {
+        var existingScript = document.getElementById('ynet-jsonp-script');
+        if (existingScript) existingScript.remove();
+        
+        var script = document.createElement('script');
+        script.id = 'ynet-jsonp-script';
+        script.src = 'https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fwww.ynet.co.il%2FIntegration%2FStoryRss2.xml&callback=processYnetNews&_=' + Date.now();
+        document.body.appendChild(script);
+    }
+
     async function fetchExternal() {
         // תחזית מזג אוויר
         try {
@@ -260,38 +280,8 @@
             document.getElementById('weather-4days').innerHTML = wHtml;
         } catch (e) { console.warn('weather fetch failed, will retry automatically:', e); }
 
-        // מבזקי ynet אמינים ומהירים בחיבור ישיר
-        try {
-            var rssTarget = 'https://www.ynet.co.il/Integration/StoryRss2.xml';
-            var proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(rssTarget);
-            var res = await fetchWithTimeout(proxyUrl, {}, 10000);
-            var xmlText = await res.text();
-            
-            var parser = new DOMParser();
-            var xmlDoc = parser.parseFromString(xmlText, "text/xml");
-            var items = xmlDoc.getElementsByTagName("title");
-            var titles = [];
-            
-            for (var i = 1; i < items.length && i < 15; i++) {
-                var txt = items[i].textContent || items[i].innerText;
-                if (txt && txt.trim()) titles.push(txt.trim());
-            }
-            
-            if (titles.length > 0) {
-                document.getElementById('news-ticker').innerHTML = "  •  " + titles.join("  •  ");
-            }
-        } catch (e) { 
-            console.warn('news primary proxy failed, trying fallback:', e); 
-            // fallback לשרת גיבוי נוסף
-            try {
-                var fbUrl = 'https://api.factmaven.com/xml-to-json/?xml=https://www.ynet.co.il/Integration/StoryRss2.xml';
-                var fbRes = await fetchWithTimeout(fbUrl, {}, 8000).then(function(r) { return r.json(); });
-                if (fbRes && fbRes.rss && fbRes.rss.channel && fbRes.rss.channel.item) {
-                    var fbTitles = fbRes.rss.channel.item.map(function(it) { return it.title; }).slice(0, 12);
-                    document.getElementById('news-ticker').innerHTML = "  •  " + fbTitles.join("  •  ");
-                }
-            } catch(err) { console.warn('news fallback failed:', err); }
-        }
+        // טעינת מבזקי חדשות Ynet באמצעות JSONP המאקף חסימות דפדפן
+        fetchYnetNewsJSONP();
 
         // זמני שבת ופרשת השבוע
         try {
@@ -309,7 +299,9 @@
         } catch (e) { console.warn('shabbat fetch failed, will retry automatically:', e); }
     }
 
-    setInterval(updateClock, 1000); setInterval(getData, 30000); setInterval(fetchExternal, 600000);
+    setInterval(updateClock, 1000); 
+    setInterval(getData, 30000); 
+    setInterval(fetchExternal, 300000); // רענון כל 5 דקות
     updateClock(); getData(); fetchExternal();
 </script>
 </body>
