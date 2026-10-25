@@ -41,7 +41,6 @@
         .card { background: var(--card-bg); border-radius: 15px; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 8px 25px rgba(0,0,0,0.3); margin-bottom: 0.5vh; }
         .card-header { background: var(--title-bg); color: var(--title-text); height: 4.5vh; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.2vw; flex-shrink: 0; }
 
-        /* תיקון תחזית - מניעת חיתוך המעלות */
         .w-grid { display: flex; justify-content: space-between; gap: 4px; padding: 4px 6px; flex: 1; align-items: center; }
         .w-item { background: #f1f5f9; border-radius: 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; padding: 4px 0; }
         .w-day { font-size: 1.3vw; font-weight: 800; color: #0c4a6e; margin-bottom: 1px; }
@@ -73,10 +72,14 @@
             border-bottom: 1px solid #f1f5f9;
         }
 
+        /* פוטר ומבזקים מתוקנים לגלילה חלקה מימין לשמאל */
         .footer { height: 6vh; background: white; display: flex; align-items: center; border-top: 3px solid #ee2d24; position: relative; overflow: hidden; }
-        /* קצב מבזקים מעודכן ל-200 שניות */
-        .ticker-move { white-space: nowrap; position: absolute; right: 120px; animation: ticker-loop 200s linear infinite; font-size: 1.8vw; font-weight: 800; color: #ee2d24; line-height: 6vh; }
-        @keyframes ticker-loop { 0% { transform: translateX(0); } 100% { transform: translateX(100%); } }
+        .ticker-container { position: absolute; right: 120px; left: 0; overflow: hidden; height: 100%; display: flex; align-items: center; }
+        .ticker-move { white-space: nowrap; position: absolute; animation: ticker-loop 200s linear infinite; font-size: 1.8vw; font-weight: 800; color: #ee2d24; }
+        @keyframes ticker-loop { 
+            0% { transform: translateX(100%); } 
+            100% { transform: translateX(-100%); } 
+        }
         .ynet-tag { background: #ee2d24; color: white; font-weight: 900; font-size: 1.8vw; width: 120px; height: 100%; display: flex; align-items: center; justify-content: center; z-index: 10; position: absolute; right: 0; }
         .emergency { background: #ef4444; color: white; padding: 0.8vh; text-align: center; font-size: 1.6vw; font-weight: 900; }
 
@@ -102,7 +105,6 @@
 </div>
 
 <div class="stage">
-    <!-- טור ימני: דיירים ממליצים (בעלי מקצוע) -->
     <div class="side-col-right">
         <div class="card" style="height: 100%;">
             <div class="card-header" style="background: #fef08a; color: #854d0e;">דיירים ממליצים</div>
@@ -137,7 +139,6 @@
         </div>
     </div>
 
-    <!-- הטור המרכזי: הודעות ועד הבית -->
     <div class="center-col">
         <div class="card" style="height: 100%;">
             <div class="card-header">📢 הודעות ועד הבית</div>
@@ -146,7 +147,6 @@
         </div>
     </div>
 
-    <!-- טור שמאלי: תחזית (מסודרת ללא חיתוך), שבת ואירועים -->
     <div class="side-col-left">
         <div class="card" style="height: 25%;">
             <div class="card-header">🌡️ תחזית</div>
@@ -166,10 +166,11 @@
     </div>
 </div>
 
-<!-- פוטר עם מבזקים מעודכנים -->
 <div class="footer">
     <div class="ynet-tag">ynet</div>
-    <div id="news-ticker" class="ticker-move">מתחבר למבזקים...</div>
+    <div class="ticker-container">
+        <div id="news-ticker" class="ticker-move">טוען מבזקים...</div>
+    </div>
 </div>
 
 <script>
@@ -214,17 +215,13 @@
         var used = performance.memory.usedJSHeapSize;
         var limit = performance.memory.jsHeapSizeLimit;
         if (limit && used / limit > 0.85) {
-            console.warn('memory watchdog: heap usage high (' + Math.round(used / 1048576) + 'MB) - reloading proactively');
+            console.warn('memory watchdog: high heap - reloading');
             safeReload();
         }
     }
     setInterval(checkMemoryWatchdog, 5 * 60 * 1000);
 
     window.addEventListener('online', function () { getData(); fetchExternal(); });
-
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('./sw.js').catch(function () {});
-    }
 
     function updateClock() {
         var now = new Date();
@@ -236,6 +233,8 @@
         try {
             var r = await fetchWithTimeout(SCRIPT_URL + '?t=' + new Date().getTime(), {}, 10000);
             var data = await r.json();
+            
+            // עדכון הודעות
             if (data.messages) {
                 var html = "";
                 for (var i = 1; i < data.messages.length; i++) {
@@ -243,6 +242,8 @@
                 }
                 document.getElementById('message-box').innerHTML = html;
             }
+            
+            // עדכון אירועים
             if (data.events) {
                 var evHtml = "";
                 for (var j = 0; j < data.events.length; j++) {
@@ -252,53 +253,16 @@
                 }
                 document.getElementById('events-list').innerHTML = evHtml;
             }
-        } catch (e) { console.warn('getData failed, will retry automatically:', e); }
-    }
 
-    // מנגנון מבזקים דינמי (JSONP עוקף חסימות דפדפן עם גיבוי פרוקסי)
-    window.processYnetNews = function(data) {
-        if (data && data.items && data.items.length > 0) {
-            var titles = data.items.map(function(item) { return item.title; }).filter(Boolean);
-            if (titles.length > 0) {
-                var newsString = "  •  " + titles.join("  •  ");
-                document.getElementById('news-ticker').innerHTML = newsString + newsString;
+            // עדכון מבזקי חדשות ישירות מהשרת (מונע חסימות CORS בדפדפן)
+            if (data.news && data.news.length > 0) {
+                var newsString = "  •  " + data.news.join("  •  ");
+                document.getElementById('news-ticker').innerHTML = newsString + "     " + newsString;
             }
-        }
-    };
-
-    function fetchYnetNewsJSONP() {
-        var existingScript = document.getElementById('ynet-jsonp-script');
-        if (existingScript) existingScript.remove();
-        
-        var script = document.createElement('script');
-        script.id = 'ynet-jsonp-script';
-        script.src = 'https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fwww.ynet.co.il%2FIntegration%2FStoryRss2.xml&callback=processYnetNews&_=' + Date.now();
-        
-        script.onerror = function() {
-            fetchWithTimeout('https://api.allorigins.win/get?url=' + encodeURIComponent('https://www.ynet.co.il/Integration/StoryRss2.xml'), {}, 8000)
-                .then(function(r) { return r.json(); })
-                .then(function(d) {
-                    if (d && d.contents) {
-                        var parser = new DOMParser();
-                        var xmlDoc = parser.parseFromString(d.contents, "text/xml");
-                        var items = xmlDoc.getElementsByTagName("title");
-                        var titles = [];
-                        for(var i=1; i<items.length && i<15; i++) {
-                            if(items[i].textContent) titles.push(items[i].textContent.trim());
-                        }
-                        if(titles.length > 0) {
-                            var newsString = "  •  " + titles.join("  •  ");
-                            document.getElementById('news-ticker').innerHTML = newsString + newsString;
-                        }
-                    }
-                }).catch(function(err) { console.warn('News fallback failed:', err); });
-        };
-
-        document.body.appendChild(script);
+        } catch (e) { console.warn('getData failed:', e); }
     }
 
     async function fetchExternal() {
-        // תחזית מזג אוויר
         try {
             var w = await fetchWithTimeout('https://api.open-meteo.com/v1/forecast?latitude=32.3215&longitude=34.8532&daily=temperature_2m_max,weathercode&timezone=auto', {}, 10000).then(function (r) { return r.json(); });
             var wHtml = "", days = ['א', 'ב', 'ג', 'ד', 'ה', 'ו', 'ש'], today = new Date().getDay();
@@ -307,12 +271,8 @@
                 wHtml += '<div class="w-item"><span class="w-day">' + days[(today + i) % 7] + '\'</span><div class="w-icon">' + icon + '</div><div class="w-temp">' + Math.round(w.daily.temperature_2m_max[i]) + '°</div></div>';
             }
             document.getElementById('weather-4days').innerHTML = wHtml;
-        } catch (e) { console.warn('weather fetch failed, will retry automatically:', e); }
+        } catch (e) { console.warn('weather fetch failed:', e); }
 
-        // טעינת מבזקי חדשות Ynet
-        fetchYnetNewsJSONP();
-
-        // זמני שבת ופרשת השבוע
         try {
             var shabbat = await fetchWithTimeout('https://www.hebcal.com/shabbat?cfg=json&geonameid=293397&b=18&m=40&M=on', {}, 10000).then(function (r) { return r.json(); });
             var items = shabbat.items || [];
@@ -325,7 +285,7 @@
             document.getElementById('shabbat-box').innerHTML = 
                 '<div class="shabbat-row-line"><span>כניסת שבת 🕯️</span><span>' + (c ? c.title.split(': ')[1] : '--:--') + '</span></div>' +
                 '<div class="shabbat-row-line"><span>צאת שבת ✨</span><span>' + (h ? h.title.split(': ')[1] : '--:--') + '</span></div>';
-        } catch (e) { console.warn('shabbat fetch failed, will retry automatically:', e); }
+        } catch (e) { console.warn('shabbat fetch failed:', e); }
     }
 
     setInterval(updateClock, 1000); 
