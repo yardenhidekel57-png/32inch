@@ -74,6 +74,7 @@
         }
 
         .footer { height: 6vh; background: white; display: flex; align-items: center; border-top: 3px solid #ee2d24; position: relative; overflow: hidden; }
+        /* קצב מבזקים מעודכן ל-200 שניות */
         .ticker-move { white-space: nowrap; position: absolute; right: 120px; animation: ticker-loop 200s linear infinite; font-size: 1.8vw; font-weight: 800; color: #ee2d24; line-height: 6vh; }
         @keyframes ticker-loop { 0% { transform: translateX(0); } 100% { transform: translateX(100%); } }
         .ynet-tag { background: #ee2d24; color: white; font-weight: 900; font-size: 1.8vw; width: 120px; height: 100%; display: flex; align-items: center; justify-content: center; z-index: 10; position: absolute; right: 0; }
@@ -101,6 +102,7 @@
 </div>
 
 <div class="stage">
+    <!-- טור ימני: דיירים ממליצים (בעלי מקצוע) -->
     <div class="side-col-right">
         <div class="card" style="height: 100%;">
             <div class="card-header" style="background: #fef08a; color: #854d0e;">דיירים ממליצים</div>
@@ -135,6 +137,7 @@
         </div>
     </div>
 
+    <!-- הטור המרכזי: הודעות ועד הבית -->
     <div class="center-col">
         <div class="card" style="height: 100%;">
             <div class="card-header">📢 הודעות ועד הבית</div>
@@ -143,6 +146,7 @@
         </div>
     </div>
 
+    <!-- טור שמאלי: תחזית (מסודרת ללא חיתוך), שבת ואירועים -->
     <div class="side-col-left">
         <div class="card" style="height: 25%;">
             <div class="card-header">🌡️ תחזית</div>
@@ -162,6 +166,7 @@
     </div>
 </div>
 
+<!-- פוטר עם מבזקים מעודכנים -->
 <div class="footer">
     <div class="ynet-tag">ynet</div>
     <div id="news-ticker" class="ticker-move">מתחבר למבזקים...</div>
@@ -250,7 +255,7 @@
         } catch (e) { console.warn('getData failed, will retry automatically:', e); }
     }
 
-    // מנגנון JSONP עוקף חסימות דפדפן (זהה לקוד שעבד בהצלחה)
+    // מנגנון מבזקים דינמי (JSONP עוקף חסימות דפדפן עם גיבוי פרוקסי)
     window.processYnetNews = function(data) {
         if (data && data.items && data.items.length > 0) {
             var titles = data.items.map(function(item) { return item.title; }).filter(Boolean);
@@ -304,7 +309,7 @@
             document.getElementById('weather-4days').innerHTML = wHtml;
         } catch (e) { console.warn('weather fetch failed, will retry automatically:', e); }
 
-        // טעינת מבזקי חדשות Ynet באמצעות JSONP
+        // טעינת מבזקי חדשות Ynet
         fetchYnetNewsJSONP();
 
         // זמני שבת ופרשת השבוע
