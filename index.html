@@ -73,13 +73,10 @@
             border-bottom: 1px solid #f1f5f9;
         }
 
-        /* הגדרות פוטר ומבזקים מתוקנות שעובדות בכרום */
+        /* פוטר ומבזקים בקצב 200 */
         .footer { height: 6vh; background: white; display: flex; align-items: center; border-top: 3px solid #ee2d24; position: relative; overflow: hidden; }
-        .ticker-move { white-space: nowrap; position: absolute; right: 130px; animation: ticker-loop 200s linear infinite; font-size: 1.8vw; font-weight: 800; color: #ee2d24; line-height: 6vh; }
-        @keyframes ticker-loop { 
-            0% { transform: translateX(0); } 
-            100% { transform: translateX(100%); } 
-        }
+        .ticker-move { white-space: nowrap; position: absolute; right: 120px; animation: ticker-loop 200s linear infinite; font-size: 1.8vw; font-weight: 800; color: #ee2d24; line-height: 6vh; }
+        @keyframes ticker-loop { 0% { transform: translateX(0); } 100% { transform: translateX(100%); } }
         .ynet-tag { background: #ee2d24; color: white; font-weight: 900; font-size: 1.8vw; width: 120px; height: 100%; display: flex; align-items: center; justify-content: center; z-index: 10; position: absolute; right: 0; }
         .emergency { background: #ef4444; color: white; padding: 0.8vh; text-align: center; font-size: 1.6vw; font-weight: 900; }
 
@@ -89,7 +86,7 @@
 <body>
 
 <video id="keep-awake-video" playsinline muted loop autoplay>
-    <source src="data:video/mp4;base64,AAAAIGZ0eXBpc29tAAACAGlzb21pc28yYXZjMW1wNDEAAAMxbW9vdgAAAGxtdmhkAAAAAAAAAAAAAAAAAAAD6AAAB9AAAQAAAQAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAlt0cmFrAAAAXHRraGQAAAADAAAAAAAAAAAAAAABAAAAAAAAB9AAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAABAAAAAABAAAAAQAAAAAAAkZWR0cwAAABxlbHN0AAAAAAAAAAEAAAfQAAAAAAABAAAAAAHTbWRpYQAAACBtZGhkAAAAAAAAAAAAAAAAAABAAAAAgABVxAAAAAAALWhkbHIAAAAAAAAAAHZpZGUAAAAAAAAAAAAAAABWaWRlb0hhbmRsZXIAAAABfm1pbmYAAAAUdm1oZAAAAAEAAAAAAAAAAAAAACRkaW5mAAAAHGRyZWYAAAAAAAAAAQAAAAx1cmwgAAAAAQAAAT5zdGJsAAAAvnN0c2QAAAAAAAAAAQAAAK5hdmMxAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAABAAEABIAAAASAAAAAAAAAABFUxhdmM2MC4zMS4xMDIgbGlieDI2NAAAAAAAAAAAAAAAGP//AAAANGF2Y0MBZAAK/+EAF2dkAAqs2V7ARAAAAwAEAAADAAg8SJZYAQAGaOvjyyLA/fj4AAAAABBwYXNwAAAAAQAAAAEAAAAUYnRydAAAAAAAAAtEAAALRAAAABhzdHRzAAAAAAAAAAEAAAACAABAAAAAABRzdHNzAAAAAAAAAAEAAAABAAAAHHN0c2MAAAAAAAAAAQAAAAEAAAACAAAAAQAAABxzdHN6AAAAAAAAAAAAAAACAAACxQAAAAwAAAAUc3RjbwAAAAAAAAABAAADYQAAAGJ1ZHRhAAAAWm1ldGEAAAAAAAAAIWhkbHIAAAAAAAAAAG1kaXJhcHBsAAAAAAAAAAAAAAAALWlsc3QAAAAlqXRvbwAAAB1kYXRhAAAAAQAAAABMYXZmNjAuMTAuMTAwAAAACGZyZWUAAALZbWRhdAAAAq0GBf//qdxF6b3m2Ui3lizYINkj7u94MjY0IC0gY29yZSAxNjQgcjMxMDggMzFlMTlmOSAtIEguMjY0L01QRUctNCBBVkMgY29kZWMgLSBDb3B5bGVmdCAyMDAzLTIwMjMgLSBodHRwOi8vd3d3LnZpZGVvbGFuLm9yZy94MjY0Lmh0bWwgLSBvcHRpb25zOiBjYWJhYz0xIHJlZj0zIGRlYmxvY2s9MTowOjAgYW5hbHlzZT0weDM6MHgxMTMgbWU9aGV4IHN1Ym1lPTcgcHN5PTEgcHN5X3JkPTEuMDA6MC4wMCBtaXhlZF9yZWY9MSBtZV9yYW5nZT0xNiBjaHJvbWFfbWU9MSB0cmVsbGlzPTEgOHg4ZGN0PTEgY3FtPTAgZGVhZHpvbmU9MjEsMTEgZmFzdF9wc2tpcD0xIGNocm9tYV_xcF9vZmZzZXQ9LTIgdGhyZWFkcz0xIGxvb2thaGVhZF90aHJlYWRzPTEgc2xpY2VkX3RocmVhZHM9MCBucj0wIGRlY2ltYXRlPTEgaW50ZXJsYWNlZD0wIGJsdXJheV9jb21wYXQ9MCBjb25zdHJhaW5lZF9pbnRyYT0wIGJmcmFtZXM9MyBiX3B5cmFtaWQ9MiBiX2FkYXB0PTEgYl9iaWFzPTAgZGlyZWN0PTEgd2VpZ2h0Yj0xIG9wZW5fZ29wPTAgd2VpZ2h0cD0yIGtleWludD0yNTAga2V5aW50X21pbj0xIHNjZW5lY3V0PTQwIGludHJhX3JlZnJlc2g9MCByY19sb29rYWhlYWQ9NDAgcmM9Y3JmIG1idHJlZT0xIGNyZj0yMy4wIHFjb21wPTAuNjAgcXBtaW49MCBxcG1heD02OSBxcHN0ZXA9NCBpcF9yYXRpbz0xLjQwIGFxPTE6MS4wMACAAAAAEGWIhAAW//730z/MsuyaJYEAAAAIQZohbEFf/vA=" type="video/mp4">
+    <source src="data:video/mp4;base64,AAAAIGZ0eXBpc29tAAACAGlzb21pc28yYXZjMW1wNDEAAAMxbW9vdgAAAGxtdmhkAAAAAAAAAAAAAAAAAAAD6AAAB9AAAQAAAQAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAlt0cmFrAAAAXHRraGQAAAADAAAAAAAAAAAAAAABAAAAAAAAB9AAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAABAAAAAABAAAAAQAAAAAAAkZWR0cwAAABxlbHN0AAAAAAAAAAEAAAfQAAAAAAABAAAAAAHTbWRpYQAAACBtZGhkAAAAAAAAAAAAAAAAAABAAAAAgABVxAAAAAAALWhkbHIAAAAAAAAAAHZpZGUAAAAAAAAAAAAAAABWaWRlb0hhbmRsZXIAAAABfm1pbmYAAAAUdm1oZAAAAAEAAAAAAAAAAAAAACRkaW5mAAAAHGRyZWYAAAAAAAAAAQAAAAx1cmwgAAAAAQAAAT5zdGJsAAAAvnN0c2QAAAAAAAAAAQAAAK5hdmMxAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAABAAEABIAAAASAAAAAAAAAABFUxhdmM2MC4zMS4xMDIgbGlieDI2NAAAAAAAAAAAAAAAGP//AAAANGF2Y0MBZAAK/+EAF2dkAAqs2V7ARAAAAwAEAAADAAg8SJZYAQAGaOvjyyLA/fj4AAAAABBwYXNwAAAAAQAAAAEAAAAUYnRydAAAAAAAAAtEAAALRAAAABhzdHRzAAAAAAAAAAEAAAACAABAAAAAABRzdHNzAAAAAAAAAAEAAAABAAAAHHN0c2MAAAAAAAAAAQAAAAEAAAACAAAAAQAAABxzdHN6AAAAAAAAAAAAAAACAAACxQAAAAwAAAAUc3RjbwAAAAAAAAABAAADYQAAAGJ1ZHRhAAAAWm1ldGEAAAAAAAAAIWhkbHIAAAAAAAAAAG1kaXJhcHBsAAAAAAAAAAAAAAAALWlsc3QAAAAlqXRvbwAAAB1kYXRhAAAAAQAAAABMYXZmNjAuMTAuMTAwAAAACGZyZWUAAALZbWRhdAAAAq0GBf//qdxF6b3m2Ui3lizYINkj7u94MjY0IC0gY29yZSAxNjQgcjMxMDggMzFlMTlmOSAtIEguMjY0L01QRUctNCBBVkMgY29kZwCgLSBDb3B5bGVmdCAyMDAzLTIwMjMgLSBodHRwOi8vd3d3LnZpZGVvbGFuLm9yZy94MjY0Lmh0bWwgLSBvcHRpb25zOiBjYWJhYz0xIHJlZj0zIGRlYmxvY2s9MTowOjAgYW5hbHlzZT0weDM6MHgxMTMgbWU9aGV4IHN1Ym1lPTcgcHN5PTEgcHN5X3JkPTEuMDA6MC4wMCBtaXhlZF9yZWY9MSBtZV9yYW5nZT0xNiBjaHJvbWFfbWU9MSB0cmVsbGlzPTEgOHg4ZGN0PTEgY3FtPTAgZGVhZHpvbmU9MjEsMTEgZmFzdF9wc2tpcD0xIGNocm9tYV_xcF9vZmZzZXQ9LTIgdGhyZWFkcz0xIGxvb2thaGVhZF90aHJlYWRzPTEgc2xpY2VkX3RocmVhZHM9MCBucj0wIGRlY2ltYXRlPTEgaW50ZXJsYWNlZD0wIGJsdXJheV9jb21wYXQ9MCBjb25zdHJhaW5lZF9pbnRyYT0wIGJmcmFtZXM9MyBiX3B5cmFtaWQ9MiBiX2FkYXB0PTEgYl9iaWFzPTAgZGlyZWN0PTEgd2VpZ2h0Yj0xIG9wZW5fZ29wPTAgd2VpZ2h0cD0yIGtleWludD0yNTAga2V5aW50X21pbj0xIHNjZW5lY3V0PTQwIGludHJhX3JlZnJlc2g9MCByY19sb29rYWhlYWQ9NDAgcmM9Y3JmIG1idHJlZT0xIGNyZj0yMy4wIHFjb21wPTAuNjAgcXBtaW49MCBxcG1heD02OSBxcHN0ZXA9NCBpcF9yYXRpbz0xLjQwIGFxPTE6MS4wMACAAAAAEGWIhAAW//730z/MsuyaJYEAAAAIQZohbEFf/vA=" type="video/mp4">
 </video>
 
 <div class="header-wrapper">
@@ -168,7 +165,7 @@
 
 <div class="footer">
     <div class="ynet-tag">ynet</div>
-    <div id="news-ticker" class="ticker-move">מתחבר למבזקים...</div>
+    <div id="news-ticker" class="ticker-move">מועצת דודו דותן 2, נתניה - ברוכים הבאים ללוח המודעות הדיגיטלי</div>
 </div>
 
 <script>
@@ -213,7 +210,7 @@
         var used = performance.memory.usedJSHeapSize;
         var limit = performance.memory.jsHeapSizeLimit;
         if (limit && used / limit > 0.85) {
-            console.warn('memory watchdog: heap usage high (' + Math.round(used / 1048576) + 'MB) - reloading proactively');
+            console.warn('memory watchdog: high heap - reloading');
             safeReload();
         }
     }
@@ -251,49 +248,31 @@
                 }
                 document.getElementById('events-list').innerHTML = evHtml;
             }
-        } catch (e) { console.warn('getData failed, will retry automatically:', e); }
+        } catch (e) { console.warn('getData failed:', e); }
     }
 
-    // מנגנון מבזקים JSONP מדויק שעובד מושלם בכרום
-    window.processYnetNews = function(data) {
-        if (data && data.items && data.items.length > 0) {
-            var titles = data.items.map(function(item) { return item.title; }).filter(Boolean);
-            if (titles.length > 0) {
-                var newsString = "  •  " + titles.join("  •  ");
-                document.getElementById('news-ticker').innerHTML = newsString + newsString;
+    // מנגנון משיכת חדשות חסין דרך פרויקט פרוקסי ישיר של XML
+    async function fetchYnetDirect() {
+        try {
+            var res = await fetchWithTimeout('https://api.allorigins.win/get?url=' + encodeURIComponent('https://www.ynet.co.il/Integration/StoryRss2.xml'), {}, 8000);
+            var data = await res.json();
+            if (data && data.contents) {
+                var parser = new DOMParser();
+                var xmlDoc = parser.parseFromString(data.contents, "text/xml");
+                var items = xmlDoc.getElementsByTagName("title");
+                var titles = [];
+                for (var i = 1; i < items.length && i < 15; i++) {
+                    if (items[i].textContent) titles.push(items[i].textContent.trim());
+                }
+                if (titles.length > 0) {
+                    var newsString = "  •  " + titles.join("  •  ") + "  •  ";
+                    document.getElementById('news-ticker').innerHTML = newsString + newsString;
+                }
             }
+        } catch (e) {
+            console.warn('Direct news fetch failed, using backup text:', e);
+            document.getElementById('news-ticker').innerHTML = "  •  ברוכים הבאים לדודו דותן 2, נתניה  •  עדכונים יופיעו בהקדם  •  ";
         }
-    };
-
-    function fetchYnetNewsJSONP() {
-        var existingScript = document.getElementById('ynet-jsonp-script');
-        if (existingScript) existingScript.remove();
-        
-        var script = document.createElement('script');
-        script.id = 'ynet-jsonp-script';
-        script.src = 'https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fwww.ynet.co.il%2FIntegration%2FStoryRss2.xml&callback=processYnetNews&_=' + Date.now();
-        
-        script.onerror = function() {
-            fetchWithTimeout('https://api.allorigins.win/get?url=' + encodeURIComponent('https://www.ynet.co.il/Integration/StoryRss2.xml'), {}, 8000)
-                .then(function(r) { return r.json(); })
-                .then(function(d) {
-                    if (d && d.contents) {
-                        var parser = new DOMParser();
-                        var xmlDoc = parser.parseFromString(d.contents, "text/xml");
-                        var items = xmlDoc.getElementsByTagName("title");
-                        var titles = [];
-                        for(var i=1; i<items.length && i<15; i++) {
-                            if(items[i].textContent) titles.push(items[i].textContent.trim());
-                        }
-                        if(titles.length > 0) {
-                            var newsString = "  •  " + titles.join("  •  ");
-                            document.getElementById('news-ticker').innerHTML = newsString + newsString;
-                        }
-                    }
-                }).catch(function(err) { console.warn('News fallback failed:', err); });
-        };
-
-        document.body.appendChild(script);
     }
 
     async function fetchExternal() {
@@ -307,7 +286,7 @@
             document.getElementById('weather-4days').innerHTML = wHtml;
         } catch (e) { console.warn('weather fetch failed:', e); }
 
-        fetchYnetNewsJSONP();
+        fetchYnetDirect();
 
         try {
             var shabbat = await fetchWithTimeout('https://www.hebcal.com/shabbat?cfg=json&geonameid=293397&b=18&m=40&M=on', {}, 10000).then(function (r) { return r.json(); });
