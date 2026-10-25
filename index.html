@@ -41,6 +41,7 @@
         .card { background: var(--card-bg); border-radius: 15px; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 8px 25px rgba(0,0,0,0.3); margin-bottom: 0.5vh; }
         .card-header { background: var(--title-bg); color: var(--title-text); height: 4.5vh; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.2vw; flex-shrink: 0; }
 
+        /* תיקון תחזית - מניעת חיתוך המעלות */
         .w-grid { display: flex; justify-content: space-between; gap: 4px; padding: 4px 6px; flex: 1; align-items: center; }
         .w-item { background: #f1f5f9; border-radius: 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; padding: 4px 0; }
         .w-day { font-size: 1.3vw; font-weight: 800; color: #0c4a6e; margin-bottom: 1px; }
@@ -72,7 +73,7 @@
             border-bottom: 1px solid #f1f5f9;
         }
 
-        /* פוטר ומבזקים מתוקנים לגלילה חלקה מימין לשמאל */
+        /* פוטר ומבזקים בגלילה חלקה על 200 שניות */
         .footer { height: 6vh; background: white; display: flex; align-items: center; border-top: 3px solid #ee2d24; position: relative; overflow: hidden; }
         .ticker-container { position: absolute; right: 120px; left: 0; overflow: hidden; height: 100%; display: flex; align-items: center; }
         .ticker-move { white-space: nowrap; position: absolute; animation: ticker-loop 200s linear infinite; font-size: 1.8vw; font-weight: 800; color: #ee2d24; }
@@ -105,6 +106,7 @@
 </div>
 
 <div class="stage">
+    <!-- טור ימני: דיירים ממליצים -->
     <div class="side-col-right">
         <div class="card" style="height: 100%;">
             <div class="card-header" style="background: #fef08a; color: #854d0e;">דיירים ממליצים</div>
@@ -139,6 +141,7 @@
         </div>
     </div>
 
+    <!-- הטור המרכזי: הודעות ועד הבית -->
     <div class="center-col">
         <div class="card" style="height: 100%;">
             <div class="card-header">📢 הודעות ועד הבית</div>
@@ -147,6 +150,7 @@
         </div>
     </div>
 
+    <!-- טור שמאלי: תחזית, שבת ואירועים -->
     <div class="side-col-left">
         <div class="card" style="height: 25%;">
             <div class="card-header">🌡️ תחזית</div>
@@ -233,8 +237,6 @@
         try {
             var r = await fetchWithTimeout(SCRIPT_URL + '?t=' + new Date().getTime(), {}, 10000);
             var data = await r.json();
-            
-            // עדכון הודעות
             if (data.messages) {
                 var html = "";
                 for (var i = 1; i < data.messages.length; i++) {
@@ -242,8 +244,6 @@
                 }
                 document.getElementById('message-box').innerHTML = html;
             }
-            
-            // עדכון אירועים
             if (data.events) {
                 var evHtml = "";
                 for (var j = 0; j < data.events.length; j++) {
@@ -253,13 +253,49 @@
                 }
                 document.getElementById('events-list').innerHTML = evHtml;
             }
+        } catch (e) { console.warn('getData failed:', e); }
+    }
 
-            // עדכון מבזקי חדשות ישירות מהשרת (מונע חסימות CORS בדפדפן)
-            if (data.news && data.news.length > 0) {
-                var newsString = "  •  " + data.news.join("  •  ");
+    // מנגנון מבזקים דינמי (JSONP עוקף חסימות דפדפן ישירות מהדפדפן)
+    window.processYnetNews = function(data) {
+        if (data && data.items && data.items.length > 0) {
+            var titles = data.items.map(function(item) { return item.title; }).filter(Boolean);
+            if (titles.length > 0) {
+                var newsString = "  •  " + titles.join("  •  ");
                 document.getElementById('news-ticker').innerHTML = newsString + "     " + newsString;
             }
-        } catch (e) { console.warn('getData failed:', e); }
+        }
+    };
+
+    function fetchYnetNewsJSONP() {
+        var existingScript = document.getElementById('ynet-jsonp-script');
+        if (existingScript) existingScript.remove();
+        
+        var script = document.createElement('script');
+        script.id = 'ynet-jsonp-script';
+        script.src = 'https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fwww.ynet.co.il%2FIntegration%2FStoryRss2.xml&callback=processYnetNews&_=' + Date.now();
+        
+        script.onerror = function() {
+            fetchWithTimeout('https://api.allorigins.win/get?url=' + encodeURIComponent('https://www.ynet.co.il/Integration/StoryRss2.xml'), {}, 8000)
+                .then(function(r) { return r.json(); })
+                .then(function(d) {
+                    if (d && d.contents) {
+                        var parser = new DOMParser();
+                        var xmlDoc = parser.parseFromString(d.contents, "text/xml");
+                        var items = xmlDoc.getElementsByTagName("title");
+                        var titles = [];
+                        for(var i=1; i<items.length && i<15; i++) {
+                            if(items[i].textContent) titles.push(items[i].textContent.trim());
+                        }
+                        if(titles.length > 0) {
+                            var newsString = "  •  " + titles.join("  •  ");
+                            document.getElementById('news-ticker').innerHTML = newsString + "     " + newsString;
+                        }
+                    }
+                }).catch(function(err) { console.warn('News fallback failed:', err); });
+        };
+
+        document.body.appendChild(script);
     }
 
     async function fetchExternal() {
@@ -272,6 +308,8 @@
             }
             document.getElementById('weather-4days').innerHTML = wHtml;
         } catch (e) { console.warn('weather fetch failed:', e); }
+
+        fetchYnetNewsJSONP();
 
         try {
             var shabbat = await fetchWithTimeout('https://www.hebcal.com/shabbat?cfg=json&geonameid=293397&b=18&m=40&M=on', {}, 10000).then(function (r) { return r.json(); });
