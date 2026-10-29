@@ -168,7 +168,7 @@
 </div>
 
 <script>
-    var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzhGwGPiqNXmESzkgh6oW-KDGlgMaBoIiYDd0ennIUNlOwVQH2F7DWIDyZ6Fe_3wrcY/exec';
+    var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzFfBM7e65MOWDe8jYYn4O1q0UViLYzhKlhEWe5IFOYn-QOVO30R60H7rZy83RTrZZf/exec';
 
     function fetchWithTimeout(url, options, timeoutMs) {
         options = options || {};
@@ -227,6 +227,10 @@
         document.getElementById('live-date').innerHTML = now.getDate().toString().padStart(2, '0') + "/" + (now.getMonth()+1).toString().padStart(2, '0') + "/" + now.getFullYear();
     }
 
+    // true ברגע שה-Apps Script מחזיר שדה news בעצמו - או אז המנגנון החיצוני
+    // (rss2json/JSONP/proxy chain) לא פועל בכלל לאותו סבב.
+    var gotNewsFromAppsScript = false;
+
     async function getData() {
         try {
             var r = await fetchWithTimeout(SCRIPT_URL + '?t=' + new Date().getTime(), {}, 10000);
@@ -247,48 +251,107 @@
                 }
                 document.getElementById('events-list').innerHTML = evHtml;
             }
+            // אם ה-Apps Script שלכם כבר מחזיר news (מערך כותרות) - זה המקור
+            // האמין ביותר (שרת שלכם, בלי תלות בפרוקסי CORS חיצוני חינמי) ומקבל
+            // עדיפות מוחלטת על פני rss2json/JSONP/proxy-chain.
+            if (Array.isArray(data.news)) {
+                gotNewsFromAppsScript = true;
+                if (data.news.length > 0) applyNewsTitles(data.news);
+                // מערך ריק = לסקריפט לא היו חדשות הפעם - משאירים את הטיקר כמו שהוא
+            } else {
+                gotNewsFromAppsScript = false;
+            }
         } catch (e) { console.warn('getData failed, will retry automatically:', e); }
     }
 
-    // מנגנון מבזקים דינמי חסין חסימות דפדפן (JSONP)
+    // מנגנון מבזקים.
+    //
+    // תוקן: הגרסה הקודמת לא בדקה את data.status בתגובה מ-rss2json, ו-
+    // script.onerror מופעל רק על כשל ברמת הרשת - לא כשהבקשה מצליחה (200)
+    // אבל rss2json מחזיר שגיאה בתוך ה-JSON (ידוע שהוא מחזיר גם 500 מדי פעם,
+    // לא רק הגבלת קצב). במקרה כזה המנגנון הקודם לא עשה כלום בלי התרעה,
+    // וה-fallback אף פעם לא הופעל. עכשיו יש גם בדיקת status, גם timeout
+    // בטיחות, וגם שרשרת fallback (לא רק ניסיון אחד) כי כל פרוקסי CORS
+    // חינמי בודד יכול ליפול בכל רגע בלי התרעה.
+    var newsTimeoutHandle = null;
+
+    function applyNewsTitles(titles) {
+        var newsString = "  •  " + titles.join("  •  ");
+        document.getElementById('news-ticker').innerHTML = newsString + newsString;
+    }
+
     window.processYnetNews = function(data) {
-        if (data && data.items && data.items.length > 0) {
+        clearTimeout(newsTimeoutHandle);
+        if (data && data.status === 'ok' && data.items && data.items.length > 0) {
             var titles = data.items.map(function(item) { return item.title; }).filter(Boolean);
-            if (titles.length > 0) {
-                var newsString = "  •  " + titles.join("  •  ");
-                document.getElementById('news-ticker').innerHTML = newsString + newsString;
-            }
+            if (titles.length > 0) { applyNewsTitles(titles); return; }
         }
+        console.warn('rss2json returned no usable items (rate limit / outage / needs api_key?):', data && data.message);
+        fetchNewsFallback();
     };
 
+    function parseTitlesFromRssXml(xmlText) {
+        var xmlDoc = new DOMParser().parseFromString(xmlText, "text/xml");
+        var items = xmlDoc.getElementsByTagName("title");
+        var titles = [];
+        for (var i = 1; i < items.length && i < 15; i++) {
+            if (items[i].textContent) titles.push(items[i].textContent.trim());
+        }
+        return titles;
+    }
+
+    // כמה פרוקסי CORS חינמיים חלופיים, מנוסים אחד אחרי השני - שום פרוקסי
+    // חינמי בודד לא אמין מספיק לשימוש רציף 24/7, אז יותר ניסיונות = יותר סיכוי.
+    var NEWS_PROXIES = [
+        function (url) { return 'https://api.allorigins.win/raw?url=' + encodeURIComponent(url); },
+        function (url) { return 'https://thingproxy.freeboard.io/fetch/' + url; }
+    ];
+
+    function fetchNewsFallback(proxyIndex) {
+        proxyIndex = proxyIndex || 0;
+        if (proxyIndex >= NEWS_PROXIES.length) {
+            console.warn('all news proxies failed this cycle - ticker keeps its last known headlines');
+            return;
+        }
+        var proxyUrl = NEWS_PROXIES[proxyIndex]('https://www.ynet.co.il/Integration/StoryRss2.xml');
+        fetchWithTimeout(proxyUrl, {}, 8000)
+            .then(function (r) { return r.text(); })
+            .then(function (text) {
+                var titles = parseTitlesFromRssXml(text);
+                if (titles.length > 0) applyNewsTitles(titles);
+                else fetchNewsFallback(proxyIndex + 1);
+            })
+            .catch(function (err) {
+                console.warn('news proxy #' + proxyIndex + ' failed:', err);
+                fetchNewsFallback(proxyIndex + 1);
+            });
+    }
+
     function fetchYnetNewsJSONP() {
+        // ה-Apps Script כבר נותן חדשות בעצמו (ראו getData) - אין סיבה
+        // להטריד שירותי צד-שלישי חינמיים בכלל.
+        if (gotNewsFromAppsScript) return;
+
         var existingScript = document.getElementById('ynet-jsonp-script');
         if (existingScript) existingScript.remove();
-        
+        clearTimeout(newsTimeoutHandle);
+
         var script = document.createElement('script');
         script.id = 'ynet-jsonp-script';
         script.src = 'https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fwww.ynet.co.il%2FIntegration%2FStoryRss2.xml&callback=processYnetNews&_=' + Date.now();
-        
+
         script.onerror = function() {
-            // Fallback לשרת פרוקסי נוסף במקרה כשל
-            fetchWithTimeout('https://api.allorigins.win/get?url=' + encodeURIComponent('https://www.ynet.co.il/Integration/StoryRss2.xml'), {}, 8000)
-                .then(function(r) { return r.json(); })
-                .then(function(d) {
-                    if (d && d.contents) {
-                        var parser = new DOMParser();
-                        var xmlDoc = parser.parseFromString(d.contents, "text/xml");
-                        var items = xmlDoc.getElementsByTagName("title");
-                        var titles = [];
-                        for(var i=1; i<items.length && i<15; i++) {
-                            if(items[i].textContent) titles.push(items[i].textContent.trim());
-                        }
-                        if(titles.length > 0) {
-                            var newsString = "  •  " + titles.join("  •  ");
-                            document.getElementById('news-ticker').innerHTML = newsString + newsString;
-                        }
-                    }
-                }).catch(function(err) { console.warn('News fallback failed:', err); });
+            console.warn('JSONP script failed at the network level, trying proxy chain');
+            clearTimeout(newsTimeoutHandle);
+            fetchNewsFallback();
         };
+
+        // רשת ביטחון: אם processYnetNews בכלל לא נקרא תוך 8 שניות - לא
+        // נשארים תקועים, מפעילים את שרשרת ה-fallback ביזמה.
+        newsTimeoutHandle = setTimeout(function () {
+            console.warn('rss2json JSONP timed out with no callback - falling back to proxy chain');
+            fetchNewsFallback();
+        }, 8000);
 
         document.body.appendChild(script);
     }
@@ -305,27 +368,27 @@
             document.getElementById('weather-4days').innerHTML = wHtml;
         } catch (e) { console.warn('weather fetch failed, will retry automatically:', e); }
 
-        // טעינת מבזקי חדשות Ynet
+        // טעינת מבזקי חדשות Ynet (מדלג לגמרי אם ה-Apps Script כבר סיפק news)
         fetchYnetNewsJSONP();
 
         // זמני שבת ופרשת השבוע
         try {
             var shabbat = await fetchWithTimeout('https://www.hebcal.com/shabbat?cfg=json&geonameid=293397&b=18&m=40&M=on', {}, 10000).then(function (r) { return r.json(); });
             var items = shabbat.items || [];
-            
+
             var p = items.find(function (i) { return i.category === "parashat"; });
             var c = items.find(function (i) { return i.category === "candles"; });
             var h = items.find(function (i) { return i.category === "havdalah"; });
-            
+
             document.getElementById('parasha-display').innerHTML = p ? p.hebrew : "פרשת השבוע";
-            document.getElementById('shabbat-box').innerHTML = 
+            document.getElementById('shabbat-box').innerHTML =
                 '<div class="shabbat-row-line"><span>כניסת שבת 🕯️</span><span>' + (c ? c.title.split(': ')[1] : '--:--') + '</span></div>' +
                 '<div class="shabbat-row-line"><span>צאת שבת ✨</span><span>' + (h ? h.title.split(': ')[1] : '--:--') + '</span></div>';
         } catch (e) { console.warn('shabbat fetch failed, will retry automatically:', e); }
     }
 
-    setInterval(updateClock, 1000); 
-    setInterval(getData, 30000); 
+    setInterval(updateClock, 1000);
+    setInterval(getData, 30000);
     setInterval(fetchExternal, 300000); // רענון כל 5 דקות
     updateClock(); getData(); fetchExternal();
 </script>
